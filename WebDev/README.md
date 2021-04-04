@@ -24,14 +24,16 @@ To read more about the recruitment process and open opportunities at Cygnius Con
         * [Getting started with DDB & Java](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Java.html)
 *   **View**: API Design
     * The app is supposed to be API driven & API need to be written in Java.
-    * Written with [Swagger OpenAPI Specifications](https://swagger.io/specification/). [Getting Started with Swagger](https://swagger.io/docs/specification/about/) [Swagger Tools](https://swagger.io/tools/)
+    * Written with [Swagger OpenAPI Specifications](https://swagger.io/specification/). Helpful links:
+        * [Getting Started with Swagger](https://swagger.io/docs/specification/about/) 
+        * [Swagger Tools](https://swagger.io/tools/)
     * The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS SAM application. Helpful links:
         * [Deploying a Hello-World API Gateway + Lambda application](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
         * [Adding Swagger template to your APIGateway application](https://medium.com/carsales-dev/api-gateway-with-aws-sam-template-c05afdd9cafe)
         * Another blog about [Building a APIGateway + Lambda application with DDB in NodeJS](https://thenewstack.io/build-a-serverless-api-with-aws-gateway-and-lambda/)
         * Another blog about [Swagger + APIGateway + Lambda application](https://swagger.io/blog/api-development/swagger-amazon-api-gateway-and-lambda/)
     * (Optional) Dependency injection through Dagger/Guice.
-    * (Optional) Documentation (as a [Postman collection](https://www.postman.com/collection/))
+    * Documentation (as a [Postman collection](https://www.postman.com/collection/))
     * All stories should be executable over these APIs.
 *   **View**: UI Design (*Optional*, for brownie points, in addition to API Design)
     *   An HTML frontend with ANY framework of choice. (functional/just wireframes)
