@@ -14,10 +14,14 @@ To read more about the recruitment process and open opportunities at Cygnius Con
 *   We typically take 5-6 days to evaluate this submission.
 
 ### Training
+Prequisite: You should be able to read & write basic java.
+
 If you don't know about AWS, backend API, serverless paradigm of computing, you can learn it here:
-  * You can watch this video till 17 mins: https://www.youtube.com/watch?v=ubCNZRNjhyo to get basics of what AWS is and how to use it.
-  * After that you can do this course: https://www.coursera.org/learn/building-modern-java-applications-on-aws
+  * You can learn about basics of AWS and how to create one account here by going through first 17 mins of this [youtube video](https://www.youtube.com/watch?v=ubCNZRNjhyo).
+  * You can learn about AWS IAM basics from the first 19m 15s of this [youtube video] (https://www.youtube.com/watch?v=GjVFf83dcE8).
+  * After that you can do this course: [Free Coursera course](https://www.coursera.org/learn/building-modern-java-applications-on-aws)
     * We recommend that you do all the practice projects and assignments. You can skip week 4 & week 6 as the course material taught in those weeks aren't relevant to the assignment.
+At the end of these 2 trainings, you will be able to develop any business application in java & deploy it in the cloud.
 
 ### Instructions
 
