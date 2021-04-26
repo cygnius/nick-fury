@@ -13,6 +13,12 @@ To read more about the recruitment process and open opportunities at Cygnius Con
 *   For success, ensure you get as many checks as in our [Assessment Criteria](#assessment-criteria)
 *   We typically take 5-6 days to evaluate this submission.
 
+### Training
+If you don't know about AWS, backend API, serverless paradigm of computing, you can learn it here:
+  * You can watch this video till 17 mins: https://www.youtube.com/watch?v=ubCNZRNjhyo to get basics of what AWS is and how to use it.
+  * After that you can do this course: https://www.coursera.org/learn/building-modern-java-applications-on-aws
+    * We recommend that you do all the practice projects and assignments. You can skip week 4 & week 6 as the course material taught in those weeks aren't relevant to the assignment.
+
 ### Instructions
 
 *   **Model**: Design database schema and implement using:
