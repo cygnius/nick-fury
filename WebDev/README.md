@@ -8,7 +8,7 @@ To read more about the recruitment process and open opportunities at Cygnius Con
 
 ### Assignment
 
-*   You can select any one of the stories mentioned in the [stories](../stories/) folder, and develop an API service using Swagger & AWS for it. 
+*   You can select any one of the stories mentioned in the [stories](../stories/) folder(currently there is only one), and develop an API service using Swagger & AWS for it. 
 *   Follow [Instructions](#instructions) and [Submission Process](#submission-process) to complete the assignment.
 *   For success, ensure you get as many checks as in our [Assessment Criteria](#assessment-criteria)
 *   We typically take 5-6 days to evaluate this submission.
@@ -16,15 +16,37 @@ To read more about the recruitment process and open opportunities at Cygnius Con
 ### Training
 Prequisite: You should be able to read & write basic java.
 
+You will need to understand & write Swagger APIs. In case, you dont know about them, you can learn it from this course:
+  * Udemy Course - [Course about Design First approach with OpenAPI(Swagger) specs and tools](https://www.udemy.com/course/swagger-tools-openapi/). Credentials at the bottom of the page. Please note that other candidates are also using this account, so the Udemy app will not be able to remember which chapter/lecture you were at in the previous learning session. Please note down the lecture number and play time in the lecture when you finish your learning session.
+
 If you don't know about AWS, backend API, serverless paradigm of computing, you can learn it here:
   * You can learn about basics of AWS and how to create one account here by going through first 17 mins of this [youtube video](https://www.youtube.com/watch?v=ubCNZRNjhyo).
   * You can learn about AWS IAM basics from the first 19m 15s of this [youtube video](https://www.youtube.com/watch?v=GjVFf83dcE8).
-  * After that you can do this course: [Free Coursera course](https://www.coursera.org/learn/building-modern-java-applications-on-aws)
-    * We recommend that you do all the practice projects and assignments. You can skip week 4 & week 6 as the course material taught in those weeks aren't relevant to the assignment.
+  * Udemy Course - [Serverless using AWS Lambda for Java Developers](https://www.udemy.com/course/serverless-programming-using-aws-lambda-for-java-developers/). Credentials at the bottom of the page. Please note that other students are also using this account, so the Udemy app will not be able to remember which chapter/lecture you were at in the previous learning session. Please note down the lecture number and play time in the lecture when you finish your learning session.
 At the end of these 2 trainings, you will be able to develop any business application in java & deploy it in the cloud.
 
-### Instructions
 
+Extra training for reference and in-depth knowledge of AWS:
+  * [Free Coursera course](https://www.coursera.org/learn/building-modern-java-applications-on-aws)
+    * You can skip week 4 & week 6 as the course material taught in those weeks aren't relevant to the assignment.
+
+
+
+### Instructions
+* **Starting Point**
+    * Go through this blog: https://aws.amazon.com/blogs/opensource/real-world-serverless-application/
+        * It talks about how to build production grade java web applications in AWS Lambda with holistic explanation with an exmaple.
+    * Fork out this Github Project: https://github.com/amazon-archives/realworld-serverless-application
+        * It will act as the starting point for your application. It has a sample application completely build and working E2E. You can modify this to build your assignment.
+    * Go through the Github project's wiki pages:
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/Quick-Start
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/Back-end
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/CloudFormation
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/DynamoDB
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/Amazon-API-Gateway
+        * https://github.com/amazon-archives/realworld-serverless-application/wiki/AWS-Lambda
+    * Remember that we are looking ONLY for properly functioning backend APIs which can be demo-ed using Postman. We DO NOT expect you to make the frontend for the same.
 *   **Model**: Design database schema and implement using:
     * MySQL+Hibernate. Helpful links:
         * [Getting Started with Java and Hibernate](https://thorben-janssen.com/hibernate-getting-started/)
@@ -34,10 +56,13 @@ At the end of these 2 trainings, you will be able to develop any business applic
         * [Getting started with DDB & Java](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Java.html)
 *   **View**: API Design
     * The app is supposed to be API driven & API need to be written in Java.
-    * Written with [Swagger OpenAPI Specifications](https://swagger.io/specification/). Helpful links:
+    * Written with Swagger OpenAPI Specifications. Some more resources:
+        * Best point to get started with Swagger is the training mentioned above.
         * [Getting Started with Swagger](https://swagger.io/docs/specification/about/) 
+        * [Swagger OpenAPI Specifications](https://swagger.io/specification/)
         * [Swagger Tools](https://swagger.io/tools/)
-    * The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS SAM application. Helpful links:
+    * The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS SAM application. Some more resources:
+        * Best point to get started with this is the training mentioned above and the github project mentioned above.
         * [Deploying a Hello-World API Gateway + Lambda application](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
         * [Adding Swagger template to your APIGateway application](https://medium.com/carsales-dev/api-gateway-with-aws-sam-template-c05afdd9cafe)
         * Another blog about [Building a APIGateway + Lambda application with DDB in NodeJS](https://thenewstack.io/build-a-serverless-api-with-aws-gateway-and-lambda/)
@@ -88,3 +113,7 @@ Cite any external piece of code you're using, preferably with a link to the sour
 10. [Adding Swagger template to your APIGateway application](https://medium.com/carsales-dev/api-gateway-with-aws-sam-template-c05afdd9cafe)
 11. Another blog about [Building a APIGateway + Lambda application with DDB in NodeJS](https://thenewstack.io/build-a-serverless-api-with-aws-gateway-and-lambda/)
 12. Another blog about [Swagger + APIGateway + Lambda application](https://swagger.io/blog/api-development/swagger-amazon-api-gateway-and-lambda/)
+
+### Credentials for Udemy
+Username: founder@cygniusconsulting.com
+Password: SharingPwd123
