@@ -1,10 +1,10 @@
-## Web Development challenge hiring assignments for EffDog
+## Web Development challenge hiring assignments for EffX
 
 ### Introduction
 The goal of this challenge is to test your familiarity with concepts in Java & Web API design.
-To read more about the recruitment process and open opportunities at EffDog, click [here](https://bit.ly/31O42C1)
+To read more about the recruitment process and open opportunities at EffX, click [here](https://bit.ly/31O42C1)
 
-*Note: This is a public submission. Any work on this assignment does not bring EffDog or its employees any moat; and by design, is made to assess skills we need. Stories provided are unrelated to EffDog's core business.* 
+*Note: This is a public submission. Any work on this assignment does not bring EffX or its employees any moat; and by design, is made to assess skills we need. Stories provided are unrelated to EffX's core business.* 
 
 ### Assignment
 
@@ -83,7 +83,7 @@ Extra training for reference and in-depth knowledge of AWS:
 2. Maintainability and organisation of code .
 3. Balancing between speed and quality of code - we understand that candidates can only spend limited time on these challenges. If you do make any trade-offs in favour of saving time, do mention them in comments. We do value calculated & well reasoned assumptions.
 4. Ownership - going beyond the exact job description to deliver a finished product. Optional elements above provide you a way to get more brownie points assuring success.
-5. No submissions to be made with compressed/binary files - all source code should be version controlled and visible in plain text in github. This is essential to our idealogy of public submission by interview candidates, not creating a competitive advantage for EffDog employees or organization.
+5. No submissions to be made with compressed/binary files - all source code should be version controlled and visible in plain text in github. This is essential to our idealogy of public submission by interview candidates, not creating a competitive advantage for EffX employees or organization.
 6. How much the candidate stays in touch with us during the process of the project.
 7. Follow [best practices](https://github.community/t/best-practices-for-pull-requests/10195) for pull requests.
 8. [Guidelines](https://gist.github.com/turbo/efb8d57c145e00dc38907f9526b60f17) for clean commit messages.
