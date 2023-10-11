@@ -1,15 +1,16 @@
-## Web Development challenge assignments for Cygnius Consulting
+## Web Development challenge hiring assignments for EffDog
 
 ### Introduction
 The goal of this challenge is to test your familiarity with concepts in Java & Web API design.
-To read more about the recruitment process and open opportunities at Cygnius Consulting Pvt. Ltd., click [here](https://bit.ly/31O42C1)
+To read more about the recruitment process and open opportunities at EffDog, click [here](https://bit.ly/31O42C1)
 
-*Note: This is a public submission. Any work on this assignment does not bring Cygnius Consulting or its employees any moat; and by design, is made to assess skills we need. Stories provided are unrelated to Cygnius Consulting's core business.* 
+*Note: This is a public submission. Any work on this assignment does not bring EffDog or its employees any moat; and by design, is made to assess skills we need. Stories provided are unrelated to EffDog's core business.* 
 
 ### Assignment
 
-*   You can select any one of the stories mentioned in the [stories](../stories/) folder(currently there is only one), and develop an API service using Swagger & AWS for it. 
-*   Follow [Instructions](#instructions) and [Submission Process](#submission-process) to complete the assignment.
+*   You can select the one stories in this [folder](../stories/). The end product is a backend API service using Swagger & AWS for it.
+*   The service should be built on top of the exact framework mentioned following all the best practices described in this [Instructions link](#instructions).
+*   Follow  and [Submission Process](#submission-process) to complete the assignment.
 *   For success, ensure you get as many checks as in our [Assessment Criteria](#assessment-criteria)
 *   We typically take 5-6 days to evaluate this submission.
 
