@@ -101,8 +101,9 @@ The goal of this hiring challenge is to test:
 12. Another blog about [Swagger + APIGateway + Lambda application](https://swagger.io/blog/api-development/swagger-amazon-api-gateway-and-lambda/)
 
 ### Credentials for Udemy
+* Login Link: https://www.udemy.com/join/passwordless-auth/
 * Username: founder@cygniusconsulting.com
-* Password: SharingPwd123
+* It will send an OTP on this email. Whatsapp Prateek (details given below) for the code.
 * Contact Prateek if you have trouble logging in.
 
 ### Contact Details for Prateek
