@@ -18,6 +18,7 @@ The goal of this hiring challenge is to test:
 *   The service should be built on top of the exact framework mentioned following all the best practices described in this [Instructions link](#instructions).
 *   Follow  and [Submission Process](#submission-process) to submit your code.
 *   For success, ensure you get as many checks as in our [Assessment Criteria](#assessment-criteria)
+*   Deadline for the assignment: 1 week from the date you start working on the assignment.
 *   We typically take 5-6 days to evaluate this submission.
 
 ### Training & Learning
