@@ -30,11 +30,16 @@ The goal of this hiring challenge is to test:
 ### Instructions
 * Step 1: **API Design**: Design and express your APIs using Swagger. Get it reviewed with Prateek (Review details given below). The app is supposed to be API driven & API need to be written in Java. Trainings:
     * You will need to understand & write Swagger APIs. In case, you dont know about them, you can learn it from this course:
-        * Youtube Videos:
-            * https://www.youtube.com/watch?v=lsMQRaeKNDk
-            * https://www.youtube.com/watch?v=_YlYuNMTCc8
-            * https://www.youtube.com/watch?v=ByuhQncSuAQ
         * Udemy Course - [Course about Design First approach with OpenAPI(Swagger) specs and tools](https://www.udemy.com/course/swagger-tools-openapi/). Credentials at the bottom of the page. Please note that other candidates are also using this account, so the Udemy app will not be able to remember which chapter/lecture you were at in the previous learning session. Please note down the lecture number and play time in the lecture when you finish your learning session.
+        * Youtube Videos (in case Udemy is not accessible):
+            * Swagger:
+                * https://www.youtube.com/watch?v=7LQrTQTS_R0
+                * https://www.youtube.com/watch?v=87ZFvJ7_-n0
+                * https://www.youtube.com/watch?v=rkk2h6Tra9A
+            * CRUD Design:
+                * https://www.youtube.com/watch?v=lsMQRaeKNDk
+                * https://www.youtube.com/watch?v=_YlYuNMTCc8
+                * https://www.youtube.com/watch?v=ByuhQncSuAQ
     * Tool used: Postman.
     * More resources. Refer only if you want to really dig deep.
         * [Getting Started with Swagger](https://swagger.io/docs/specification/about/) 
