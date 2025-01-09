@@ -46,7 +46,7 @@ The goal of this hiring challenge is to test:
         * [Swagger OpenAPI Specifications. Very elaborate documentation. Only refer when needed.](https://swagger.io/specification/)
         * [Swagger Tools](https://swagger.io/tools/)
         * For submitting a review:
-            * Fork this repository.
+            * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
             * Create a branch in your repository (e.g. api-review).
             * Commit your code/api-definition/dynamodb design document in your branch in your repository.
             * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
@@ -58,7 +58,7 @@ The goal of this hiring challenge is to test:
    * https://aws.amazon.com/dynamodb/getting-started/
    * [Best Practices of using DDB. Imp Read!](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
    * For submitting a review:
-       * Fork this repository.
+       * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
        * Create a branch in your repository (e.g. api-review).
        * Commit your code/api-definition/dynamodb design document in your branch in your repository.
        * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
