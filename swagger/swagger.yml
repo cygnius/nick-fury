@@ -1,0 +1,1093 @@
+openapi: 3.0.0
+info:
+  title: Therapy Journal API
+  version: 1.0.0
+  description: API for clients and therapists to manage therapy journals, sessions, and communication.
+servers:
+  - url: http://localhost:8080/api/v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /clients/register:
+    post:
+      summary: Register a new client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: Client registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: id of the registered client
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/login:
+    post:
+      summary: Login a client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Client login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: id of the logged in client
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/therapists:
+    get:
+      summary: Get list of therapists mapped to the client
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of mapped therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    therapistId:
+                      type: string
+                      description: Id of the therapist
+                    hasJournalAccess:
+                      type: boolean
+                      description: boolean indicating journal access.
+        '404':
+          description: Client not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: Map a therapist to a client
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                therapistId:
+                  type: string
+              required:
+                - therapistId
+      responses:
+        '201':
+          description: Therapist mapped to client successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/therapists/{therapistId}:
+    delete:
+      summary: Remove a therapist mapping from the client account
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Therapist mapping removed successfully
+        '404':
+          description: Client or Therapist mapping not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/therapists/{therapistId}/journalAccess:
+    delete:
+      summary: Remove a therapist's access to the journal, but not mapping to account
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Therapist's journal access removed successfully
+        '404':
+          description: Client or Therapist mapping not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/therapists/{therapistId}/messages:
+    get:
+      summary: Get the history of messages exchanged with a therapist
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved message history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    senderId:
+                      type: string
+                    receiverId:
+                      type: string
+                    message:
+                      type: string
+                    timestamp:
+                      type: string
+                      format: date-time
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: Send a message to a therapist
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+                - message
+      responses:
+        '201':
+          description: Message sent successfully
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/journalAccessRequests:
+    get:
+      summary: Get the list of journal access requests
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retreived the list of journal access request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    therapistId:
+                      type: string
+                      description: id of the requesting therapist
+        '404':
+          description: Client not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/journalAccessRequests/{therapistId}:
+    put:
+      summary: Approve or Reject journal access request
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - ACCEPTED
+                    - REJECTED
+              required:
+                - status
+      responses:
+        '200':
+          description: Journal access request updated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Client or therapist or journal access request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/emotions:
+    post:
+      summary: Add a new emotion record
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeOfEmotion:
+                  type: string
+                  format: date-time
+                feeling:
+                  type: string
+                intensity:
+                  type: string
+                  enum:
+                    - LOW
+                    - MEDIUM
+                    - HIGH
+              required:
+                - timeOfEmotion
+                - feeling
+                - intensity
+      responses:
+        '201':
+          description: Emotion record added successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Client not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Retrieve emotion records for the client
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of emotion records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        timeOfEmotion:
+                            type: string
+                            format: date-time
+                        feeling:
+                            type: string
+                        intensity:
+                            type: string
+        '404':
+          description: Client not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /clients/{clientId}/appointments:
+    post:
+      summary: Request for an appointment in an available slot
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  therapistId:
+                    type: string
+                  appointmentTime:
+                    type: string
+                    format: date-time
+              required:
+                - therapistId
+                - appointmentTime
+      responses:
+          '201':
+            description: Successfully requested appointment
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+          '404':
+            description: Client or Therapist not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+  /clients/search:
+    get:
+      summary: search for therapists' notes and emotions journal
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: keyword
+          required: true
+          schema:
+            type: string
+      responses:
+          '200':
+            description: Successfully retrieved search results
+            content:
+              application/json:
+                schema:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            type:
+                                type: string
+                                enum:
+                                    - THERAPIST_NOTE
+                                    - EMOTION_RECORD
+                            data:
+                                type: object
+                                description: based on the type
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+  /therapists/register:
+    post:
+      summary: Register a new therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: Therapist registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: id of the registered therapist
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/login:
+    post:
+      summary: Login a therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Therapist login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: id of the logged in therapist
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/{therapistId}/clients:
+    get:
+      summary: Get list of clients mapped to the therapist
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of mapped clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    clientId:
+                      type: string
+                      description: id of the client.
+                    hasJournalAccess:
+                      type: boolean
+                      description: boolean indicating if the therapist has journal access.
+        '404':
+            description: Therapist not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+    post:
+      summary: Request for a new client to be mapped for therapy
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+              required:
+                - clientId
+      responses:
+          '201':
+            description: Successfully requested a client to be mapped
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+          '404':
+            description: Client or Therapist not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+  /therapists/{therapistId}/clients/{clientId}/journalAccess:
+    post:
+      summary: Request a new client for journal access
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successfully requested journal access
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/{therapistId}/clients/{clientId}:
+    delete:
+      summary: Remove a client from the therapist mapping
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Client mapping removed successfully
+        '404':
+          description: Client or Therapist mapping not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/{therapistId}/clients/{clientId}/messages:
+    get:
+      summary: Get the history of messages exchanged with a client
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved message history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    senderId:
+                      type: string
+                    receiverId:
+                      type: string
+                    message:
+                      type: string
+                    timestamp:
+                      type: string
+                      format: date-time
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: Send a message to a client
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+                - message
+      responses:
+        '201':
+          description: Message sent successfully
+        '404':
+          description: Client or Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/{therapistId}/sessions:
+    post:
+      summary: Create a new therapy session
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                sessionTime:
+                  type: string
+                  format: date-time
+                privateNotes:
+                  type: string
+                sharedNotes:
+                  type: string
+              required:
+                - clientId
+                - sessionTime
+      responses:
+          '201':
+            description: Session created successfully
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+          '404':
+            description: Client or Therapist not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+    get:
+      summary: Retrieve sessions created by the therapist
+      security:
+        - bearerAuth: []
+      parameters:
+          - in: path
+            name: therapistId
+            required: true
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Successfully retrieved sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        sessionId:
+                            type: string
+                        clientId:
+                            type: string
+                        sessionTime:
+                            type: string
+                            format: date-time
+                        privateNotes:
+                            type: string
+                        sharedNotes:
+                            type: string
+        '404':
+          description: Therapist not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/{therapistId}/sessions/{sessionId}:
+    put:
+      summary: Modify details of a session
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: therapistId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionTime:
+                  type: string
+                  format: date-time
+                privateNotes:
+                  type: string
+                sharedNotes:
+                  type: string
+      responses:
+        '200':
+          description: Session details updated successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Therapist or Session not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Retrieve a session details
+      security:
+        - bearerAuth: []
+      parameters:
+          - in: path
+            name: therapistId
+            required: true
+            schema:
+              type: string
+          - in: path
+            name: sessionId
+            required: true
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Successfully retrieved session
+          content:
+            application/json:
+                schema:
+                    type: object
+                    properties:
+                        sessionId:
+                            type: string
+                        clientId:
+                            type: string
+                        sessionTime:
+                            type: string
+                            format: date-time
+                        privateNotes:
+                            type: string
+                        sharedNotes:
+                            type: string
+        '404':
+          description: Therapist or Session not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /therapists/search:
+    get:
+      summary: search for clients' notes and emotions journal
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: keyword
+          required: true
+          schema:
+            type: string
+      responses:
+          '200':
+            description: Successfully retrieved search results
+            content:
+              application/json:
+                schema:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            type:
+                                type: string
+                                enum:
+                                    - THERAPIST_NOTE
+                                    - EMOTION_RECORD
+                            data:
+                                type: object
+                                description: based on the type
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
