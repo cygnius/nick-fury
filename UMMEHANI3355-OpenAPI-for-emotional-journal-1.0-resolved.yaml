@@ -1,0 +1,361 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI-for-emotional-journal
+  description: Developing API for emotional journal app for assessment
+  version: "1.0"
+servers:
+- url: https://localhost:44333/api/v1
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user (client or therapist).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_register_body'
+        required: true
+      responses:
+        "201":
+          description: User registered successfully.
+        "400":
+          description: Invalid input.
+  /auth/login:
+    post:
+      summary: Login with email and password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_login_body'
+        required: true
+      responses:
+        "200":
+          description: Login successful.
+        "401":
+          description: Unauthorized.
+  /clients/{id}/therapists:
+    get:
+      summary: Get a list of mapped therapists.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of therapists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+        "404":
+          description: Client not found.
+  /clients/{id}/therapists/{therapistId}/message:
+    post:
+      summary: Send a message to a therapist.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/therapistId_message_body'
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully.
+        "404":
+          description: Client or Therapist not found.
+  /clients/{id}/journals:
+    post:
+      summary: Add an emotion journal entry.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_journals_body'
+        required: true
+      responses:
+        "201":
+          description: Journal entry added successfully.
+        "404":
+          description: Client not found.
+  /therapists/{id}/clients:
+    get:
+      summary: Get a list of mapped clients.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of clients.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+        "404":
+          description: Therapist not found.
+  /therapists/{id}/notes:
+    post:
+      summary: Add notes for a client session.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_notes_body'
+        required: true
+      responses:
+        "201":
+          description: Notes added successfully.
+        "404":
+          description: Therapist or Client not found.
+  /therapists/{id}/journals/{clientId}:
+    get:
+      summary: View journal entries for a specific client.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of journal entries for the client.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+        "404":
+          description: Therapist or Client not found.
+  /therapists/{id}/sessions/{sessionId}:
+    put:
+      summary: Modify details of a specific session.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sessionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sessions_sessionId_body'
+        required: true
+      responses:
+        "200":
+          description: Session details updated successfully.
+        "404":
+          description: Therapist or Session not found.
+  /search:
+    get:
+      summary: "Run keyword search across customers, notes, and journals."
+      parameters:
+      - name: keyword
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Search results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_3'
+        "404":
+          description: No results found.
+components:
+  schemas:
+    auth_register_body:
+      required:
+      - email
+      - password
+      - userType
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        userType:
+          type: string
+          enum:
+          - client
+          - therapist
+    auth_login_body:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    inline_response_200:
+      type: object
+      properties:
+        therapistId:
+          type: string
+        name:
+          type: string
+    therapistId_message_body:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+    id_journals_body:
+      required:
+      - emotion
+      - intensity
+      - timestamp
+      type: object
+      properties:
+        emotion:
+          type: string
+          enum:
+          - Happiness
+          - Caring
+          - Depression
+          - Inadequate
+          - Fear
+          - Confusion
+          - Hurt
+          - Anger
+          - Loneliness
+          - Remorse
+        intensity:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+    inline_response_200_1:
+      type: object
+      properties:
+        clientId:
+          type: string
+        name:
+          type: string
+    id_notes_body:
+      required:
+      - clientId
+      - privateNotes
+      type: object
+      properties:
+        clientId:
+          type: string
+        privateNotes:
+          type: string
+        sharedNotes:
+          type: string
+    inline_response_200_2:
+      type: object
+      properties:
+        emotion:
+          type: string
+          enum:
+          - Happiness
+          - Caring
+          - Depression
+          - Inadequate
+          - Fear
+          - Confusion
+          - Hurt
+          - Anger
+          - Loneliness
+          - Remorse
+        intensity:
+          type: integer
+        timestamp:
+          type: string
+    sessions_sessionId_body:
+      required:
+      - privateNotes
+      type: object
+      properties:
+        privateNotes:
+          type: string
+        sharedNotes:
+          type: string
+    inline_response_200_3:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - customer
+          - note
+          - journal
+        id:
+          type: string
+        content:
+          type: string
