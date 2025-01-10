@@ -46,7 +46,7 @@ The goal of this hiring challenge is to test:
         * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
         * Create a branch in your repository (e.g. api-review).
         * Commit your code/api-definition/dynamodb design document in your branch in your repository.
-        * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
+        * Raise a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) to merge code from your branch in your repository to "main" branch in your repository.
         * Share the link to this PR link with Prateek (contact details given below)
     * Tips to file a good review:
         * Must define CRUDL Operations for each Core Resources
