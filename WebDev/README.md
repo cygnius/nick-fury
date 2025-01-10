@@ -40,6 +40,7 @@ The goal of this hiring challenge is to test:
                 * https://www.youtube.com/watch?v=7LQrTQTS_R0
                 * https://www.youtube.com/watch?v=87ZFvJ7_-n0
                 * https://www.youtube.com/watch?v=rkk2h6Tra9A
+                * MindMap for Swagger file properties: https://drive.google.com/file/d/14gVFeB9wI-g8ZWQ6J_3KrCkWAgYNVTKc/view?usp=drive_link
     * Tool used: Postman.
     * For submitting a review:
         * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
