@@ -29,28 +29,46 @@ The goal of this hiring challenge is to test:
 
 ### Instructions
 * Step 1: **API Design**: Design and express your APIs using Swagger. Get it reviewed with Prateek (Review details given below). The app is supposed to be API driven & API need to be written in Java. Trainings:
-    * You will need to understand & write Swagger APIs. In case, you dont know about them, you can learn it from this course:
-        * Udemy Course - [Course about Design First approach with OpenAPI(Swagger) specs and tools](https://www.udemy.com/course/swagger-tools-openapi/). Credentials at the bottom of the page. Please note that other candidates are also using this account, so the Udemy app will not be able to remember which chapter/lecture you were at in the previous learning session. Please note down the lecture number and play time in the lecture when you finish your learning session.
-        * Youtube Videos (in case Udemy is not accessible):
-            * Swagger:
+    * You will need to understand & write Swagger APIs. In case, you dont know about them, you can learn it here:
+        * CRUD Design:
+            * https://www.youtube.com/watch?v=lsMQRaeKNDk
+            * https://www.youtube.com/watch?v=_YlYuNMTCc8
+            * https://www.youtube.com/watch?v=ByuhQncSuAQ
+        * Swagger:
+            * [Option 1] Section 1 to Section 5 of this Udemy Course - [Course about Design First approach with OpenAPI(Swagger) specs and tools](https://www.udemy.com/course/swagger-tools-openapi/). Credentials at the bottom of the page. Please note that other candidates are also using this account, so the Udemy app will not be able to remember which chapter/lecture you were at in the previous learning session. Please note down the lecture number and play time in the lecture when you finish your learning session.
+            * [Option 2] Youtube videos:
                 * https://www.youtube.com/watch?v=7LQrTQTS_R0
                 * https://www.youtube.com/watch?v=87ZFvJ7_-n0
                 * https://www.youtube.com/watch?v=rkk2h6Tra9A
-            * CRUD Design:
-                * https://www.youtube.com/watch?v=lsMQRaeKNDk
-                * https://www.youtube.com/watch?v=_YlYuNMTCc8
-                * https://www.youtube.com/watch?v=ByuhQncSuAQ
     * Tool used: Postman.
-    * More resources. Refer only if you want to really dig deep.
+    * For submitting a review:
+        * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
+        * Create a branch in your repository (e.g. api-review).
+        * Commit your code/api-definition/dynamodb design document in your branch in your repository.
+        * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
+        * Share the link to this PR link with Prateek (contact details given below)
+    * Tips to file a good review:
+        * Must define CRUDL Operations for each Core Resources
+            * When you have a core resource like “client,” start by defining its core CRUDL methods (Create, Read, Update, Delete, List) -
+            * Create (POST /clients)
+            * Read (GET /clients/{clientId})
+            * Update (PUT /clients/{clientId})
+            * Delete (DELETE /clients/{clientId})
+            * List (GET /clients)
+            * These fundamental operations form the backbone of your API for that resource. After establishing these, you can add any specialized endpoints (like search) that extend the resource’s functionality.
+        * Organize API Paths by Root Objects
+            * When defining OpenAPI paths, group them under their “root” objects in a logical order. 
+            * For example, start with /clients, then follow with any subpaths like /clients/{clientId}, /clients/{clientId}/therapist, etc. Once you finish all the /clients-related paths, move on to the next root object—such as /therapists—and list all those paths. This way, your specification stays organized, easy to read, and follows a clear hierarchy for each root object before switching to a new one.
+        * Align API Methods With Resource Scope
+            * When defining paths, keep the methods relevant to the resource they represent. 
+            * For example, in /clients/{clientId}, include GET, POST, PUT, or DELETE operations specifically for managing client data (e.g., fetching client details or updating client information). 
+            * Don’t mix unrelated operations (like therapist-client associations) in this path. This keeps each route focused on a single resource and makes your API more intuitive.
+        * Use Components Section
+            * Use the OpenAPI Components section for schemas, requestBodies and responses for better code readability and reusability.
+     * More resources. Refer only if you want to really dig deep.
         * [Getting Started with Swagger](https://swagger.io/docs/specification/about/) 
         * [Swagger OpenAPI Specifications. Very elaborate documentation. Only refer when needed.](https://swagger.io/specification/)
-        * [Swagger Tools](https://swagger.io/tools/)
-        * For submitting a review:
-            * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
-            * Create a branch in your repository (e.g. api-review).
-            * Commit your code/api-definition/dynamodb design document in your branch in your repository.
-            * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
-            * Share the link to this PR link with Prateek (contact details given below)
+        * [Swagger Tools](https://swagger.io/tools/) 
 * Step 2: **Model**: Database for the project needs to be Dynamo DB. Design the Dynamo DB schema for the assignment. Get it reviewed with Prateek (contact details given below). Helpful guides:
    * [Understanding DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
    * [Getting started and Playing around with CLI with DDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
