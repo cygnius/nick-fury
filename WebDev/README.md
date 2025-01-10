@@ -48,8 +48,9 @@ The goal of this hiring challenge is to test:
         * Commit your code/api-definition/dynamodb design document in your branch in your repository.
         * Raise a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) to merge code from your branch in your repository to "main" branch in your repository.
         * Share the link to this PR link with Prateek (contact details given below)
-    * Tips to file a good review:
-        * Must define CRUDL Operations for each Core Resources
+    * Tips to defining your APIs:
+        * Identify each core resource in the business problem - client, therapist, session, journal, journal entry, mapping, etc.
+        * You must define CRUDL Operations for each Core Resources.
             * When you have a core resource like “client,” start by defining its core CRUDL methods (Create, Read, Update, Delete, List) -
             * Create (POST /clients)
             * Read (GET /clients/{clientId})
