@@ -174,7 +174,7 @@ paths:
               properties:
                 access:
                   type: string
-                  enum: [REQUESTED, ACCEPTED, REJECTED]
+                  enum: [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
               required:
                 - access
       responses:
@@ -182,6 +182,8 @@ paths:
           description: Journal access updated.
         '400':
           description: Invalid input.
+        '404':
+          description: Client or therapist not found.
 
   /therapists/map-client:
     post:
@@ -368,5 +370,6 @@ paths:
                 properties:
                   status:
                     type: string
+                    enum: [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
         '404':
           description: Appointment not found.
