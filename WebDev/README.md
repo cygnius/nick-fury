@@ -77,11 +77,10 @@ The goal of this hiring challenge is to test:
    * [Getting started with DDB & Java](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Java.html)
    * https://aws.amazon.com/dynamodb/getting-started/
    * [Best Practices of using DDB. Imp Read!](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
-   * For submitting a review:
-       * Fork this repository. Make sure you give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com
-       * Create a branch in your repository (e.g. api-review).
-       * Commit your code/api-definition/dynamodb design document in your branch in your repository.
-       * Raise a pull request to merge code from your branch in your repository to "main" branch in your repository.
+   * **For submitting a review:**
+       * Create a git repository in your own account with 2 branches, main and assignment.
+       * Push all your changes to the assignment branch and then create a pull request from the assignment branch to the main branch.
+       * Then give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com so that we can give comments on that pull request.
        * Share the link to this PR link with Prateek (contact details given below)
 * Step 3: **Implementation**: Once the API design and the database design is finalized and reviewed, you will start with the implementation. The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS CDK application. You should be testing your APIs through Postman. Make a [Postman collection](https://www.postman.com/collection/) containing all your API calls. All functionality should be executable over these APIs. Important Points:
     * Remember that we are looking ONLY for properly functioning backend APIs which can be demo-ed using Postman. We DO NOT expect you to make the frontend for the same.
