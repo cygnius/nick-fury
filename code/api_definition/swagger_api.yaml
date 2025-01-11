@@ -1,0 +1,516 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Journaling Therapy App 
+  description: API for managing journaling therapy app during the COVID-19 pandemic. The system allows clients to express their emotions, therapists to access client journals
+  termsOfService: http://users/tos
+  contact:
+    name: Venkadesh S
+    email: venkat@123gmail.com
+servers:  
+ - url: http://api/users/v1
+   description: Production server
+ - url: http://staging-api/users/v1
+   description: Staging server
+tags:
+  - name: user
+    description: Operations related to users
+  - name: mapTherapist
+    description:  Operations related to mapping therapists
+  - name: viewTherapistList
+    description: Operations related to view list of therapists
+  - name: mapJournalAccess
+    description: Operations related to mapping journal access
+  - name: approveOrRejectJournalAccess
+    description: Operations related to approve or rejecting journal access
+  - name: searchTherapists
+    description: Operations related to searching therapist
+  - name: emotionJournal
+    description: Operations related to journals
+  - name: appointments
+    description: Operations related to managing appointments
+  - name: sessions
+    description: Operations related to managing sessions 
+  - name: messages
+    description: Operations related to conversation between client and therapist
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: To Create a New User ( Client / Therapist )
+      description: Create a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                User_Id:
+                  type: string
+                User_Type:
+                  type: string
+                  enum: [Client, Therapist]
+                Email:
+                  type: string
+                  format: email
+                Password:
+                  type: string
+                  format: password
+                First_Name:
+                  type: string
+                Last_Name:
+                  type: string
+                Mapping_Therapist:
+                  type: string
+                Mapping_Client:
+                  type: array
+                  items:
+                    type: string
+                Journal_Id:
+                  type: string
+                Journal_Access_By_Therapist:
+                  type: string
+                  enum: [Accessed, Denied]
+                  default: Denied
+              required:
+                - User_Id
+                - User_Type
+                - Email
+                - First_Name
+                - Last_Name
+                - Password
+      responses:
+        '201':
+          description: Successfully Created a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
+        '4XX':
+          description:  Invalid Input 
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+    get:
+      tags:
+        - user
+      summary: To retrive a user for given User Id
+      operationId: getUser
+      parameters: 
+        - name: User_Id
+          in: query
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  Successfully retrieve a user 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    put:
+      summary: To update a user 
+      description:  To Update a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
+      parameters:
+        - name: User_Id
+          in: query
+          required: true
+          description: ID of the user to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                User_Id:
+                  type: string
+                User_Type:
+                  type: string
+                  enum: [Client, Therapist]
+                Email:
+                  type: string
+                  format: email
+                Password:
+                  type: string
+                  format: password
+                First_Name:
+                  type: string
+                Last_Name:
+                  type: string
+                Mapping_Therapist:
+                  type: string
+                Mapping_Client:
+                  type: array
+                  items:
+                    type: string
+                Journal_Id:
+                  type: string
+                Journal_Access_By_Therapist:
+                  type: string
+                  enum: [Accessed, Denied]
+                  default: Denied
+              required:
+                - User_Id
+                - User_Type
+                - Email
+                - First_Name
+                - Last_Name
+                - Password
+      responses:
+        '201':
+          description: Successfully Updated a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
+        '4XX':
+          description:  Invalid Input 
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+    delete:
+      tags:
+        - user
+      summary: To delete a user for given User Id
+      operationId: deleteUser
+      parameters: 
+        - name: User_Id
+          in: query
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  Successfully deleted a user 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /getUser:
+    get:
+      tags:
+        - users
+      summary: To retrive a users
+      operationId: getListUser
+      responses:
+        '200':
+          description:  Successfully retrieve a users  
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /emotionJournal:
+    post:
+      tags: 
+        - emotionJournal
+      summary: Adding Emotional Journals
+      description: Add record of an emotion felt, time of emotion, feeling and intensity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Journal_Id:
+                  type: string
+                Emotion:
+                  type: string
+                Emotion_Notes:
+                  type: string
+                Emotion_Rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                Timestamp:
+                  type: string
+                  format: date-time
+              required: 
+                - Journal_Id
+                - Client_Id
+                - Emotion
+                - Emotion_Rating
+                - Timestamp
+      responses:
+        '201':
+          description: Successfully added record of an emotion felt, time of emotion, feeling and intensity
+        '400':
+          description: Invalid Input
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+  /appointments:
+    post:
+      tags: 
+        - appointments
+      summary: Request for an appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Appointment_Id:
+                  type: string
+                Appointment_Date:
+                  type: string
+                  format: date-time
+                Appointment_Status:
+                  type: string
+                  enum: [Pending, Confirmed, Completed]
+                Client_Id:
+                  type: string
+                Therapist_Id:
+                  type: string
+              required:
+                - Appointment_Id
+                - Appointment_Date
+                - Appointment_Status
+                - Client_Id
+                - Therapist_Id
+      responses:
+        '201':
+          description: Successfully Requested for an appointment
+        '4XX':
+          description: Invalid Input
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+  /sessions:
+    post:
+      summary: To Create a Session
+      description: Create a session with private and shared notes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Session_Id:
+                  type: string
+                Therapist_Id:
+                  type: string
+                Client_Id:
+                  type: string
+                Private_Notes:
+                  type: string
+                Shared_Notes:
+                  type: string
+                Session_Date:
+                  type: string
+                  format: date
+              required: 
+                - Session_Id
+                - Therapist_Id
+                - Client_Id
+                - Session_Date
+      responses:
+        '201':
+          description: Successfully Created a Session
+        '400':
+          description: Invalid Input
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+  /messages:
+    post:
+      tags: 
+        - messages
+      summary: To Conversation Between Therapist and Client
+      description: Send a message between Client and Therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Message_Id:
+                  type: string
+                Time_Stamp:
+                  type: string
+                  format: date-time
+                Message_Content:
+                  type: string
+                Receiver_Id:
+                  type: string
+                Sender_Id:
+                  type: string
+              required:
+                - Message_Id
+                - Time_Stamp
+                - Message_Content
+                - Receiver_Id
+                - Sender_Id
+      responses:
+        '201':
+          description: Message Sent Successfully
+        '4XX':
+          description: Invalid Input
+        '5XX': 
+           description: Internal Server Error
+        default:
+           description: Success
+    
+        
+      
+    
+          
+  /mapTherapist/{Client_Id},{Therapist_Id}:
+    put:
+      summary: Client remove therapist mapped account
+      description:  Client Remove a therapist mapped to account
+      parameters:
+        - name: Client_Id
+          in: path
+          required: true
+          description: ID of the client to update
+          schema:
+            type: string
+        - name: Therapist_Id
+          in: path
+          required: true
+          description: ID of the therapist to update
+          schema:
+            type: string
+        - name: Is_Mapping
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully Client Remove a therapist mapped to account 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully Client Remove a therapist mapped to account"
+  /viewTherapistList/{Client_Id}:
+    get:
+      tags:
+        - viewTherapistList
+      summary: To view the list of Therapists
+      description: View list of therapists who have access to emotions journal
+      operationId: viewTherapistList
+      parameters: 
+        - name: Client_Id
+          in: path
+          required: true
+          description: ID of the client to update
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  Successfully Viewing list of therapists who have access to emotions journal
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /mapJournalAccess/{Client_Id},{Therapist_Id},{Is_Mapping}:
+    put:
+      summary: To remove a Journal Access
+      description: Remove a therapist’s access to the journal, but not mapping to account
+      parameters:
+        - name: Client_Id
+          in: path
+          required: true
+          description: ID of the client to update
+          schema:
+            type: string
+        - name: Therapist_Id
+          in: path
+          required: true
+          description: ID of the therapist to update
+          schema:
+            type: string
+        - name: Is_Mapping
+          in: path
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully Remove a therapist’s access to the journal, but not mapping to account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Removed a therapist’s access to the journal, but not mapping to account successfully"
+  /approveOrRejectJournalAccess/{Client_Id},{Therapist_Id}:
+    put:
+      tags: 
+        - approveOrRejectJournalAccess
+      summary: Journal access approval
+      description: Approve or reject a therapist’s request for access to Client emotions journal
+      parameters:
+        - name: Client_Id
+          in: path
+          required: true
+          description: ID of the client to update
+          schema:
+            type: string
+        - name: Therapist_Id
+          in: path
+          required: true
+          description: ID of the therapist to update
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully Approve or reject a therapist’s request for access to Client emotions journal
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Approve or reject a therapist’s request for access to Client emotions journal successfully"
+  /searchTherapists/{Keyword}:
+    get:
+      tags: 
+        - searchTherapists
+      summary: To search therapists notes and emotions journal
+      description: Run keyword search across Therapists’ notes and emotions journals
+      parameters: 
+        - name: Keyword
+          in: path
+          required: true
+          description: Search Keyword to update
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully Run keyword search across Therapists’ notes and emotions journals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Run keyword search across Therapists’ notes and emotions journals Successfully"
+  
