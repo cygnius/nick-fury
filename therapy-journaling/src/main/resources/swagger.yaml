@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Therapy Journaling API
+  description: API documentation for the Therapy Journaling application
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /api/journal:
+    get:
+      summary: Retrieve all journal entries
+      responses:
+        '200':
+          description: A list of journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JournalEntry'
+    post:
+      summary: Create a new journal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntry'
+      responses:
+        '201':
+          description: Journal entry created successfully
+  /api/journal/{id}:
+    get:
+      summary: Retrieve a journal entry by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Details of a journal entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntry'
+        '404':
+          description: Journal entry not found
+    put:
+      summary: Update an existing journal entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntry'
+      responses:
+        '200':
+          description: Journal entry updated successfully
+    delete:
+      summary: Delete a journal entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Journal entry deleted successfully
+components:
+  schemas:
+    JournalEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the journal entry
+        title:
+          type: string
+          description: Title of the journal entry
+        content:
+          type: string
+          description: Content of the journal entry
+        createdDate:
+          type: string
+          format: date-time
+          description: Date when the entry was created
+        updatedDate:
+          type: string
+          format: date-time
+          description: Date when the entry was last updated
