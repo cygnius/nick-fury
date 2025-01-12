@@ -88,6 +88,19 @@ To run the **Therapy Journaling Application** locally, follow these steps:
    - `POST /journal/entry`: To add a new journal entry.
    - `PUT /journal/entry/{id}`: To update an existing entry.
    - `DELETE /journal/entry/{id}`: To delete a specific entry.
+  
+## API Definition
+The API definition for the Therapy Journaling project is provided in the `swagger.yaml` file located in the root directory of the project.
+
+### Viewing the API Definition
+To view the API definition:
+1. Use an online Swagger Editor at [https://editor.swagger.io/](https://editor.swagger.io/).
+2. Upload the `swagger.yaml` file to visualize and test the API schema.
+3. Alternatively, use tools like Postman to import the `swagger.yaml` file and test the endpoints.
+
+### Updating the API Definition
+If you need to make changes to the API, ensure the `swagger.yaml` file is updated first. The implementation should align with the updated API definition.
+
 
 7. **End the Application**:
    You can stop the application by terminating the process in your IDE or pressing `Ctrl + C` in the terminal.
