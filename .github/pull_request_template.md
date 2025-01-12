@@ -1,8 +1,4 @@
-Here’s a comprehensive example of how you can complete the entire submission document for your project:
-
----
-
-# Your Name
+# Parth Komawar
 
 ## Submission Checklist
 *Mark checks as explained on this [link](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/about-task-lists#creating-task-lists), and remove this instruction*
