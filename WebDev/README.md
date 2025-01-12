@@ -69,7 +69,9 @@ The goal of this hiring challenge is to test:
      * More resources. Refer only if you want to really dig deep.
         * [Getting Started with Swagger](https://swagger.io/docs/specification/about/) 
         * [Swagger OpenAPI Specifications. Very elaborate documentation. Only refer when needed.](https://swagger.io/specification/)
-        * [Swagger Tools](https://swagger.io/tools/) 
+        * [Swagger Tools](https://swagger.io/tools/)
+
+
 * Step 2: **Model**: Database for the project needs to be Dynamo DB. Design the Dynamo DB schema for the assignment. Get it reviewed with Prateek (contact details given below). Helpful guides:
    * [Understanding DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
    * [Getting started and Playing around with CLI with DDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
@@ -81,6 +83,12 @@ The goal of this hiring challenge is to test:
        * Push all your changes to the assignment branch and then create a pull request from the assignment branch to the main branch.
        * Then give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com so that we can give comments on that pull request.
        * Share the link to this PR link with Prateek (contact details given below)
+   * **Tips for submitting a good review:**
+       * It can be a txt file.
+       * Define each object, its table.
+       * For each DDB table, which attribute is the hash partition key and range key?
+       * For each DDB table, what are additional GSI and LSI, what are the hash partition key and range key? 
+       * For each of the APIs defined in Step 1, how are you constructing the query and which LSI/GSI are you using? 
 * Step 3: **Implementation**: Once the API design and the database design is finalized and reviewed, you will start with the implementation. The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS CDK application. You should be testing your APIs through Postman. Make a [Postman collection](https://www.postman.com/collection/) containing all your API calls. All functionality should be executable over these APIs. Important Points:
     * Remember that we are looking ONLY for properly functioning backend APIs which can be demo-ed using Postman. We DO NOT expect you to make the frontend for the same.
     * If you don't know about AWS, backend API, serverless paradigm of computing, you can learn it here:
