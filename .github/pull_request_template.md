@@ -91,7 +91,3 @@ To run the **Therapy Journaling Application** locally, follow these steps:
 
 7. **End the Application**:
    You can stop the application by terminating the process in your IDE or pressing `Ctrl + C` in the terminal.
-
----
-
-Feel free to customize and adjust any part of this document based on your specific implementation. If you need further assistance with anything else, let me know!
