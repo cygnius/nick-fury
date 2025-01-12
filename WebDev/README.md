@@ -86,7 +86,7 @@ The goal of this hiring challenge is to test:
    * **Tips for submitting a good review:**
        * It can be a txt file.
        * Define each object, its table.
-       * For each DDB table, which attribute is the hash partition key and range key?
+       * For each DDB table, List each attribute and its data type. Which attribute is the hash partition key and range key? 
        * For each DDB table, what are additional GSI and LSI, what are the hash partition key and range key? 
        * For each of the APIs defined in Step 1, how are you constructing the query and which LSI/GSI are you using? 
 * Step 3: **Implementation**: Once the API design and the database design is finalized and reviewed, you will start with the implementation. The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS CDK application. You should be testing your APIs through Postman. Make a [Postman collection](https://www.postman.com/collection/) containing all your API calls. All functionality should be executable over these APIs. Important Points:
