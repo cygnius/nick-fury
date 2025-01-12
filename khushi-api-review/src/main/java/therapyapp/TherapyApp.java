@@ -3,8 +3,8 @@ package therapyapp;
 
 import software.amazon.awscdk.App;
 import therapyapp.infrastructure.ApiGatewayStack;
-import therapyapp.infrastructure.LambdaStack;
 import therapyapp.infrastructure.DynamoDbStack;
+import therapyapp.infrastructure.LambdaStack;
 
 /**
  * Main application class for initializing AWS CDK stacks.
@@ -20,7 +20,9 @@ public class TherapyApp {
         LambdaStack lambdaStack = new LambdaStack(app, "LambdaStack");
 
         // Initialize the API Gateway stack connecting to the Lambda functions
-        new ApiGatewayStack(app, "ApiGatewayStack");
+        new ApiGatewayStack(app, "ApiGatewayStack",
+                lambdaStack.getAuthLambda(), lambdaStack.getClientLambda(), lambdaStack.getTherapistLambda(),
+                lambdaStack.getSessionLambda(), lambdaStack.getMessageLambda(), lambdaStack.getAppointmentLambda());
 
         // Synthesize the app
         app.synth();

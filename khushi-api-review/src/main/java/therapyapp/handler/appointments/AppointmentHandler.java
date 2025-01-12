@@ -1,5 +1,9 @@
 package therapyapp.handler.appointments;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
@@ -8,9 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import therapyapp.model.Appointment; 
 import therapyapp.util.ResponseHelper;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AppointmentHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -33,9 +34,9 @@ public class AppointmentHandler implements RequestHandler<APIGatewayProxyRequest
                 }
                 break;
             default:
-                return ResponseHelper.createResponse(405, "Method Not Allowed", null);
+                return ResponseHelper.createResponse(405, "Method Not Allowed", "");
         }
-        return ResponseHelper.createResponse(404, "Resource Not Found", null);
+        return ResponseHelper.createResponse(404, "Resource Not Found", "");
     }
 
     private APIGatewayProxyResponseEvent handleCreateAppointment(APIGatewayProxyRequestEvent request) {
@@ -45,7 +46,7 @@ public class AppointmentHandler implements RequestHandler<APIGatewayProxyRequest
             Map<String, String> response = new HashMap<>();
             response.put("message", "Appointment request created.");
             return ResponseHelper.createResponse(201, "Created", objectMapper.writeValueAsString(response));
-        } catch (Exception e) {
+        } catch (IOException e) {
             return ResponseHelper.createResponse(400, "Invalid input", e.getMessage());
         }
     }
@@ -57,7 +58,7 @@ public class AppointmentHandler implements RequestHandler<APIGatewayProxyRequest
             Map<String, String> response = new HashMap<>();
             response.put("appointmentId", appointmentId);
             response.put("status", "PENDING"); // Replace with actual status from database
-            return ResponseHelper.createResponse(200, "OK", objectMapper.writeValueAsString(response));
+            return ResponseHelper.buildResponse(200, "OK", objectMapper.writeValueAsString(response));
         } catch (Exception e) {
             return ResponseHelper.createResponse(404, "Appointment not found", e.getMessage());
         }
