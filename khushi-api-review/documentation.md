@@ -43,3 +43,10 @@ The Therapy Journaling API facilitates the management of therapy sessions, journ
    ```bash
    git clone <repository-url>
    cd <project-directory>
+
+
+
+## Flow of the Api/Application
+
+
+![alt text](<uml img.jpg>)

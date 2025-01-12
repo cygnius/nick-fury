@@ -20,7 +20,7 @@ public class TherapyApp {
         LambdaStack lambdaStack = new LambdaStack(app, "LambdaStack");
 
         // Initialize the API Gateway stack connecting to the Lambda functions
-        new ApiGatewayStack(app, "ApiGatewayStack",
+        ApiGatewayStack apiGatewayStack = new ApiGatewayStack(app, "ApiGatewayStack",
                 lambdaStack.getAuthLambda(), lambdaStack.getClientLambda(), lambdaStack.getTherapistLambda(),
                 lambdaStack.getSessionLambda(), lambdaStack.getMessageLambda(), lambdaStack.getAppointmentLambda());
 
