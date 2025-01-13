@@ -1,0 +1,805 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI-for-emotional-journal
+  description: Developing API for emotional journal app for assessment
+  version: '1.0'
+servers:
+  - url: https://localhost:44333/api/v1
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user (client or therapist).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_register_body'
+        required: true
+      responses:
+        '201':
+          description: User registered successfully.
+        '400':
+          description: Invalid input.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /auth/login:
+    post:
+      summary: Login with email and password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_login_body'
+        required: true
+      responses:
+        '200':
+          description: Login successful.
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /clients/{clientId}/therapists:
+    get:
+      summary: Get a list of mapped therapists for a client.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      responses:
+        '200':
+          description: List of therapists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TherapistListResponse'
+        '404':
+          description: Client not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+    post:
+      summary: Request to map a therapist to a client.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/therapist_mapping_request_body'
+        required: true
+      responses:
+          '201':
+              description: Therapist mapping request initiated successfully.
+          '404':
+              description: Client not found.
+          '500':
+              description: Internal Server Error. Please try again later.
+  /clients/{clientId}/therapists/{therapistId}:
+    delete:
+      summary: Remove a therapist mapping from a client.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+              type: string
+          description: The ID of the therapist.
+      responses:
+        '204':
+          description: Therapist mapping removed successfully.
+        '404':
+          description: Client or Therapist not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /clients/{clientId}/therapists/{therapistId}/message:
+    post:
+      summary: Send a message to a therapist.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the therapist.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/therapistId_message_body'
+        required: true
+      responses:
+        '201':
+          description: Message sent successfully.
+        '404':
+          description: Client or Therapist not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+    get:
+      summary: Get a list of messages with a therapist
+      parameters:
+          - name: clientId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the client.
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the therapist.
+      responses:
+        '200':
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/MessageResponse'
+        '404':
+          description: Client or Therapist not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /clients/{clientId}/journals:
+    post:
+      summary: Add an emotion journal entry.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_journals_body'
+        required: true
+      responses:
+        '201':
+          description: Journal entry added successfully.
+        '404':
+          description: Client not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /clients/{clientId}/journals/{journalId}/access:
+    put:
+      summary: Approve or reject a therapist's request for journal access.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+        - name: journalId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the journal.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/journal_access_body'
+        required: true
+      responses:
+        '200':
+          description: Journal access updated successfully
+        '404':
+            description: Client or Journal not found.
+        '500':
+            description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/clients:
+    get:
+      summary: Get a list of mapped clients for a therapist.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the therapist.
+      responses:
+        '200':
+          description: List of clients.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientListResponse'
+        '404':
+          description: Therapist not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+    post:
+        summary: Request a client to be mapped for therapy.
+        parameters:
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+            description: The ID of the therapist.
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client_mapping_request_body'
+          required: true
+        responses:
+            '201':
+                description: Client mapping request initiated successfully.
+            '404':
+                description: Therapist not found.
+            '500':
+                description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/clients/{clientId}:
+    delete:
+        summary: Remove a client mapping for a therapist.
+        parameters:
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+            description: The ID of the therapist.
+          - name: clientId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the client.
+        responses:
+            '204':
+                description: Client mapping removed successfully.
+            '404':
+                description: Client or Therapist not found.
+            '500':
+                description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/notes:
+    post:
+      summary: Add notes for a client session.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the therapist.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_notes_body'
+        required: true
+      responses:
+        '201':
+          description: Notes added successfully.
+        '404':
+          description: Therapist or Client not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/journals/{clientId}:
+    get:
+      summary: View journal entries for a specific client.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the therapist.
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      responses:
+        '200':
+          description: List of journal entries for the client.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JournalListResponse'
+        '404':
+          description: Therapist or Client not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/sessions:
+    post:
+      summary: Create a new session.
+      parameters:
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the therapist.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_session_body'
+        required: true
+      responses:
+        '201':
+          description: Session created successfully.
+        '404':
+          description: Therapist not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}/sessions/{sessionId}:
+    patch:
+      summary: Modify details of a specific session.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the therapist.
+        - name: sessionId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the session.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sessions_sessionId_body'
+        required: true
+      responses:
+        '200':
+          description: Session details updated successfully.
+        '404':
+          description: Therapist or Session not found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /search:
+    get:
+      summary: Run keyword search across customers, notes, and journals.
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResponse'
+        '404':
+          description: No results found.
+        '500':
+          description: Internal Server Error. Please try again later.
+  /clients/{clientId}:
+    get:
+      summary: Get client profile information.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      responses:
+        '200':
+          description: Client profile information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientProfileResponse'
+        '404':
+          description: Client not found.
+        '500':
+            description: Internal Server Error. Please try again later.
+    put:
+      summary: Update client profile information
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          description: The ID of the client.
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/client_update_body'
+        required: true
+      responses:
+        '200':
+          description: Client profile updated successfully.
+        '404':
+            description: Client not found.
+        '500':
+            description: Internal Server Error. Please try again later.
+  /therapists/{therapistId}:
+    get:
+      summary: Get therapist profile information
+      parameters:
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the therapist.
+      responses:
+        '200':
+            description: Therapist profile information.
+            content:
+                application/json:
+                    schema:
+                      $ref: '#/components/schemas/TherapistProfileResponse'
+        '404':
+            description: Therapist not found.
+        '500':
+            description: Internal Server Error. Please try again later.
+    put:
+        summary: Update therapist profile information
+        parameters:
+          - name: therapistId
+            in: path
+            required: true
+            style: simple
+            explode: false
+            schema:
+                type: string
+            description: The ID of the therapist.
+        requestBody:
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/therapist_update_body'
+          required: true
+        responses:
+          '200':
+              description: Therapist profile updated successfully.
+          '404':
+              description: Therapist not found.
+          '500':
+              description: Internal Server Error. Please try again later.
+  /sessions:
+      post:
+          summary: Create a new appointment.
+          requestBody:
+              content:
+                application/json:
+                  schema:
+                      $ref: '#/components/schemas/create_appointment_body'
+              required: true
+          responses:
+              '201':
+                  description: Appointment created successfully.
+              '400':
+                  description: Invalid input
+              '500':
+                  description: Internal server error. Please try again later.
+components:
+  schemas:
+    auth_register_body:
+      required:
+        - email
+        - password
+        - userType
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        userType:
+          type: string
+          enum:
+            - client
+            - therapist
+    auth_login_body:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+            type: string
+    therapistId_message_body:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+    id_journals_body:
+      required:
+        - emotion
+        - intensity
+        - timestamp
+      type: object
+      properties:
+        emotion:
+          type: string
+          enum:
+            - Happiness
+            - Caring
+            - Depression
+            - Inadequate
+            - Fear
+            - Confusion
+            - Hurt
+            - Anger
+            - Loneliness
+            - Remorse
+        intensity:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+    id_notes_body:
+      required:
+        - clientId
+        - privateNotes
+        - therapistId
+      type: object
+      properties:
+        clientId:
+          type: string
+        privateNotes:
+          type: string
+        sharedNotes:
+          type: string
+        therapistId:
+          type: string
+    sessions_sessionId_body:
+      required:
+          - privateNotes
+      type: object
+      properties:
+        privateNotes:
+          type: string
+        sharedNotes:
+          type: string
+    TherapistListResponse:
+      type: object
+      properties:
+        therapistId:
+          type: string
+        name:
+          type: string
+        email:
+            type: string
+    ClientListResponse:
+        type: object
+        properties:
+            clientId:
+                type: string
+            name:
+                type: string
+            email:
+                type: string
+    JournalListResponse:
+      type: object
+      properties:
+        emotion:
+          type: string
+          enum:
+            - Happiness
+            - Caring
+            - Depression
+            - Inadequate
+            - Fear
+            - Confusion
+            - Hurt
+            - Anger
+            - Loneliness
+            - Remorse
+        intensity:
+          type: integer
+        timestamp:
+          type: string
+    SearchResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - customer
+            - note
+            - journal
+        id:
+          type: string
+        content:
+          type: string
+        clientId:
+            type: string
+        therapistId:
+            type: string
+    MessageResponse:
+        type: object
+        properties:
+          message:
+            type: string
+          senderId:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+    therapist_mapping_request_body:
+        type: object
+        required:
+          - therapistId
+        properties:
+          therapistId:
+            type: string
+    client_mapping_request_body:
+        type: object
+        required:
+          - clientId
+        properties:
+          clientId:
+              type: string
+    journal_access_body:
+        type: object
+        required:
+          - hasAccess
+        properties:
+            hasAccess:
+                type: boolean
+    create_session_body:
+      type: object
+      required:
+        - clientId
+        - sessionDate
+      properties:
+        clientId:
+          type: string
+        sessionDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+    ClientProfileResponse:
+        type: object
+        properties:
+          clientId:
+            type: string
+          name:
+            type: string
+          email:
+            type: string
+          phone:
+            type: string
+    client_update_body:
+        type: object
+        properties:
+            name:
+                type: string
+            phone:
+                type: string
+    TherapistProfileResponse:
+      type: object
+      properties:
+        therapistId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+    therapist_update_body:
+      type: object
+      properties:
+        name:
+            type: string
+        specialization:
+            type: string
+    create_appointment_body:
+      type: object
+      required:
+        - therapistId
+        - clientId
+        - appointmentDate
+      properties:
+          therapistId:
+              type: string
+          clientId:
+            type: string
+          appointmentDate:
+            type: string
+            format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
