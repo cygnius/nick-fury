@@ -43,8 +43,9 @@ The goal of this hiring challenge is to test:
                 * MindMap for Swagger file properties: https://drive.google.com/file/d/14gVFeB9wI-g8ZWQ6J_3KrCkWAgYNVTKc/view?usp=drive_link
     * Tool used: Postman.
     * **For submitting a review:**
-        * Create a git repository in your own account with 2 branches, main and assignment.
-        * Push all your changes to the assignment branch and then create a pull request from the assignment branch to the main branch.
+        * Creata a github account if you haven't already.
+        * Create a NEW git repository in your OWN account with 2 branches, "main" and "assignment".
+        * Push all your changes to the "assignment" branch and then create a pull request ([relevant doc](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)) from the "assignment" branch to the main branch.
         * Then give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com so that we can give comments on that pull request.
         * Share the link to this PR link with Prateek (contact details given below)  
     * Tips to defining your APIs:
@@ -79,8 +80,9 @@ The goal of this hiring challenge is to test:
    * https://aws.amazon.com/dynamodb/getting-started/
    * [Best Practices of using DDB. Imp Read!](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
    * **For submitting a review:**
-       * Create a git repository in your own account with 2 branches, main and assignment.
-       * Push all your changes to the assignment branch and then create a pull request from the assignment branch to the main branch.
+       * Creata a github account if you haven't already.
+       * Create a NEW git repository in your OWN account with 2 branches, "main" and "assignment".
+       * Push all your changes to the "assignment" branch and then create a pull request ([relevant doc](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)) from the "assignment" branch to the main branch.
        * Then give access to three email ids: founder@cygniusconsulting.com, rajmishra@cygniusconsulting.com, shubham@cygniusconsulting.com so that we can give comments on that pull request.
        * Share the link to this PR link with Prateek (contact details given below)
    * **Tips for submitting a good review:**
