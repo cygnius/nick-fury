@@ -24,12 +24,12 @@ The app must cover these stories –
         *   Send a message to a therapist and view the history of exchanges.
     *   Approve or reject a therapist’s request for access to Client emotions journal.
     *   Add record of an emotion felt. This should include the time of emotion, feeling and intensity (For vocabulary of emotions/feelings with intensity, refer to [this link](https://tomdrummond.com/app/uploads/2019/11/Emotion-Feelings.pdf))
-    *   Request for an appointment in an available slot
-    *   Select therapists from a list of available therapists on the platform
+    *   Request for an appointment in an available session.
+    *   Select therapists from a list of available therapists on the platform.
     *   Run keyword search across Therapists’ notes and emotions journals.
 *   A Therapist should be able to …
     *   Create a Therapist account and login using their email and password
-    *   Create a new session (therapy appointment). Each session with –
+    *   Create a new sessions (to which any client can apply). Each session with –
         *   Private notes, visible only to the therapist
         *   Shared notes with the client. For any assignments.
     *   View list of clients along with actions like –
