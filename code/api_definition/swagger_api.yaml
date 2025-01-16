@@ -1,143 +1,165 @@
 openapi: 3.0.0
+
 info:
-  version: '1.0'
-  title: Journaling Therapy App 
+  version: "1.0"
+  title: Journaling Therapy App
   description: API for managing journaling therapy app during the COVID-19 pandemic. The system allows clients to express their emotions, therapists to access client journals
   termsOfService: http://users/tos
   contact:
     name: Venkadesh S
     email: venkat@123gmail.com
-servers:  
- - url: http://api/users/v1
-   description: Production server
- - url: http://staging-api/users/v1
-   description: Staging server
+
+servers:
+  - url: http://api/users/v1
+    description: Production server
+  - url: http://staging-api/users/v1
+    description: Staging server
+
 tags:
-  - name: user
-    description: Operations related to users
-  - name: emotionJournal
+  - name: client
+    description: Operations related to clients
+  - name: therapist
+    description: Operations related to therapists
+  - name: emotion_journal
     description: Operations related to journals
   - name: appointment
     description: Operations related to managing appointments
   - name: session
-    description: Operations related to managing sessions 
+    description: Operations related to managing sessions
   - name: message
     description: Operations related to conversation between client and therapist
-  - name: mapTherapist
-    description:  Operations related to mapping therapists
-  - name: viewTherapistList
-    description: Operations related to view list of therapists
-  - name: mapJournalAccess
-    description: Operations related to mapping journal access
-  - name: approveOrRejectJournalAccess
-    description: Operations related to approve or rejecting journal access
-  
- 
-    
+  - name: mapping
+    description: Operations related to mapping between therapist and client
+
 paths:
-  /user:
+  /client:
     get:
       tags:
-        - user
-      summary: To retrive a users
-      operationId: getUsers
+        - client
+      summary: To retrive a list of all clients
+      operationId: getClients
       responses:
-        '200':
-          description:  Successfully retrieve a users  
+        "200":
+          description: Successfully retrieve a list of all clients
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                      format: password
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                  required:
+                    - email
+                    - first_name
+                    - last_name
+                    - password
     post:
       tags:
-        - user
-      summary: To Create a New User ( Client / Therapist )
-      description: Create a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
-      operationId: createUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                User_Id:
-                  type: string
-                User_Type:
-                  type: string
-                  enum: [Client, Therapist]
-                Email:
-                  type: string
-                  format: email
-                Password:
-                  type: string
-                  format: password
-                First_Name:
-                  type: string
-                Last_Name:
-                  type: string
-                Mapping_Therapist:
-                  type: string
-                Mapping_Client:
-                  type: array
-                  items:
-                    type: string
-                Journal_Id:
-                  type: string
-                Journal_Access_By_Therapist:
-                  type: string
-                  enum: [Accessed, Denied]
-                  default: Denied
-              required:
-                - User_Id
-                - User_Type
-                - Email
-                - First_Name
-                - Last_Name
-                - Password
+        - client
+      summary: To Create a New Client
+      description: Create a client account and login using their email and password
+      operationId: createClient
       responses:
-        '201':
-          description: Successfully Created a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
-        '4XX':
-          description:  Invalid Input 
-        '5XX': 
-           description: Internal Server Error
+        "201":
+          description: Successfully Created a client account and login using their email and password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  password:
+                    type: string
+                    format: password
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                required:
+                  - email
+                  - first_name
+                  - last_name
+                  - password
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
         default:
-           description: Success
-  /user/{User_Id}:
+          description: Unexpected error occurred
+  /client/{client_id}:
     get:
       tags:
-        - user
-      summary: To retrive a user for given User Id
-      operationId: getUser
-      parameters: 
-        - name: User_Id
+        - client
+      summary: To retrive a client for given Client Id
+      operationId: getClient
+      parameters:
+        - name: client_id
           in: path
           required: true
           description: ID of the User
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully retrieve a user 
+        "200":
+          description: Successfully retrieve a client
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    description: The email address of the created user
+                  password:
+                    type: string
+                    format: password
+                    description: The password of the newly created user (typically would not be returned in practice for security reasons)
+                  first_name:
+                    type: string
+                    description: The first name of the user
+                  last_name:
+                    type: string
+                    description: The last name of the user
+                required:
+                  - email
+                  - first_name
+                  - last_name
+                  - password
+        "404":
+          description: Client not found, the provided client_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
     put:
       tags:
-        - user
-      summary: To update a user 
-      description:  To Update a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
+        - client
+      summary: To update a client
+      description: To Update a client account and login using their email and password
       parameters:
-        - name: User_Id
+        - name: client_id
           in: path
           required: true
-          description: ID of the user to update
+          description: ID of the client to update
           schema:
             type: string
       requestBody:
@@ -147,88 +169,365 @@ paths:
             schema:
               type: object
               properties:
-                User_Id:
-                  type: string
-                User_Type:
-                  type: string
-                  enum: [Client, Therapist]
-                Email:
+                email:
                   type: string
                   format: email
-                Password:
+                password:
                   type: string
                   format: password
-                First_Name:
+                first_name:
                   type: string
-                Last_Name:
+                last_name:
                   type: string
-                Mapping_Therapist:
-                  type: string
-                Mapping_Client:
-                  type: array
-                  items:
-                    type: string
-                Journal_Id:
-                  type: string
-                Journal_Access_By_Therapist:
-                  type: string
-                  enum: [Accessed, Denied]
-                  default: Denied
               required:
-                - User_Id
-                - User_Type
-                - Email
-                - First_Name
-                - Last_Name
-                - Password
+                - email
+                - first_name
+                - last_name
+                - password
       responses:
-        '201':
-          description: Successfully Updated a Client/Therapist account and login using their email and password, Approve or reject a therapist’s request for access to Client emotions journal
-        '4XX':
-          description:  Invalid Input 
-        '5XX': 
-           description: Internal Server Error
+        "200":
+          description: Successfully updated the client account
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Client not found, the provided client_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
         default:
-           description: Success
+          description: Unexpected error occurred
     delete:
       tags:
-        - user
-      summary: To delete a user for given User Id
-      operationId: deleteUser
-      parameters: 
-        - name: User_Id
+        - client
+      summary: To delete a client account for given Client Id
+      operationId: deleteClient
+      parameters:
+        - name: client_id
           in: path
           required: true
-          description: ID of the User
+          description: ID of the client
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully deleted a user 
+        "200":
+          description: Successfully deleted a client account
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-  /emotionJournal:
+        "404":
+          description: Client not found, the provided client_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /therapist:
     get:
       tags:
-        - emotionJournal
-      summary: To retrive a Journals
-      operationId: getJournals
+        - therapist
+      summary: To retrive a list of all therapists
+      operationId: getTherapists
       responses:
-        '200':
-          description:  Successfully retrieve a Journals 
+        "200":
+          description: Successfully retrieve a therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                      format: password
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                  required:
+                    - email
+                    - first_name
+                    - last_name
+                    - password
+    post:
+      tags:
+        - therapist
+      summary: To Create a New Therapist
+      description: Create a therapist account and login using their email and password
+      operationId: createTherapist
+      responses:
+        "201":
+          description: Successfully Created a therapist account and login using their email and password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  password:
+                    type: string
+                    format: password
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                required:
+                  - therapist_id
+                  - email
+                  - first_name
+                  - last_name
+                  - password
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
+        default:
+          description: Unexpected error occurred
+  /therapist/{therapist_id}:
+    get:
+      tags:
+        - therapist
+      summary: To retrive a therapist for given Therapist Id
+      operationId: getTherapist
+      parameters:
+        - name: therapist_id
+          in: path
+          required: true
+          description: ID of the Therapist
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieve a therapist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    description: The email address of the created therapist
+                  password:
+                    type: string
+                    format: password
+                    description: The password of the newly created therspist (typically would not be returned in practice for security reasons)
+                  first_name:
+                    type: string
+                    description: The first name of the therapist
+                  last_name:
+                    type: string
+                    description: The last name of the therapist
+                required:
+                  - email
+                  - first_name
+                  - last_name
+                  - password
+        "404":
+          description: Therapist not found, the provided therapist_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+    put:
+      tags:
+        - therapist
+      summary: To update a therapist
+      description: To Update a therapist account and login using their email and password
+      parameters:
+        - name: therapist_id
+          in: path
+          required: true
+          description: ID of the therapist to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+              required:
+                - email
+                - first_name
+                - last_name
+                - password
+      responses:
+        "200":
+          description: Successfully updated the therapist account
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Therapist not found, the provided therapist_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+    delete:
+      tags:
+        - therapist
+      summary: To delete a therapist account for given Therapist Id
+      operationId: deleteTherapist
+      parameters:
+        - name: therapist_id
+          in: path
+          required: true
+          description: ID of the therapist
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully deleted a therapist account
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+        "404":
+          description: Therapist not found, the provided therapist_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /mapping:
+    get:
+      tags:
+        - mapping
+      summary: To retrive a list of all mappings
+      operationId: getMappings
+      responses:
+        "200":
+          description: Successfully retrieve all the mappings between clients and therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    therapist_id:
+                      type: string
+                    client_id:
+                      type: string
+                    is_mapping:
+                      type: boolean
+                      default: false
+                    journal_access:
+                      type: boolean
+                      default: false
     post:
-      tags: 
-        - emotionJournal
+      tags:
+        - mapping
+      summary: Create a mapping between Client and Therapist
+      operationId: createMapping
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                therapist_id:
+                  type: string
+                client_id:
+                  type: string
+                is_mapping:
+                  type: boolean
+                  default: false
+                journal_access:
+                  type: boolean
+                  default: false
+              required:
+                - client_id
+                - therapist_id
+      responses:
+        "201":
+          description: Successfully Created a mapping between client and therapist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client_id:
+                    type: string
+                  therapist_id:
+                    type: string
+                required:
+                  - client_id
+                  - therapist_id
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
+        default:
+          description: Unexpected error occurred
+  /emotion_journal:
+    get:
+      tags:
+        - emotion_journal
+      summary: To retrive the list of all Journals
+      operationId: getJournals
+      responses:
+        "200":
+          description: Successfully retrieve a Journals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    journal_id:
+                      type: string
+                    emotion:
+                      type: string
+                    emotion_notes:
+                      type: string
+                    emotion_rating:
+                      type: integer
+                      minimum: 1
+                      maximum: 5
+                    timestamp:
+                      type: string
+                      format: date-time
+                  required:
+                    - journal_id
+                    - client_id
+                    - emotion
+                    - emotion_rating
+                    - timestamp
+    post:
+      tags:
+        - emotion_journal
       summary: Adding Emotional Journals
       description: Add record of an emotion felt, time of emotion, feeling and intensity
       requestBody:
@@ -238,63 +537,88 @@ paths:
             schema:
               type: object
               properties:
-                Journal_Id:
+                emotion:
                   type: string
-                Emotion:
+                emotion_notes:
                   type: string
-                Emotion_Notes:
-                  type: string
-                Emotion_Rating:
+                emotion_rating:
                   type: integer
                   minimum: 1
                   maximum: 5
-                Timestamp:
+                timestamp:
                   type: string
                   format: date-time
-              required: 
-                - Journal_Id
-                - Client_Id
-                - Emotion
-                - Emotion_Rating
-                - Timestamp
+              required:
+                - journal_id
+                - client_id
+                - emotion
+                - emotion_rating
+                - timestamp
       responses:
-        '201':
+        "201":
           description: Successfully added record of an emotion felt, time of emotion, feeling and intensity
-        '400':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
         default:
-           description: Success
-  /emotionJournal/{Journal_Id}:
+          description: Unexpected error occurred
+  /emotion_journal/{journal_id}:
     get:
       tags:
-        - emotionJournal
+        - emotion_journal
       summary: To retrive a Journal for given Journal Id
       operationId: getJournal
-      parameters: 
-        - name: Journal_Id
+      parameters:
+        - name: journal_id
           in: path
           required: true
           description: ID of the Journal
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully retrieve a Journal 
+        "200":
+          description: Successfully retrieve a Journal
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                type: object
+                properties:
+                  emotion:
+                    type: string
+                  emotion_notes:
+                    type: string
+                  emotion_rating:
+                    type: integer
+                    minimum: 1
+                    maximum: 5
+                  timestamp:
+                    type: string
+                    format: date-time
+                required:
+                  - client_id
+                  - emotion
+                  - emotion_rating
+                  - timestamp
+        "404":
+          description: Journal not found, the provided journal_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
     put:
-      tags: 
-        - emotionJournal
-      summary: To update a journal 
-      description:  To Update a record of an emotion felt, time of emotion, feeling and intensity
+      tags:
+        - emotion_journal
+      summary: To update a journal
+      description: To Update a record of an emotion felt, time of emotion, feeling and intensity
       parameters:
-        - name: Journal_Id
+        - name: journal_id
           in: path
           required: true
           description: ID of the journal to update
@@ -307,72 +631,96 @@ paths:
             schema:
               type: object
               properties:
-                Journal_Id:
+                emotion:
                   type: string
-                Emotion:
+                emotion_notes:
                   type: string
-                Emotion_Notes:
-                  type: string
-                Emotion_Rating:
+                emotion_rating:
                   type: integer
                   minimum: 1
                   maximum: 5
-                Timestamp:
+                timestamp:
                   type: string
                   format: date-time
-              required: 
-                - Journal_Id
-                - Client_Id
-                - Emotion
-                - Emotion_Rating
-                - Timestamp
+              required:
+                - client_id
+                - emotion
+                - emotion_rating
+                - timestamp
       responses:
-        '201':
+        "200":
           description: Successfully Updated record of an emotion felt, time of emotion, feeling and intensity
-        '400':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Journal not found, the provided journal_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
         default:
-           description: Success
+          description: Unexpected error occurred
     delete:
       tags:
-        - emotionJournal
+        - emotion_journal
       summary: To delete a user for given User Id
       operationId: deleteJournal
-      parameters: 
-        - name: Journal_Id
+      parameters:
+        - name: journal_id
           in: path
           required: true
           description: ID of the Journal
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully deleted a Journal 
+        "200":
+          description: Successfully deleted a Journal
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+        "404":
+          description: Journal not found, the provided journal_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
   /appointment:
     get:
       tags:
         - appointment
-      summary: To retrive a Appointments
+      summary: To retrive a list of all Appointments
       operationId: getAppointments
       responses:
-        '200':
-          description:  Successfully retrieve an Appointments 
+        "200":
+          description: Successfully retrieve an Appointments
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    appointment_id:
+                      type: string
+                    appointment_date:
+                      type: string
+                      format: date-time
+                    appointment_status:
+                      type: string
+                      enum: [Pending, Confirmed, Completed, Rejected]
+                    client_id:
+                      type: string
+                    therapist_id:
+                      type: string
+                  required:
+                    - appointment_id
+                    - appointment_date
+                    - appointment_status
+                    - client_id
+                    - therapist_id
     post:
-      tags: 
+      tags:
         - appointment
       summary: Request for an appointment
       requestBody:
@@ -382,62 +730,81 @@ paths:
             schema:
               type: object
               properties:
-                Appointment_Id:
-                  type: string
-                Appointment_Date:
+                appointment_date:
                   type: string
                   format: date-time
-                Appointment_Status:
+                appointment_status:
                   type: string
-                  enum: [Pending, Confirmed, Completed]
-                Client_Id:
+                  enum: [Pending, Confirmed, Completed, Rejected]
+                client_id:
                   type: string
-                Therapist_Id:
+                therapist_id:
                   type: string
               required:
-                - Appointment_Id
-                - Appointment_Date
-                - Appointment_Status
-                - Client_Id
-                - Therapist_Id
+                - appointment_id
+                - appointment_date
+                - appointment_status
+                - client_id
+                - therapist_id
       responses:
-        '201':
+        "201":
           description: Successfully Requested for an appointment
-        '4XX':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
         default:
-           description: Success
-  /appointment/{Appointment_Id}:
+          description: Unexpected error occurred
+  /appointment/{appointment_id}:
     get:
       tags:
         - appointment
       summary: To retrive a appointment details for given appointment Id
       operationId: getAppointment
-      parameters: 
-        - name: Appointment_Id
+      parameters:
+        - name: appointment_id
           in: path
           required: true
           description: ID of the Appointment
           schema:
             type: string
+
       responses:
-        '200':
-          description:  Successfully retrieve a appointment details 
+        "200":
+          description: Successfully retrieve a appointment
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                type: object
+                properties:
+                  appointment_date:
+                    type: string
+                    format: date-time
+                  appointment_status:
+                    type: string
+                    enum: [Pending, Confirmed, Completed, Rejected]
+                  client_id:
+                    type: string
+                  therapist_id:
+                    type: string
+                required:
+                  - appointment_date
+                  - appointment_status
+                  - client_id
+                  - therapist_id
     put:
       tags:
         - appointment
-      summary: To update an appointment 
-      description:  To Update a Request for an appointment
+      summary: To update an appointment
+      description: To Update a Request for an appointment
       parameters:
-        - name: Appointment_Id
+        - name: appointment_id
           in: path
           required: true
           description: ID of the appointment to update
@@ -450,158 +817,93 @@ paths:
             schema:
               type: object
               properties:
-                Appointment_Id:
-                  type: string
-                Appointment_Date:
+                appointment_date:
                   type: string
                   format: date-time
-                Appointment_Status:
+                appointment_status:
                   type: string
-                  enum: [Pending, Confirmed, Completed]
-                Client_Id:
+                  enum: [Pending, Confirmed, Completed, Rejected]
+                client_id:
                   type: string
-                Therapist_Id:
+                therapist_id:
                   type: string
               required:
-                - Appointment_Id
-                - Appointment_Date
-                - Appointment_Status
-                - Client_Id
-                - Therapist_Id
+                - appointment_date
+                - appointment_status
+                - client_id
+                - therapist_id
       responses:
-        '201':
+        "200":
           description: Successfully Requested for an appointment
-        '4XX':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Appointments not found, the provided appointment_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
         default:
-           description: Success
+          description: Unexpected error occurred
     delete:
       tags:
         - appointment
       summary: To delete an appointment for given Appointment Id
       operationId: deleteAppointment
-      parameters: 
-        - name: Appointment_Id
+      parameters:
+        - name: appointment_id
           in: path
           required: true
           description: ID of the Appointment
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully deleted an appointment request 
+        "200":
+          description: Successfully deleted an appointment request
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-  /session/{Session_Id}:
-    get:
-      tags:
-        - session
-      summary: To retrive a session details for given session Id
-      operationId: getSession
-      parameters: 
-        - name: Session_Id
-          in: path
-          required: true
-          description: ID of the Session
-          schema:
-            type: string
-      responses:
-        '200':
-          description:  Successfully retrieve a session details 
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-    put:
-      tags: 
-        - session
-      summary: To update an session 
-      description:  To Update a session with private and shared notes
-      parameters:
-        - name: Session_Id
-          in: path
-          required: true
-          description: ID of the session to update
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                Session_Id:
-                  type: string
-                Therapist_Id:
-                  type: string
-                Client_Id:
-                  type: string
-                Private_Notes:
-                  type: string
-                Shared_Notes:
-                  type: string
-                Session_Date:
-                  type: string
-                  format: date
-              required: 
-                - Session_Id
-                - Therapist_Id
-                - Client_Id
-                - Session_Date
-      responses:
-        '201':
-          description: Successfully Updated a Session
-        '400':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "404":
+          description: Appointment not found, the provided appointment_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
         default:
-           description: Success
-    delete:
-      tags:
-        - session
-      summary: To delete a session for given Session Id
-      operationId: deleteSession
-      parameters: 
-        - name: Session_Id
-          in: path
-          required: true
-          description: ID of the Session
-          schema:
-            type: string
-      responses:
-        '200':
-          description:  Successfully deleted a session with private and shared notes 
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
+          description: Unexpected error occurred
   /session:
     get:
       tags:
         - session
-      summary: To retrive a Sessions
+      summary: To retrive the list of all Sessions
       operationId: getSessions
       responses:
-        '200':
-          description:  Successfully retrieve Sessions 
+        "200":
+          description: Successfully retrieved all the Sessions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    session_id:
+                      type: string
+                    therapist_id:
+                      type: string
+                    client_id:
+                      type: string
+                    private_notes:
+                      type: string
+                    shared_notes:
+                      type: string
+                    session_date:
+                      type: string
+                      format: date
+                  required:
+                    - session_id
+                    - therapist_id
+                    - client_id
+                    - session_date
     post:
       tags:
         - session
@@ -614,62 +916,264 @@ paths:
             schema:
               type: object
               properties:
-                Session_Id:
+                therapist_id:
                   type: string
-                Therapist_Id:
+                client_id:
                   type: string
-                Client_Id:
+                private_notes:
                   type: string
-                Private_Notes:
+                shared_notes:
                   type: string
-                Shared_Notes:
-                  type: string
-                Session_Date:
+                session_date:
                   type: string
                   format: date
-              required: 
-                - Session_Id
-                - Therapist_Id
-                - Client_Id
-                - Session_Date
+              required:
+                - session_id
+                - therapist_id
+                - client_id
+                - session_date
       responses:
-        '201':
+        "201":
           description: Successfully Created a Session
-        '400':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
         default:
-           description: Success
-  /message/{Message_Id}:
+          description: Unexpected error occurred
+  /session/{session_id}:
     get:
       tags:
-        - message
-      summary: To retrive a message details for given message Id
-      operationId: getMessage
-      parameters: 
-        - name: Message_Id
+        - session
+      summary: To retrive a session details for given session Id
+      operationId: getSession
+      parameters:
+        - name: session_id
           in: path
           required: true
-          description: ID of the Message
+          description: ID of the Session
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully retrieve a Message details 
+        "200":
+          description: Successfully retrieve a session details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  therapist_id:
+                    type: string
+                  client_id:
+                    type: string
+                  private_notes:
+                    type: string
+                  shared_notes:
+                    type: string
+                  session_date:
+                    type: string
+                    format: date
+                required:
+                  - therapist_id
+                  - client_id
+                  - session_date
+    put:
+      tags:
+        - session
+      summary: To update an session
+      description: To Update a session with private and shared notes
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: ID of the session to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                therapist_id:
+                  type: string
+                client_id:
+                  type: string
+                private_notes:
+                  type: string
+                shared_notes:
+                  type: string
+                session_date:
+                  type: string
+                  format: date
+              required:
+                - therapist_id
+                - client_id
+                - session_date
+      responses:
+        "200":
+          description: Successfully Updated a Session
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Session not found, the provided session_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+    delete:
+      tags:
+        - session
+      summary: To delete a session for given Session Id
+      operationId: deleteSession
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: ID of the Session
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully deleted a session with private and shared notes
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-    put:
-      tags: 
+        "404":
+          description: Session not found, the provided session_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /message:
+    get:
+      tags:
         - message
-      summary: To update a message 
-      description:  To Update a message between Client and Therapist
+      summary: To retrieve the list of all Messages
+      operationId: getMessages
+      responses:
+        "200":
+          description: Successfully retrieve Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    message_id:
+                      type: string
+                    timestamp:
+                      type: string
+                      format: date-time
+                    message_content:
+                      type: string
+                    receiver_id:
+                      type: string
+                    sender_id:
+                      type: string
+                  required:
+                    - message_id
+                    - timestamp
+                    - message_content
+                    - receiver_id
+                    - sender_id
+    post:
+      tags:
+        - message
+      summary: Conversation Between Therapist and Client
+      description: Send a message between Client and Therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timestamp:
+                  type: string
+                  format: date-time
+                message_content:
+                  type: string
+                receiver_id:
+                  type: string
+                sender_id:
+                  type: string
+              required:
+                - message_id
+                - timestamp
+                - message_content
+                - receiver_id
+                - sender_id
+      responses:
+        "201":
+          description: Message Sent Successfully
+        "400":
+          description: Invalid input, check the provided data
+        "401":
+          description: Your authentication was failed
+        "404":
+          description: Page not found
+        "422":
+          description: Your requested data is valid but server could not found that data
+        "500":
+          description: Internal Server Error
+        default:
+          description: Unexpected error occurred
+  /message/{message_id}:
+    get:
+      tags:
+        - message
+      summary: To retrive a message details for given message Id
+      operationId: getMessage
       parameters:
-        - name: Message_Id
+        - name: message_id
+          in: path
+          required: true
+          description: ID of the Message
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieve a Message details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    timestamp:
+                      type: string
+                      format: date-time
+                    message_content:
+                      type: string
+                    receiver_id:
+                      type: string
+                    sender_id:
+                      type: string
+                  required:
+                    - timestamp
+                    - message_content
+                    - receiver_id
+                    - sender_id
+    put:
+      tags:
+        - message
+      summary: To update a message
+      description: To Update a message between Client and Therapist
+      parameters:
+        - name: message_id
           in: path
           required: true
           description: ID of the message to update
@@ -682,73 +1186,75 @@ paths:
             schema:
               type: object
               properties:
-                Message_Id:
-                  type: string
-                Time_Stamp:
+                timestamp:
                   type: string
                   format: date-time
-                Message_Content:
+                message_content:
                   type: string
-                Receiver_Id:
+                receiver_id:
                   type: string
-                Sender_Id:
+                sender_id:
                   type: string
               required:
-                - Message_Id
-                - Time_Stamp
-                - Message_Content
-                - Receiver_Id
-                - Sender_Id
+                - timestamp
+                - message_content
+                - receiver_id
+                - sender_id
       responses:
-        '201':
+        "200":
           description: Message Updated Successfully
-        '4XX':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "400":
+          description: Invalid input, check the provided data (e.g., malformed or missing fields)
+        "404":
+          description: Message not found, the provided message_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
         default:
-           description: Success
+          description: Unexpected error occurred
     delete:
       tags:
         - message
       summary: To delete a message for given Message Id
       operationId: deleteMessage
-      parameters: 
-        - name: Message_Id
+      parameters:
+        - name: message_id
           in: path
           required: true
           description: ID of the Message
           schema:
             type: string
       responses:
-        '200':
-          description:  Successfully deleted a message between Client and Therapist 
+        "200":
+          description: Successfully deleted a message between Client and Therapist
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-  /message:
-    get:
+        "404":
+          description: Message not found, the provided message_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /mapping/{therapist_id}/{client_id}:
+    put:
       tags:
-        - message
-      summary: To retrive a Messages
-      operationId: getMessages
-      responses:
-        '200':
-          description:  Successfully retrieve Messages 
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-    post:
-      tags: 
-        - message
-      summary: To Conversation Between Therapist and Client
-      description: Send a message between Client and Therapist
+        - mapping
+      summary: Update a mapping between Client and Therapist
+      operationId: mapClient
+      parameters:
+        - name: therapist_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: client_id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -756,191 +1262,109 @@ paths:
             schema:
               type: object
               properties:
-                Message_Id:
-                  type: string
-                Time_Stamp:
-                  type: string
-                  format: date-time
-                Message_Content:
-                  type: string
-                Receiver_Id:
-                  type: string
-                Sender_Id:
-                  type: string
-              required:
-                - Message_Id
-                - Time_Stamp
-                - Message_Content
-                - Receiver_Id
-                - Sender_Id
+                is_mapping:
+                  type: boolean
+                  default: true
+                journal_access:
+                  type: boolean
+                  default: false
       responses:
-        '201':
-          description: Message Sent Successfully
-        '4XX':
-          description: Invalid Input
-        '5XX': 
-           description: Internal Server Error
+        "201":
+          description: Successfully Updated a mapping between client and therapist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client_id:
+                    type: string
+                  therapist_id:
+                    type: string
+                  is_mapping:
+                    type: boolean
+                    default: true
+                  journal_access:
+                    type: boolean
+                    default: false
+                required:
+                  - client_id
+                  - therapist_id
         default:
-           description: Success
-  /mapTherapist/{Client_Id},{Therapist_Id},{Is_Mapping}:
-    put:
+          description: Unexpected error occurred
+  /viewTherapists/{client_id}/{journal_access}:
+    get:
       tags:
-        - mapTherapist
-      summary: Client map or unmap therapist to account
-      description: Client map or unmap therapist to account
+        - mapping
+      summary: To retrive the list of therapists for given client_id
+      operationId: viewTherapists
       parameters:
-        - name: Client_Id
+        - name: client_id
           in: path
           required: true
-          description: ID of the client to update
+          description: ID of the client
           schema:
             type: string
-        - name: Therapist_Id
+        - name: journal_access
           in: path
           required: true
-          description: ID of the therapist to update
-          schema:
-            type: string
-        - name: Is_Mapping
-          in: path
-          required: true
+          description: check journal access of therapist
           schema:
             type: boolean
       responses:
         "200":
-          description: Successfully Client Remove a therapist mapped to account
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Successfully Client mapped  a therapist  to account"
-  /viewClientList/{Therapist_Id}:
-    get:
-      tags:
-        - viewClientList
-      summary: To view the list of Clients for the given therapist
-      description: View list of clients for the given therapist
-      operationId: viewClientList
-      parameters:
-        - name: Therapist_Id
-          in: path
-          required: true
-          description: ID of the Therapist
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successfully Viewing list of Clients who are mapped to the given therapist
+          description: Successfully retrieved all the therapists mapped to the client's journal(s) with journal access
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-  /viewTherapistList/{Client_Id}:
+                  required:
+                    - client_id
+        "404":
+          description: client_id not found, the provided client_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /viewClients/{therapist_id}:
     get:
       tags:
-        - viewTherapistList
-      summary: To view the list of Therapists
-      description: View list of therapists who have access to emotions journal
-      operationId: viewTherapistList
+        - mapping
+      summary: To retrive the list of clients for given therapist_id
+      operationId: viewClients
       parameters:
-        - name: Client_Id
+        - name: therapist_id
           in: path
           required: true
-          description: ID of the client to update
+          description: ID of the therapist
           schema:
             type: string
       responses:
         "200":
-          description: Successfully Viewing list of therapists who have access to emotions journal
+          description: Successfully retrieved all the clients mapped to the therapist's journal(s)
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
-  /mapJournalAccess/{Client_Id},{Therapist_Id},{Is_Mapping}:
-    put:
-      tags:
-        - mapJournalAccess
-      summary: To Map or unmap  a Journal Access
-      description: Add or Remove a therapist’s access to the journal, but not mapping to account
-      parameters:
-        - name: Client_Id
-          in: path
-          required: true
-          description: ID of the client to update
-          schema:
-            type: string
-        - name: Therapist_Id
-          in: path
-          required: true
-          description: ID of the therapist to update
-          schema:
-            type: string
-        - name: Is_Mapping
-          in: path
-          required: true
-          schema:
-            type: boolean
-      responses:
-        "200":
-          description: Successfully Modified a therapist’s access to the journal, but not mapping to account
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Mapped  a therapist’s access to the journal, but not mapping to account successfully"
-  /approveOrRejectJournalAccess/{Client_Id},{Therapist_Id},{Is_Mapping}:
-    put:
-      tags:
-        - approveOrRejectJournalAccess
-      summary: Journal access approval
-      description: Approve or reject a therapist’s request for access to Client emotions journal
-      parameters:
-        - name: Client_Id
-          in: path
-          required: true
-          description: ID of the client to update
-          schema:
-            type: string
-        - name: Therapist_Id
-          in: path
-          required: true
-          description: ID of the therapist to update
-          schema:
-            type: string
-        - name: Is_Mapping
-          in: path
-          required: true
-          schema:
-            type: boolean
-      responses:
-        "200":
-          description: Successfully Approve or reject a therapist’s request for access to Client emotions journal
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Approve or reject a therapist’s request for access to Client emotions journal successfully"
-  /search/{Keyword}:
+                  required:
+                    - therapist_id
+        "404":
+          description: therapist_id not found, the provided therapist_id does not exist
+        "500":
+          description: Internal server error, something went wrong on the server
+        default:
+          description: Unexpected error occurred
+  /search/{keyword}:
     get:
       tags:
         - search
       summary: To search therapists and clients notes and emotions journal
       description: Run keyword search across Therapists and clients’ notes and emotions journals
       parameters:
-        - name: Keyword
+        - name: keyword
           in: path
           required: true
           description: Search Keyword to update
@@ -957,10 +1381,3 @@ paths:
                   message:
                     type: string
                     example: "Run keyword search across Therapists and clients’ notes and emotions journals Successfully"
-    
-        
-      
-    
-          
-  
-  
