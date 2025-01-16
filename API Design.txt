@@ -1,0 +1,420 @@
+info:
+  title: Therapy Management System API
+  description: API for managing therapy sessions and client emotions journals
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+        name:
+          type: string
+        contact:
+          type: string
+        email:
+          type: string
+        userType:
+          type: string
+          enum: [CLIENT, THERAPIST]
+    
+    Client:
+      type: object
+      properties:
+        clientId:
+          type: integer
+        userId:
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+
+    Therapist:
+      type: object
+      properties:
+        therapistId:
+          type: integer
+        userId:
+          type: integer
+        qualifications:
+          type: string
+        specializations:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+
+    Mapping:
+      type: object
+      properties:
+        mappingId:
+          type: integer
+        therapistId:
+          type: integer
+        clientId:
+          type: integer
+        journalAccess:
+          type: boolean
+        status:
+          type: string
+
+    Journal:
+      type: object
+      properties:
+        journalId:
+          type: integer
+        clientId:
+          type: integer
+        emotion:
+          type: string
+        feeling:
+          type: integer
+        notes:
+          type: string
+        createdAt:
+          type: string
+
+    Session:
+      type: object
+      properties:
+        sessionId:
+          type: integer
+        therapistId:
+          type: integer
+        clientId:
+          type: integer
+        appointmentTime:
+          type: string
+        status:
+          type: string
+
+    Notes:
+      type: object
+      properties:
+        noteId:
+          type: integer
+        sessionId:
+          type: integer
+        content:
+          type: string
+        isPrivate:
+          type: boolean
+        createdAt:
+          type: string
+
+    Message:
+      type: object
+      properties:
+        messageId:
+          type: integer
+        senderId:
+          type: integer
+        receiverId:
+          type: integer
+        content:
+          type: string
+        sentAt:
+          type: string
+        isRead:
+          type: boolean
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                contact:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                userType:
+                  type: string
+                  enum: [CLIENT, THERAPIST]
+                qualifications:
+                  type: string
+                specialization:
+                  type: string
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Authenticate user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+
+  /therapists:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Therapists]
+      summary: Get all therapists
+      responses:
+        200:
+          description: List of therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /therapists/{therapistId}/clients:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Therapists]
+      summary: Get therapist's clients
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+
+  /clients/{clientId}/journals:
+    post:
+      security:
+        - BearerAuth: []
+      tags: [Journals]
+      summary: Create emotion journal entry
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmotionJournal'
+      responses:
+        201:
+          description: Journal entry created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmotionJournal'
+
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Journals]
+      summary: Get client's journal entries
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: List of journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmotionJournal'
+
+  /sessions:
+    post:
+      security:
+        - BearerAuth: []
+      tags: [Sessions]
+      summary: Create new therapy session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+      responses:
+        201:
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+
+  /sessions/{sessionId}/notes:
+    post:
+      security:
+        - BearerAuth: []
+      tags: [Sessions]
+      summary: Add session notes
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionNote'
+      responses:
+        201:
+          description: Note added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionNote'
+
+  /messages:
+    post:
+      security:
+        - BearerAuth: []
+      tags: [Messages]
+      summary: Send a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        201:
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Messages]
+      summary: Get message history
+      parameters:
+        - name: senderId
+          in: query
+          schema:
+            type: integer
+        - name: receiverId
+          in: query
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Message history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+
+  
+  
+  
+  /mappings:
+    post:
+      security:
+        - BearerAuth: []
+      tags: [Mappings]
+      summary: Create therapist-client mapping
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TherapistClientMapping'
+      responses:
+        201:
+          description: Mapping created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TherapistClientMapping'
+
+    patch:
+      security:
+        - BearerAuth: []
+      tags: [Mappings]
+      summary: Update mapping status or journal access
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mappingId:
+                  type: integer
+                journalAccess:
+                  type: boolean
+                status:
+                  type: string
+      responses:
+        200:
+          description: Mapping updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TherapistClientMapping'
