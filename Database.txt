@@ -1,0 +1,55 @@
+Table: Users
+- user_id (string) Primary Key
+- name (string)
+- contact (string)
+- email (string)
+- password_hash (string)
+- user_type (string) - ["CLIENT", "THERAPIST"]
+
+Table: Clients
+- client_id (string) Primary Key
+- user_id (string) Foreign Key
+
+Table: Therapists
+- therapist_id (string) Primary Key
+- user_id (string) Foreign Key
+- name (string)
+- qualifications (string)
+- specialization (string)
+
+Table: Mapping
+- mapping_id (string) Primary Key
+- therapist_id (string) Foreign Key
+- client_id (string) Foreign Key
+- journal_access (boolean)
+- status (string)
+
+Table: Journal
+- journal_id (string) Primary Key
+- client_id (string) Foreign Key
+- emotion (string)
+- feeling (number)
+- notes (string)
+- created_at (string)
+
+Table: Sessions
+- session_id (string) Primary Key
+- therapist_id (string) Foreign Key
+- client_id (string) Foreign Key
+- appointment_time (string)
+- status (string)
+
+Table: Notes
+- note_id (string) Primary Key
+- session_id (string) Foreign Key
+- content (string)
+- is_private (boolean)
+- created_at (string)
+
+Table: Messages
+- message_id (string) Primary Key
+- sender_id (string) Foreign Key
+- receiver_id (string) Foreign Key
+- content (string)
+- sent_at (string)
+- is_read (boolean)
