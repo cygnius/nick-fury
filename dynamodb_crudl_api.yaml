@@ -1,0 +1,741 @@
+openapi: 3.0.3
+info:
+  title: DynamoDB CRUDL API
+  description: API supporting CRUDL operations for DynamoDB tables.
+  version: 1.0.1
+servers:
+- url: /
+paths:
+  /clients:
+    get:
+      summary: List all clients
+      responses:
+        "200":
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Create a new client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        required: true
+      responses:
+        "201":
+          description: Client created successfully
+  /clients/{clientId}:
+    get:
+      summary: Get client details
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Client details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      summary: Update client details
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        required: true
+      responses:
+        "200":
+          description: Client updated successfully
+    delete:
+      summary: Delete a client
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Client deleted successfully
+  /clients/login:
+    post:
+      summary: Login for clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clients_login_body'
+        required: true
+      responses:
+        "200":
+          description: Client logged in successfully
+        "401":
+          description: Invalid credentials
+  /clients/{clientId}/therapists:
+    get:
+      summary: List therapists mapped to client
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of therapists mapped to the client
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+    post:
+      summary: Map a therapist to the client
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clientId_therapists_body'
+        required: true
+      responses:
+        "201":
+          description: Therapist mapped successfully
+    delete:
+      summary: Remove a therapist mapped to the client
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: therapistId
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "201":
+          description: Therapist mapping removed successfully
+  /clients/{clientId}/journals/access:
+    get:
+      summary: List therapists with journal access
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of therapists with journal access
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+    post:
+      summary: Request journal access from client
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/journals_access_body'
+        required: true
+      responses:
+        "201":
+          description: Therapist mapped successfully
+    delete:
+      summary: Remove a therapist's journal access
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: therapistId
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Therapist journal access removed successfully
+  /clients/{clientId}/journals:
+    post:
+      summary: Add a new emotion record
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clientId_journals_body'
+        required: true
+      responses:
+        "201":
+          description: Emotion record added successfully
+  /clients/{clientId}/journals/search:
+    post:
+      summary: Search emotions journal for text
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/journals_search_body'
+        required: true
+      responses:
+        "200":
+          description: List of journal entries with given text
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+  /therapists:
+    get:
+      summary: List all therapists
+      responses:
+        "200":
+          description: List of therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+    post:
+      summary: Create a new therapist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+        required: true
+      responses:
+        "201":
+          description: Therapist created successfully
+  /therapists/{therapistId}:
+    get:
+      summary: Get therapist details
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Therapist details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+    put:
+      summary: Update therapist details
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+        required: true
+      responses:
+        "200":
+          description: Therapist updated successfully
+    delete:
+      summary: Delete a therapist
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Therapist deleted successfully
+  /therapists/login:
+    post:
+      summary: Login for therapists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/therapists_login_body'
+        required: true
+      responses:
+        "200":
+          description: Therapist logged in successfully
+        "401":
+          description: Invalid credentials
+  /therapists/{therapistId}/clients:
+    get:
+      summary: List all clients mapped to therapist
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+  /therapists/{therapistId}/sessions:
+    get:
+      summary: List all sessions
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+    post:
+      summary: Create a new session
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/therapistId_sessions_body'
+        required: true
+      responses:
+        "201":
+          description: Session created successfully
+  /therapists/{therapistId}/sessions/search:
+    post:
+      summary: Search for text in session notes
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sessions_search_body'
+        required: true
+      responses:
+        "200":
+          description: List of sessions with given text in notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+  /therapists/{therapistId}/sessions/{sessionId}:
+    get:
+      summary: Get session details
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sessionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    put:
+      summary: Update session details
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sessionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+        required: true
+      responses:
+        "200":
+          description: Session updated successfully
+    delete:
+      summary: Delete a session
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sessionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Session deleted successfully
+  /therapists/{therapistId}/slots:
+    get:
+      summary: List all available slots for a therapist
+      parameters:
+      - name: therapistId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of available slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: Therapist not found
+  /messages/send:
+    post:
+      summary: Send a message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messages_send_body'
+        required: true
+      responses:
+        "201":
+          description: Message sent successfully
+  /messages/history:
+    get:
+      summary: Get message history between client and therapist
+      parameters:
+      - name: ClientId
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      - name: TherapistId
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Message history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        ClientId:
+          type: string
+          format: uuid
+        ClientName:
+          type: string
+        ClientEmail:
+          type: string
+          format: email
+        ClientPassword:
+          type: string
+    Therapist:
+      type: object
+      properties:
+        TherapistId:
+          type: string
+          format: uuid
+        TherapistName:
+          type: string
+        TherapistEmail:
+          type: string
+          format: email
+        TherapistPassword:
+          type: string
+        SlotsAvailable:
+          type: array
+          items:
+            type: string
+    Session:
+      type: object
+      properties:
+        SessionId:
+          type: string
+          format: uuid
+        ClientId:
+          type: string
+        TherapistId:
+          type: string
+        SharedNotes:
+          type: string
+        PrivateNotes:
+          type: string
+    Journal:
+      type: object
+      properties:
+        ClientId:
+          type: string
+          format: uuid
+        Feeling:
+          type: string
+        Intensity:
+          type: string
+    Message:
+      type: object
+      properties:
+        ClientId:
+          type: string
+          format: uuid
+        TherapistId:
+          type: string
+          format: uuid
+        Timestamp:
+          type: string
+          format: date-time
+        Sender:
+          type: string
+          enum:
+          - Client
+          - Therapist
+        MessageContent:
+          type: string
+        MessageType:
+          type: string
+    clients_login_body:
+      required:
+      - ClientEmail
+      - ClientPassword
+      type: object
+      properties:
+        ClientEmail:
+          type: string
+          format: email
+        ClientPassword:
+          type: string
+    clientId_therapists_body:
+      required:
+      - TherapistId
+      type: object
+      properties:
+        TherapistId:
+          type: string
+    journals_access_body:
+      required:
+      - TherapistId
+      type: object
+      properties:
+        TherapistId:
+          type: string
+    clientId_journals_body:
+      required:
+      - Feeling
+      - Intensity
+      - Timestamp
+      type: object
+      properties:
+        Feeling:
+          type: string
+        Intensity:
+          type: string
+        Timestamp:
+          type: string
+          format: date-time
+    journals_search_body:
+      required:
+      - Text
+      type: object
+      properties:
+        Text:
+          type: string
+    therapists_login_body:
+      required:
+      - TherapistEmail
+      - TherapistPassword
+      type: object
+      properties:
+        TherapistEmail:
+          type: string
+          format: email
+        TherapistPassword:
+          type: string
+    therapistId_sessions_body:
+      required:
+      - PrivateNotes
+      - SharedNotes
+      type: object
+      properties:
+        ClientId:
+          type: string
+        SharedNotes:
+          type: string
+        PrivateNotes:
+          type: string
+    sessions_search_body:
+      required:
+      - Text
+      type: object
+      properties:
+        Text:
+          type: string
+    messages_send_body:
+      required:
+      - ClientId
+      - MessageContent
+      - Sender
+      - TherapistId
+      type: object
+      properties:
+        ClientId:
+          type: string
+          format: uuid
+        TherapistId:
+          type: string
+          format: uuid
+        Sender:
+          type: string
+          enum:
+          - Client
+          - Therapist
+        MessageContent:
+          type: string
+        MessageType:
+          type: string

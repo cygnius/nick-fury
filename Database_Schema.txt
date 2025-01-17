@@ -1,0 +1,217 @@
+Functionalities for client:
+1) Login
+2) Search for a therapist
+3) Map a therapist to their account
+4) Remove a therapist mapped to account
+5) Remove a therapist's access to the journal but not to the account
+6) Send a message to a therapist and view history of exchanges
+7) Add record of an emotion felt into the journal
+8) Approve or reject a therapist's access to journal based on whether the therapist and client are mapped together or not.
+9) Search across Therapist's notes
+10) Search across emotions journal
+11) Request for an appointment in an available slot 
+
+Functionalities for therapist:
+1) Login
+2) Search for a client
+3) Map a client for therapy 
+4) Remove client
+5) Request a client for journal access
+6) Create a new session (private notes and shared notes automatically created when a session is created)
+7) Send a message to client and view history of exchanges
+8) View client journals
+9) Search across notes
+10) Search across emotions journal
+11) Modify details of a session 
+
+
+
+
+
+Table choices:
+
+1. Clients Table
+Purpose: Stores client details and their relationships with therapists.
+Partition Key: ClientId (UUID or unique identifier for the client)
+Sort Key: None
+Attributes:
+ClientName (String)
+ClientEmail (String)
+ClientPassword (String, hashed)
+GSI1PK: ClientEmail
+GSI1SK: CliendId
+
+2. Therapists Table
+Purpose: Stores therapist details and their relationships with clients.
+Partition Key: TherapistId (UUID or unique identifier for the therapist)
+Sort Key: None
+Attributes:
+TherapistName (String)
+TherapistEmail (String)
+TherapistPassword (String, hashed)
+SlotsAvailable (List<String> of available appointment slots for the client)
+GSI1PK: TherapistEmail
+GSI1SK: TherapistId
+
+3. Messages Table
+Purpose: Stores messages exchanged between clients and therapists.
+Partition Key: ClientId#TherapistId (Composite key to uniquely identify the conversation)
+Sort Key: Timestamp (ISO 8601 format date-time for chronological ordering)
+Attributes:
+Sender (String, either Client or Therapist)
+MessageContent (String)
+MessageType (Optional, e.g., text, attachment)
+GSI1PK: ClientId
+GSI1SK: Timestamp
+GSI2PK: TherapistId
+GSI2SK: Timestamp
+
+4. Journals Table
+Purpose: Stores journal entries created by clients.
+Partition Key: ClientId (Client who owns the journal)
+Sort Key: Timestamp (ISO 8601 format date-time for chronological ordering)
+Attributes:
+Feeling (String)
+Intensity (String)
+GSI1PK: ClientId
+GSI1SK: Feeling#Timestamp
+
+5. Sessions Table
+Purpose: Stores session information between clients and therapists.
+Partition Key: TherapistId#ClientId (String)
+Sort Key: SessionId (Unique session identifier, incrementing or UUID)
+Attributes:
+SessionDate (String)
+SharedNotes (String, notes shared with the client)
+PrivateNotes (String, notes private to the therapist)
+GSI1PK: ClientId
+GSI1SK: SessionDate
+
+6. ClientTherapistMappings
+Partition Key: ClientId (UUID or unique identifier for the client)
+Sort Key: TherapistId (UUID or unique identifier for the therapist)
+Attributes:
+Status (String)(Active/Removed)
+MappingDate (String)
+JournalAccess (String)(Yes/No)
+
+7. Appointments
+Partition Key: TherapistId (UUID or unique identifier for the therapist)
+Sort Key: Date#TimeSlot (String)
+Attributes:
+ClientId (String)
+Status (String)(Available/Booked/Cancelled)
+RequestDate (String)
+
+Note: I have chosen GSI for some of the tables.
+
+
+
+
+
+How the queries can be constructed? 
+
+For Clients:
+
+List all clients (GET /clients)
+- Query: Scan Clients table.
+- No LSI/GSI needed (scans entire table).
+
+Create a new client (POST /clients)
+- Query: PutItem to Clients table with ClientId as the key.
+
+Get client details (GET /clients/{clientId})
+- Query: GetItem from Clients table with ClientId.
+- No LSI/GSI needed.
+
+Update client details (PUT /clients/{clientId})
+- Query: UpdateItem in Clients table with ClientId as the key.
+
+Delete a client (DELETE /clients/{clientId})
+- Query: DeleteItem from Clients table using ClientId.
+
+Client login (POST /clients/login)
+- Query: Use GSI1 (email-based lookup).
+- Key: GSI1PK=ClientEmail.
+
+
+For Therapists:
+
+List all therapists (GET /therapists)
+- Query: Scan Therapists table.
+- No LSI/GSI needed.
+
+Create a new therapist (POST /therapists)
+- Query: PutItem to Therapists table with TherapistId as the key.
+
+Get therapist details (GET /therapists/{therapistId})
+- Query: GetItem from Therapists table with TherapistId.
+
+Therapist login (POST /therapists/login)
+- Query: Use GSI1 (email-based lookup).
+- Key: GSI1PK=TherapistEmail.
+
+
+Client-Therapist Relationships:
+
+List therapists mapped to client (GET /clients/{clientId}/therapists)
+- Query: Query ClientTherapistMappings table.
+- Key: PartitionKey=ClientId.
+
+Map a therapist to the client (POST /clients/{clientId}/therapists)
+- Query: PutItem in ClientTherapistMappings with ClientId and TherapistId.
+
+Remove a therapist mapping (DELETE /clients/{clientId}/therapists)
+- Query: DeleteItem from ClientTherapistMappings.
+- Key: PartitionKey=ClientId, SortKey=TherapistId.
+
+Manage journal access (POST/DELETE /clients/{clientId}/journals/access)
+- Query: Update JournalAccess in ClientTherapistMappings.
+
+
+Journals:
+
+Add emotion record (POST /clients/{clientId}/journals)
+- Query: PutItem in Journals table.
+- Key: PartitionKey=ClientId, SortKey=Timestamp.
+
+Search emotions journal (POST /clients/{clientId}/journals/search)
+- Query: Query Journals table using GSI1 for feelings or text.
+- Key: GSI1PK=ClientId.
+
+
+Sessions:
+
+List all sessions (GET /therapists/{therapistId}/sessions)
+- Query: Query Sessions table.
+- Key: PartitionKey=TherapistId.
+
+Create a new session (POST /therapists/{therapistId}/sessions)
+- Query: PutItem in Sessions table.
+- Key: PartitionKey=TherapistId#ClientId, SortKey=SessionId.
+
+Search sessions (POST /therapists/{therapistId}/sessions/search)
+- Query: Query Sessions table using a GSI for notes text.
+- Key: GSI1PK=TherapistId.
+
+
+Messaging:
+
+Send a message (POST /messages/send)
+- Query: PutItem in Messages table.
+- Key: PartitionKey=ClientId#TherapistId, SortKey=Timestamp.
+
+View message history (GET /messages/history)
+- Query: Query Messages table.
+- Key: PartitionKey=ClientId#TherapistId.
+
+
+Appointments:
+
+Request an appointment (POST /therapists/{therapistId}/slots)
+- Query: PutItem in Appointments table.
+- Key: PartitionKey=TherapistId, SortKey=Date#TimeSlot.
+
+List all appointments (GET /therapists/{therapistId}/slots)
+- Query: Query Appointments table.
+- Key: PartitionKey=TherapistId.
