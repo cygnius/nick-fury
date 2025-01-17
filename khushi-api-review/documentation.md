@@ -41,8 +41,9 @@ The Therapy Journaling API facilitates the management of therapy sessions, journ
 1. **Clone the Repository**:
    Clone the repository to your local machine:
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/khushi-tulsiyan/api-review.git
+   cd api-review
+
 
 
 
