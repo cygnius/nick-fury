@@ -1,1 +1,1 @@
-Refer to respective folders for assignments
+Adding OpenAPI structure and DynamoDB schema
