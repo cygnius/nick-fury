@@ -137,3 +137,11 @@ logging.level.com.amazonaws=DEBUG
 ### Troubleshooting
 - **DynamoDB Local not working:** Ensure that DynamoDB Local is properly started and accessible at the endpoint `http://localhost:8000/`.
 - **JWT authentication issues:** Make sure the JWT secret and expiration times are configured correctly in the application.
+
+## Postman Collection
+
+You can find the Postman collection for this project in the following file:
+- [Postman Collection](/Therapy%20App%20Endpoints.postman_collection.json)
+
+Import this collection into Postman to interact with the API endpoints.
+
