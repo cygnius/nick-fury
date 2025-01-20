@@ -1,0 +1,1241 @@
+openapi: 3.0.0
+info:
+  title: Therapy Management API
+  description: API for managing therapy sessions, client records, therapist details, journals, and messages
+  version: 1.0.0
+paths:
+  /auth/register:
+    post:
+      summary: Register a new client
+      operationId: registerClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        201:
+          description: Client successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  
+  /auth/registerTH:
+    post:
+      summary: Register a new therapist
+      operationId: saveTherapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        201:
+          description: Client successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+
+  
+  
+  /auth/login:
+    post:
+      summary: Authenticate a user and generate JWT token
+      operationId: authenticateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: JWT token generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  /clients:
+    post:
+      summary: Save a new client
+      security:
+        - bearerAuth: []
+      operationId: saveClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        201:
+          description: Client successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+  /clients/{email}:
+    get:
+      summary: Get a client by email
+      security:
+        - bearerAuth: []
+      
+      operationId: getClientByEmail
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Client fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+    delete:
+      summary: Delete a client by email
+      operationId: deleteClientByEmail
+      security:
+        - bearerAuth: []
+      
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Client successfully deleted
+
+  /clients/{clientEmail}/mapTherapist/{therapistEmail}:
+    post:
+      summary: Map therapist to a client
+      security:
+        - bearerAuth: []
+      
+      operationId: mapTherapist
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Therapist successfully mapped to client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        403:
+          description: Access Denied
+        500:
+          description: Internal Server Error
+
+  /clients/{clientEmail}/unmapTherapist/{therapistEmail}:
+    post:
+      summary: Unmap therapist from a client
+      security:
+        - bearerAuth: []
+      
+      operationId: unmapTherapist
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Therapist successfully unmapped from client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        403:
+          description: Access Denied
+        500:
+          description: Internal Server Error
+
+  /api/journals:
+    post:
+      summary: Create a new journal
+      security:
+        - bearerAuth: []
+      
+      operationId: createJournal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Journal'
+      responses:
+        201:
+          description: Journal successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journal'
+
+  /api/journals/{journalUuid}:
+    get:
+      summary: Get journal by UUID
+      security:
+        - bearerAuth: []
+      
+      operationId: getJournal
+      parameters:
+        - in: path
+          name: journalUuid
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Journal fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journal'
+    delete:
+      summary: Delete journal by UUID
+      security:
+        - bearerAuth: []
+      
+      operationId: deleteJournal
+      parameters:
+        - in: path
+          name: journalUuid
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Journal successfully deleted
+
+  /api/journals/client/{clientEmail}:
+    get:
+      summary: Get all journals for a specific client email
+      security:
+        - bearerAuth: []
+      
+      operationId: getAllJournalsByClient
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Journals fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+
+  /api/journals/title/{title}:
+    get:
+      summary: Get all journals by title
+      security:
+        - bearerAuth: []
+      
+      operationId: getAllJournalsByTitle
+      parameters:
+        - in: path
+          name: title
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Journals by title fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+
+  /api/journals/accessible/{clientEmail}/{title}:
+    get:
+      summary: Find accessible journals by client email and title
+      security:
+        - bearerAuth: []
+      
+      operationId: findAccessibleJournals
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: title
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Accessible journals fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+
+  /api/journals/{journalId}/therapist/{therapistEmail}:
+    post:
+      summary: Add therapist to a journal
+      security:
+        - bearerAuth: []
+      
+      operationId: addTherapistToJournal
+      parameters:
+        - in: path
+          name: journalId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Therapist successfully added to journal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journal'
+
+    delete:
+      summary: Remove therapist from a journal
+      security:
+        - bearerAuth: []
+      
+      operationId: removeTherapistFromJournal
+      parameters:
+        - in: path
+          name: journalId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Therapist successfully removed from journal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journal'
+
+  /api/journals/{journalId}/emotion:
+    post:
+      summary: Add emotion to a journal
+      security:
+        - bearerAuth: []
+      
+      operationId: addEmotionToJournal
+      parameters:
+        - in: path
+          name: journalId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmotionRequest'
+      responses:
+        200:
+          description: Emotion successfully added to journal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journal'
+
+  /api/journals/search/{keyword}:
+    get:
+      summary: Search journals by keyword (title or content)
+      security:
+        - bearerAuth: []
+      
+      operationId: searchJournals
+      parameters:
+        - in: path
+          name: keyword
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Journals searched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+
+  /api/journals/search/accessible/{keyword}:
+    get:
+      summary: Search accessible journals by keyword (title or content)
+      security:
+        - bearerAuth: []
+      
+      operationId: searchAccessibleJournals
+      parameters:
+        - in: path
+          name: keyword
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Accessible journals searched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
+                  
+                  
+                  
+                  
+                  
+  /api/messages:
+    post:
+      summary: Create a new message
+      security:
+        - bearerAuth: []
+      
+      operationId: createMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        201:
+          description: Message successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/sent/{senderId}:
+    get:
+      summary: Get messages sent by the current user
+      security:
+        - bearerAuth: []
+      
+      operationId: getMessagesSentByCurrentUser
+      parameters:
+        - in: path
+          name: senderId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Messages sent by the current user fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/received/{receiverId}:
+    get:
+      summary: Get messages received by the current user
+      security:
+        - bearerAuth: []
+      
+      operationId: getMessagesReceivedByCurrentUser
+      parameters:
+        - in: path
+          name: receiverId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Messages received by the current user fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/conversation/{senderId}/{receiverId}:
+    get:
+      summary: Get messages between a specific sender and receiver
+      security:
+        - bearerAuth: []
+      
+      operationId: getMessagesBetweenSenderAndReceiver
+      parameters:
+        - in: path
+          name: senderId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: receiverId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Messages between the sender and receiver fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/conversation/current/{senderId}/{receiverId}:
+    get:
+      summary: Get the conversation of the current user with a specific sender and receiver
+      security:
+        - bearerAuth: []
+      
+      operationId: getConversationOfCurrentUser
+      parameters:
+        - in: path
+          name: senderId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: receiverId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Conversation of the current user fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/all/{senderId}:
+    get:
+      summary: Get all messages of the current user
+      security:
+        - bearerAuth: []
+      
+      operationId: getAllMessagesOfCurrentUser
+      parameters:
+        - in: path
+          name: senderId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: All messages of the current user fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+
+  /api/messages/search:
+    get:
+      summary: Search messages by a keyword
+      operationId: searchMessagesByKeyword
+      parameters:
+        - in: query
+          name: keyword
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Messages searched by keyword successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        403:
+          description: Forbidden
+                
+  
+  /sessions:
+    post:
+      summary: Create a new session
+      security:
+        - bearerAuth: []
+      
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+      responses:
+        '200':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/public/open:
+    get:
+      summary: Get open sessions
+      operationId: findOpenSessions
+      responses:
+        '200':
+          description: List of open sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+
+  /sessions/client/{clientEmail}:
+    get:
+      summary: Get sessions by client email
+      security:
+        - bearerAuth: []
+      
+      operationId: findSessionByClientEmail
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of sessions for the client
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/therapist/{therapistEmail}:
+    get:
+      summary: Get sessions by therapist email
+      security:
+        - bearerAuth: []
+      
+      operationId: findSessionByTherapistEmail
+      parameters:
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of sessions for the therapist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/client/{clientEmail}/therapist/{therapistEmail}:
+    get:
+      summary: Get sessions by client and therapist
+      security:
+        - bearerAuth: []
+      
+      operationId: findSessionByClientAndTherapist
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of sessions for the client and therapist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/add-client/{sessionId}/{clientEmail}:
+    post:
+      summary: Add client to open session
+      security:
+        - bearerAuth: []
+      
+      operationId: addClientToOpenSession
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated session with client added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/{sessionId}/shared-notes/{clientEmail}:
+    get:
+      summary: Get shared notes for a session
+      security:
+        - bearerAuth: []
+      
+      operationId: getSharedNotes
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shared notes for the session
+          content:
+            application/json:
+              schema:
+                type: string
+        '403':
+          description: Access denied
+
+  /sessions/{sessionId}/private-notes/{therapistEmail}:
+    get:
+      summary: Get private notes for a session
+      security:
+        - bearerAuth: []
+      
+      operationId: getPrivateNotes
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Private notes for the session
+          content:
+            application/json:
+              schema:
+                type: string
+        '403':
+          description: Access denied
+
+  /sessions/search/shared-notes/{clientEmail}/{searchText}:
+    get:
+      summary: Search shared notes for a client
+      security:
+        - bearerAuth: []
+      
+      operationId: searchSharedNotes
+      parameters:
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: searchText
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sessions with matching shared notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+
+  /sessions/search/notes/{therapistEmail}/{searchText}:
+    get:
+      summary: Search notes for a therapist
+      security:
+        - bearerAuth: []
+      
+      operationId: searchNotesForTherapist
+      parameters:
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: searchText
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sessions with matching notes for the therapist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        '403':
+          description: Access denied
+                
+  
+  /api/therapists/public/save:
+    post:
+      summary: Save a new therapist
+      operationId: saveTherapist1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        '200':
+          description: Therapist created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+
+  /api/therapists/public/{email}:
+    get:
+      summary: Get therapist by email (public access)
+      operationId: getTherapistByEmailforPublic
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Therapist information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+
+  /api/therapists/public/all:
+    get:
+      summary: Get all therapists (public access)
+      operationId: getAllTherapists
+      responses:
+        '200':
+          description: List of all therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /api/therapists/{email}:
+    delete:
+      summary: Delete therapist by email
+      security:
+        - bearerAuth: []
+      
+      operationId: deleteTherapistByEmail
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Therapist deleted successfully
+        '403':
+          description: Access denied
+
+  /api/therapists/{therapistEmail}/add-client/{clientEmail}:
+    post:
+      summary: Add a client to a therapist's list
+      security:
+        - bearerAuth: []
+      
+      operationId: addClientToTherapist
+      parameters:
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Therapist with added client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+        '403':
+          description: Access denied
+
+  /api/therapists/public/specialization/{specialization}:
+    get:
+      summary: Find therapists by specialization
+      security:
+        - bearerAuth: []
+      
+      operationId: findTherapistsBySpecialization
+      parameters:
+        - in: path
+          name: specialization
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of therapists with the given specialization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /api/therapists/public/available-slot/{slot}:
+    get:
+      summary: Find therapists available at a specific time slot
+      operationId: findTherapistsByAvailableSlot
+      security:
+        - bearerAuth: []
+      
+      parameters:
+        - in: path
+          name: slot
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: List of therapists available at the given slot
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /api/therapists/{email}/update-specialization:
+    put:
+      summary: Update therapist specialization
+      security:
+        - bearerAuth: []
+      
+      operationId: updateSpecialization
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: Updated therapist with new specialization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+        '403':
+          description: Access denied
+
+  /api/therapists/{email}/update-slots:
+    put:
+      summary: Update therapist available slots
+      security:
+        - bearerAuth: []
+      
+      operationId: updateAvailableSlots
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: date-time
+      responses:
+        '200':
+          description: Updated therapist with new slots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+        '403':
+          description: Access denied
+
+  /api/therapists/{therapistEmail}/remove-client/{clientEmail}:
+    delete:
+      summary: Remove a client from a therapist's list
+      security:
+        - bearerAuth: []
+      
+      operationId: removeClientFromTherapist
+      parameters:
+        - in: path
+          name: therapistEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: clientEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Therapist with removed client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+        '403':
+          description: Access denied
+  
+                  
+
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+        description:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    Therapist:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        password:
+          type: string
+        specialization:
+          type: array
+          items:
+            type: string
+        availableSlots:
+          type: array
+          items:
+            type: string
+            format: date-time
+        clients:
+          type: array
+          items:
+            type: string
+        
+    Journal:
+      type: object
+      properties:
+        journalUuid:
+          type: string
+        clientEmail:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+    EmotionRequest:
+      type: object
+      properties:
+          journalId:
+            type: integer
+          
+          emotion:
+            type: object
+            properties:
+              name:
+                type: string
+              intensity:
+                type: integer   
+              timestamp:
+                type: string
+                format: date-time
+    Message:
+      type: object
+      properties:
+        messageId:
+          type: string
+        senderId:
+          type: string
+        receiverId:
+          type: string
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time        
+    
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        clientEmail:
+          type: string
+        therapistEmail:
+          type: string
+        status:
+          type: boolean
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        privatenotes:
+          type: string
+        sharedNotes:
+          type: string
+      required:
+        - id
+        - clientEmail
+        - therapistEmail
+        - status
+        - startTime
+        - endTime        
+        
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT      
+        
