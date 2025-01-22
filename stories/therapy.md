@@ -32,11 +32,11 @@ The app must cover these stories –
     *   Create a new sessions (to which any client can apply). Each session with –
         *   Private notes, visible only to the therapist
         *   Shared notes with the client. For any assignments.
-    *   View list of clients along with actions like –
-        *   Request a new client to be mapped for therapy. This allows for associating session notes to client. By default, journal access is off. 
+    *   View list of clients who have requested/taken a session with them or messages them and perform the following actions:
+        *   Request a new client to be mapped for therapy. By default, journal access is off. 
         *   Request a new client for journal access. 
         *   Send a message to a client and view the history of exchanges.
-        *   Remove a client
+        *   Remove a client mapping. Journal Access will automatically be turned off.
     *   View client journals
     *   Modify details of each session
     *   Run keyword search across customers, notes and emotions journals.
