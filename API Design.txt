@@ -223,6 +223,43 @@ paths:
                 items:
                   $ref: '#/components/schemas/Client'
 
+  /therapists/{therapistId}/clients/search:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Therapists, Clients]
+      summary: Search therapist's clients
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: minFeeling
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: maxFeeling
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of matched clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+
   /clients/{clientId}/journals:
     post:
       security:
@@ -240,14 +277,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmotionJournal'
+              $ref: '#/components/schemas/Journal'
       responses:
         201:
           description: Journal entry created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmotionJournal'
+                $ref: '#/components/schemas/Journal'
 
     get:
       security:
@@ -278,34 +315,125 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EmotionJournal'
+                  $ref: '#/components/schemas/Journal'
+
+  /clients/{clientId}/journals/search:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Journals]
+      summary: Search journal entries by keyword
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of matching journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journal'
 
   /sessions:
     post:
       security:
         - BearerAuth: []
       tags: [Sessions]
-      summary: Create new therapy session
+      summary: Request a therapy session
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Session'
+              type: object
+              properties:
+                therapistId:
+                  type: integer
+                appointmentTime:
+                  type: string
       responses:
         201:
-          description: Session created
+          description: Session requested
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Session'
 
   /sessions/{sessionId}/notes:
-    post:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Notes, Sessions]
+      summary: Retrieve all notes for a specific session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: includePrivate
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: List of session notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notes'
+
+  /sessions/{sessionId}/notes/search:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Notes]
+      summary: Search session notes by keyword
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: includePrivate
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: List of matching notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notes'
+
+  /sessions/{sessionId}/status:
+    patch:
       security:
         - BearerAuth: []
       tags: [Sessions]
-      summary: Add session notes
+      summary: Update session status
       parameters:
         - name: sessionId
           in: path
@@ -317,62 +445,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SessionNote'
-      responses:
-        201:
-          description: Note added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SessionNote'
-
-  /messages:
-    post:
-      security:
-        - BearerAuth: []
-      tags: [Messages]
-      summary: Send a message
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Message'
-      responses:
-        201:
-          description: Message sent
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-
-    get:
-      security:
-        - BearerAuth: []
-      tags: [Messages]
-      summary: Get message history
-      parameters:
-        - name: senderId
-          in: query
-          schema:
-            type: integer
-        - name: receiverId
-          in: query
-          schema:
-            type: integer
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [ACCEPTED, REJECTED]
       responses:
         200:
-          description: Message history
+          description: Session status updated
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Message'
+                $ref: '#/components/schemas/Session'
 
-  
-  
-  
   /mappings:
     post:
       security:
@@ -384,14 +469,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TherapistClientMapping'
+              $ref: '#/components/schemas/Mapping'
       responses:
         201:
           description: Mapping created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TherapistClientMapping'
+                $ref: '#/components/schemas/Mapping'
 
     patch:
       security:
@@ -417,4 +502,89 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TherapistClientMapping'
+                $ref: '#/components/schemas/Mapping'
+
+  /mappings/{clientId}/therapists:
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Mappings]
+      summary: Get therapists mapped to a client
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of mapped therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /mappings/{clientId}/journalAccess:
+    patch:
+      security:
+        - BearerAuth: []
+      tags: [Mappings]
+      summary: Client controls journal access
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mappingId:
+                  type: integer
+                journalAccess:
+                  type: boolean
+      responses:
+        200:
+          description: Journal access updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mapping'
+
+  /mappings/{clientId}/status:
+    patch:
+      security:
+        - BearerAuth: []
+      tags: [Mappings]
+      summary: Client manages therapist mapping
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mappingId:
+                  type: integer
+                action:
+                  type: string
+                  enum: [APPROVE, REJECT, REVOKE, REMOVE]
+      responses:
+        200:
+          description: Mapping status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mapping'
