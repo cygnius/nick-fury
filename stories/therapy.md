@@ -18,7 +18,7 @@ The app must cover these stories –
 *   A Client should be able to …
     *   Create a Client account and login using their email and password
     *   Search and map a Therapist to their account.
-    *   View list of therapists who have access to emotions journal along with these actions –
+    *   View list of therapists who are related to their account (in any way - mapping/journal access) along with these actions –
         *   Remove a therapist mapped to account
         *   Remove a therapist’s access to the journal, but not mapping to account
         *   Send a message to a therapist and view the history of exchanges.
