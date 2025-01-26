@@ -21,6 +21,11 @@ public class ResponseHelper {
 
     }
 
+    public static String generateResponse(int statusCode, String message) {
+
+        return "{\"statusCode\": " + statusCode + ", \"message\": \"" + message + "\"}";
+
+    }
 
     public static APIGatewayProxyResponseEvent buildResponse(int statusCode, String message, String body) {
 
