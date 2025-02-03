@@ -32,76 +32,67 @@ Table choices:
 
 1. Clients Table
 Purpose: Stores client details and their relationships with therapists.
-Partition Key: ClientId (UUID or unique identifier for the client)
+Partition Key: clientId (UUID or unique identifier for the client)
 Sort Key: None
 Attributes:
-ClientName (String)
-ClientEmail (String)
-ClientPassword (String, hashed)
-GSI1PK: ClientEmail
-GSI1SK: CliendId
+clientName (String)
+clientEmail (String)
+clientPassword (String, hashed)
 
 2. Therapists Table
 Purpose: Stores therapist details and their relationships with clients.
-Partition Key: TherapistId (UUID or unique identifier for the therapist)
+Partition Key: therapistId (UUID or unique identifier for the therapist)
 Sort Key: None
 Attributes:
-TherapistName (String)
-TherapistEmail (String)
-TherapistPassword (String, hashed)
-SlotsAvailable (List<String> of available appointment slots for the client)
-GSI1PK: TherapistEmail
-GSI1SK: TherapistId
+therapistName (String)
+therapistEmail (String)
+therapistPassword (String, hashed)
 
 3. Messages Table
 Purpose: Stores messages exchanged between clients and therapists.
-Partition Key: ClientId#TherapistId (Composite key to uniquely identify the conversation)
-Sort Key: Timestamp (ISO 8601 format date-time for chronological ordering)
+Partition Key: messageId (Composite key to uniquely identify the conversation)
+Sort Key: timestamp (ISO 8601 format date-time for chronological ordering)
 Attributes:
 Sender (String, either Client or Therapist)
 MessageContent (String)
-MessageType (Optional, e.g., text, attachment)
-GSI1PK: ClientId
-GSI1SK: Timestamp
-GSI2PK: TherapistId
-GSI2SK: Timestamp
+GSI1PK: clientId
+GSI1SK: timestamp
+GSI2PK: therapistId
+GSI2SK: timestamp
 
 4. Journals Table
 Purpose: Stores journal entries created by clients.
-Partition Key: ClientId (Client who owns the journal)
-Sort Key: Timestamp (ISO 8601 format date-time for chronological ordering)
+Partition Key: clientId (Client who owns the journal)
+Sort Key: timestamp (ISO 8601 format date-time for chronological ordering)
 Attributes:
-Feeling (String)
-Intensity (String)
-GSI1PK: ClientId
-GSI1SK: Feeling#Timestamp
+feeling (String)
+intensity (String)
+therapistId (String)
 
 5. Sessions Table
 Purpose: Stores session information between clients and therapists.
-Partition Key: TherapistId#ClientId (String)
-Sort Key: SessionId (Unique session identifier, incrementing or UUID)
+Partition Key: sessionId (String)
+Sort Key: sessionDate (String)
 Attributes:
-SessionDate (String)
-SharedNotes (String, notes shared with the client)
-PrivateNotes (String, notes private to the therapist)
-GSI1PK: ClientId
-GSI1SK: SessionDate
+therapistId (String)
+clientId (String)
+sharedNotes (String, notes shared with the client)
+privateNotes (String, notes private to the therapist)
+GSI1PK: clientId
+GSI1SK: therapistId
 
 6. ClientTherapistMappings
-Partition Key: ClientId (UUID or unique identifier for the client)
-Sort Key: TherapistId (UUID or unique identifier for the therapist)
+Partition Key: clientId (UUID or unique identifier for the client)
+Sort Key: therapistId (UUID or unique identifier for the therapist)
 Attributes:
-Status (String)(Active/Removed)
-MappingDate (String)
-JournalAccess (String)(Yes/No)
+journalAccess (String)(Yes/No)
 
 7. Appointments
-Partition Key: TherapistId (UUID or unique identifier for the therapist)
-Sort Key: Date#TimeSlot (String)
+Partition Key: appointmentId (UUID or unique identifier for the therapist)
+Sort Key: timestamp (String)
 Attributes:
-ClientId (String)
-Status (String)(Available/Booked/Cancelled)
-RequestDate (String)
+clientId (String)
+therapistId (String)
 
 Note: I have chosen GSI for some of the tables.
 

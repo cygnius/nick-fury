@@ -21,34 +21,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: No clients found.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
     post:
       summary: Create a new client
       requestBody:
@@ -69,34 +54,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '409':
           description: Conflict due to duplicate email or client data.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /clients/{clientId}:
     get:
       summary: Get client details
@@ -118,34 +88,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: Client not found for the given clientId.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
     put:
       summary: Update client details
       parameters:
@@ -159,7 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Client'
+              $ref: '#/components/schemas/NewClient'
       responses:
         '200':
           description: Client updated successfully
@@ -172,45 +127,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: Client not found for the given clientId.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '409':
           description: Conflict due to duplicate or conflicting data.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
     delete:
       summary: Delete a client
       parameters:
@@ -227,34 +162,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: Client not found for the given clientId.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /clients/login:
     post:
       summary: Login for clients
@@ -265,14 +185,14 @@ paths:
             schema:
               type: object
               properties:
-                ClientEmail:
+                clientEmail:
                   type: string
                   format: email
-                ClientPassword:
+                clientPassword:
                   type: string
               required:
-                - ClientEmail
-                - ClientPassword
+                - clientEmail
+                - clientPassword
       responses:
         '200':
           description: Client logged in successfully
@@ -289,45 +209,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '401':
           description: Invalid credentials. Authentication failed.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '403':
           description: Access forbidden due to account issues (e.g., account disabled).
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /therapists:
     get:
       summary: List all therapists
@@ -345,34 +245,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: No clients found.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
     post:
       summary: Create a new therapist
       requestBody:
@@ -393,34 +278,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '409':
           description: Conflict due to duplicate email or client data.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /therapists/{therapistId}:
     get:
       summary: Get therapist details
@@ -456,7 +326,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Therapist'
+              $ref: '#/components/schemas/NewTherapist'
       responses:
         '200':
           description: Therapist updated successfully
@@ -496,14 +366,14 @@ paths:
             schema:
               type: object
               properties:
-                TherapistEmail:
+                therapistEmail:
                   type: string
                   format: email
-                TherapistPassword:
+                therapistPassword:
                   type: string
               required:
-                - TherapistEmail
-                - TherapistPassword
+                - therapistEmail
+                - therapistPassword
       responses:
         '200':
           description: Therapist logged in successfully
@@ -520,45 +390,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '401':
           description: Invalid credentials. Authentication failed.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '403':
           description: Access forbidden due to account issues (e.g., account disabled).
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /mapping:
     post:
       summary: Map a client and therapist
@@ -592,23 +442,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
     delete:
       summary: Remove a mapping
       description: Allows either a client or a therapist to remove a mapping.
@@ -640,34 +480,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '404':
           description: Mapping not found.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                  errorMessage:
-                    type: string
+                $ref: '#/components/schemas/Error'
   /journal:
     get:
       summary: Search across emotions journal
@@ -861,7 +686,7 @@ paths:
             schema:
               type: object
               properties:
-                TherapistId:
+                therapistId:
                   type: string
                   example: therapist-123
                 SessionDate:
@@ -889,21 +714,21 @@ paths:
             schema:
               type: object
               properties:
-                TherapistId:
+                therapistId:
                   type: string
                   example: therapist-123
-                SessionDate:
+                sessionDate:
                   type: string
                   format: date
                   example: 2025-01-14
-                SharedNotes:
+                sharedNotes:
                   type: string
                   example: Updated shared notes content.
-                PrivateNotes:
+                privateNotes:
                   type: string
                   example: Updated private notes content.
               required:
-                - TherapistId
+                - therapistId
       responses:
         '200':
           description: Session details updated successfully.
@@ -927,31 +752,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                ClientId:
-                  type: string
-                  format: uuid
-                TherapistId:
-                  type: string
-                  format: uuid
-                Sender:
-                  type: string
-                  enum:
-                    - Client
-                    - Therapist
-                MessageContent:
-                  type: string
-                MessageType:
-                  type: string
-              required:
-                - ClientId
-                - TherapistId
-                - Sender
-                - MessageContent
+              $ref: '#/components/schemas/NewMessage'
       responses:
         '201':
           description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
         '400':
           description: Invalid request payload or missing required fields.
         '404':
@@ -964,13 +772,13 @@ paths:
     get:
       summary: Get message history between client and therapist
       parameters:
-        - name: ClientId
+        - name: clientId
           in: query
           required: true
           schema:
             type: string
             format: uuid
-        - name: TherapistId
+        - name: therapistId
           in: query
           required: true
           schema:
@@ -986,14 +794,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Message'
         '400':
-          description: Invalid query parameters (e.g., missing or malformed `ClientId` or `TherapistId`).
+          description: Invalid query parameters (e.g., missing or malformed `clientId` or `therapistId`).
         '404':
           description: No message history found between the specified client and therapist.
         '500':
           description: Internal server error.
   /appointment/request:
     post:
-      summary: Request an appointment in an available slot
+      summary: Request an appointment in an available session
       requestBody:
         required: true
         content:
@@ -1001,22 +809,17 @@ paths:
             schema:
               type: object
               properties:
-                TherapistId:
+                therapistId:
                   type: string
                   description: Unique identifier of the therapist.
                   example: therapist-123
-                Date:
+                sessionId:
                   type: string
-                  description: Date of the requested appointment (ISO 8601 format).
-                  example: "2025-01-15"
-                TimeSlot:
-                  type: string
-                  description: Requested time slot of the appointment (ISO 8601 format).
-                  example: "10:00:00Z"
+                  description: Unique identifier of the available session.
+                  example: session-789
               required:
-                - TherapistId
-                - Date
-                - TimeSlot
+                - therapistId
+                - sessionId
       responses:
         '200':
           description: Appointment request submitted successfully.
@@ -1025,11 +828,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Appointment'
         '400':
-          description: Invalid request body or the slot is not available.
+          description: Invalid request body or session is not available.
         '404':
-          description: Therapist not found.
+          description: Therapist or session not found.
         '409':
-          description: Slot is already booked.
+          description: Session is already booked.
         '500':
           description: Internal server error.
           
@@ -1038,162 +841,167 @@ components:
     Client:
       type: object
       properties:
-        ClientId:
+        clientId:
           type: string
           format: uuid
           description: Unique identifier for the client, generated by the backend.
-        ClientName:
+        clientName:
           type: string
-        ClientEmail:
+        clientEmail:
           type: string
           format: email
-        ClientPassword:
-          type: string
-          description: Hashed password stored securely.
     NewClient:
       type: object
       properties:
-        ClientName:
+        clientName:
           type: string
           example: John Doe
-        ClientEmail:
+        clientEmail:
           type: string
           format: email
           example: john.doe@example.com
-        ClientPassword:
+        clientPassword:
           type: string
           example: password123
     Therapist:
       type: object
       properties:
-        TherapistId:
+        therapistId:
           type: string
           format: uuid
           description: Unique identifier for the therapist, generated by the backend.
-        TherapistName:
+        therapistName:
           type: string
-        TherapistEmail:
+        therapistEmail:
           type: string
           format: email
-        TherapistPassword:
-          type: string
-        SlotsAvailable:
-          type: array
-          items:
-            type: string
     NewTherapist:
       type: object
       properties:
-        TherapistName:
+        therapistName:
           type: string
           example: Clark Kent
-        TherapistEmail:
+        therapistEmail:
           type: string
           format: email
           example: clark.kent@example.com
-        TherapistPassword:
+        therapistPassword:
           type: string
           example: password456
-        SlotsAvailable:
-          type: array
-          items:
-            type: string
     Session:
       type: object
       properties:
-        TherapistId:
+        therapistId:
           type: string
           example: therapist-123
-        SessionId:
+        sessionId:
           type: string
           example: session-789
-        SessionDate:
+        sessionDate:
           type: string
           format: date
           example: 2025-01-13
-        SharedNotes:
+        sharedNotes:
           type: string
           example: Discussed coping strategies and exercises.
-        PrivateNotes:
+        privateNotes:
           type: string
           example: Therapist-only observations.
     Journal:
       type: object
       properties:
-        EmotionId:
+        emotionId:
           type: string
           format: uuid
           description: Unique identifier for the emotion, generated by the backend.
-        ClientId:
+        clientId:
           type: string
           example: client-123
-        Timestamp:
+        timestamp:
           type: string
           format: date-time
           example: 2025-01-13T10:30:00Z
-        Feeling:
+        feeling:
           type: string
           example: Happy
-        Intensity:
+        intensity:
           type: string
           example: High
     NewJournalEntry:
       type: object
       properties:
-        ClientId:
+        clientId:
           type: string
           example: client-123
-        Timestamp:
+        timestamp:
           type: string
           format: date-time
           example: 2025-01-13T10:30:00Z
-        Feeling:
+        feeling:
           type: string
           example: Happy
-        Intensity:
+        intensity:
           type: string
           example: High
     Message:
       type: object
       properties:
-        ClientId:
+        messageId:
           type: string
           format: uuid
-        TherapistId:
+        clientId:
           type: string
           format: uuid
-        Timestamp:
+        therapistId:
+          type: string
+          format: uuid
+        timestamp:
           type: string
           format: date-time
-        Sender:
+        sender:
           type: string
           enum:
             - Client
             - Therapist
-        MessageContent:
+        messageContent:
           type: string
-        MessageType:
+    NewMessage:
+      type: object
+      properties:
+        clientId:
           type: string
+          format: uuid
+        therapistId:
+          type: string
+          format: uuid
+        sender:
+          type: string
+          enum:
+            - Client
+            - Therapist
+        messageContent:
+          type: string
+      required:
+        - clientId
+        - therapistId
+        - sender
+        - messageContent
     Appointment:
       type: object
       properties:
-        TherapistId:
+        therapistId:
           type: string
           description: Unique identifier of the therapist.
           example: therapist-123
-        Date:
+        sessionId:
           type: string
-          description: Date of the appointment in ISO 8601 format.
-          example: "2025-01-15"
-        TimeSlot:
-          type: string
-          description: Time slot of the appointment in ISO 8601 format.
-          example: "10:00:00Z"
-        ClientId:
+          description: Unique identifier of the booked session.
+          example: session-789
+        clientId:
           type: string
           description: Unique identifier of the client requesting the appointment.
           example: client-456
-        Status:
+        status:
           type: string
           description: Current status of the appointment.
           enum:
@@ -1201,7 +1009,10 @@ components:
             - Booked
             - Cancelled
           example: Booked
-        RequestDate:
+    Error:
+      type: object
+      properties:
+        errorCode:
           type: string
-          description: Date when the appointment was requested.
-          example: "2025-01-13T12:00:00Z"
+        errorMessage:
+          type: string
