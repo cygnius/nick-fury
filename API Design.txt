@@ -62,6 +62,7 @@ components:
           type: boolean
         status:
           type: string
+          enum: [PENDING, ACTIVE, REJECTED, REVOKED]
 
     Journal:
       type: object
@@ -92,6 +93,7 @@ components:
           type: string
         status:
           type: string
+          enum: [SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED]
 
     Notes:
       type: object
@@ -122,6 +124,25 @@ components:
           type: string
         isRead:
           type: boolean
+
+    Appointment:
+      type: object
+      properties:
+        appointmentId:
+          type: integer
+        therapistId:
+          type: integer
+        clientId:
+          type: integer
+        requestedTime:
+          type: string
+        status:
+          type: string
+          enum: [REQUESTED, CONFIRMED, REJECTED, CANCELLED]
+        notes:
+          type: string
+        createdAt:
+          type: string
 
 paths:
   /auth/register:
@@ -156,6 +177,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        400:
+          description: Invalid input
+        409:
+          description: Email already exists
 
   /auth/login:
     post:
@@ -184,6 +209,8 @@ paths:
                     type: string
                   user:
                     $ref: '#/components/schemas/User'
+        401:
+          description: Invalid credentials
 
   /therapists:
     get:
@@ -191,6 +218,15 @@ paths:
         - BearerAuth: []
       tags: [Therapists]
       summary: Get all therapists
+      parameters:
+        - name: specialization
+          in: query
+          schema:
+            type: string
+        - name: qualification
+          in: query
+          schema:
+            type: string
       responses:
         200:
           description: List of therapists
@@ -200,6 +236,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Therapist'
+
+  /therapist/{therapistId}
+    get:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Therapist profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+        404:
+          description: Therapist not found
 
   /therapists/{therapistId}/clients:
     get:
@@ -260,6 +316,27 @@ paths:
                 items:
                   $ref: '#/components/schemas/Client'
 
+  /clients/{clientId}
+    get:
+      security:
+        - BearerAuth: []
+      tags: [Client]
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Client profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        404:
+          description: Client not found
+
   /clients/{clientId}/journals:
     post:
       security:
@@ -285,6 +362,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Journal'
+        400:
+          description: Invalid input
+        404:
+          description: Client not found
 
     get:
       security:
@@ -316,6 +397,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Journal'
+        404:
+          description: Client not found
 
   /clients/{clientId}/journals/search:
     get:
@@ -359,6 +442,8 @@ paths:
               properties:
                 therapistId:
                   type: integer
+                clientId:
+                  type: integer
                 appointmentTime:
                   type: string
       responses:
@@ -368,8 +453,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Session'
+        400:
+          description: Invalid input
+        409:
+          description: Scheduling conflict
+
+  /sessions/{userId}
+    get:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        404:
+          description: User not found
 
   /sessions/{sessionId}/notes:
+    post:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notes'
+      responses:
+        201:
+          description: Note created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notes'
+        400:
+          description: Invalid input
+        404:
+          description: Session not found
+
     get:
       security:
         - BearerAuth: []
@@ -395,6 +537,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Notes'
+        404:
+          description: Session not found
 
   /sessions/{sessionId}/notes/search:
     get:
@@ -477,6 +621,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Mapping'
+        400:
+          description: Invalid input
+        409:
+          description: Mapping already exists
 
     patch:
       security:
@@ -525,6 +673,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Therapist'
+        404:
+          description: Client not found
 
   /mappings/{clientId}/journalAccess:
     patch:
@@ -556,6 +706,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Mapping'
+        404:
+          description: Mapping not found
 
   /mappings/{clientId}/status:
     patch:
@@ -588,3 +740,241 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Mapping'
+
+  /messages:
+    post:
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                receiverId:
+                  type: integer
+                content:
+                  type: string
+                attachments:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        201:
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        400:
+          description: Invalid input
+        404:
+          description: Receiver not found
+
+  /messages/{userId}
+    get:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: unreadOnly
+          in: query
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: Conversation history retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        404:
+          description: User not found
+
+  /messages/{messageId}/read
+    patch:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Message marked as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        404:
+          description: Message not found
+
+  /appointments
+    post:
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                therapistId:
+                  type: integer
+                requestedTime:
+                  type: string
+                  format: date-time
+                duration:
+                  type: integer
+                notes:
+                  type: string
+      responses:
+        201:
+          description: Appointment requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        400:
+          description: Invalid input
+        409:
+          description: Time slot not available
+
+  /appointments/{userId}
+    get:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [REQUESTED, CONFIRMED, REJECTED, CANCELLED]
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        404:
+          description: User not found
+
+  /appointments/{appointmentId}/status
+    patch:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [CONFIRMED, REJECTED, CANCELLED]
+                notes:
+                  type: string
+      responses:
+        200:
+          description: Appointment status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        404:
+          description: Appointment not found
+ 
+  /search
+    get:
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [notes, journals, messages]
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notes'
+                  journals:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Journal'
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+        400:
+          description: Invalid search parameters
