@@ -409,31 +409,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /mapping:
+  /mapping/client/{clientId}/therapist/{therapistId}:
     post:
-      summary: Map a client and therapist
-      description: Allows either a client to map a therapist to their account or a therapist to map a client for therapy.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                clientId:
-                  type: string
-                  example: client-123
-                therapistId:
-                  type: string
-                  example: therapist-456
-                initiator:
-                  type: string
-                  enum: [Client, Therapist]
-                  example: Client
-              required:
-                - clientId
-                - therapistId
-                - initiator
+      summary: Client maps to a therapist for therapy.
+      description: Allows a client to map a therapist without requiring approval.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Mapping created successfully.
@@ -449,34 +439,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
     delete:
-      summary: Remove a mapping
-      description: Allows either a client or a therapist to remove a mapping.
+      summary: Client removes a therapist from their account.
+      description: Allows a client to remove a therapist they are mapped with.
       parameters:
         - name: clientId
-          in: query
+          in: path
           required: true
           schema:
             type: string
-            example: client-123
         - name: therapistId
-          in: query
+          in: path
           required: true
           schema:
             type: string
-            example: therapist-456
-        - name: initiator
-          in: query
-          required: true
-          schema:
-            type: string
-            enum: [Client, Therapist]
-            example: Client
       responses:
-        '204':
-          description: Mapping removed successfully.
+        '200':
+          description: Therapist removed from the client’s account successfully.
         '400':
-          description: Bad request due to invalid or non-existent mapping.
+          description: Bad request due to invalid inputs.
           content:
             application/json:
               schema:
@@ -493,12 +475,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /journal:
+  /mapping/client/{clientId}/therapist/{therapistId}/approve:
+    put:
+      summary: Client approves a therapist’s mapping request.
+      description: A client can approve a therapist’s request to map with them.
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvalStatus:
+                  type: string
+                  enum: [Approved, Rejected]
+                  description: Whether the client approves or rejects the mapping.
+                  example: Approved
+      responses:
+        '200':
+          description: Mapping request updated successfully.
+        '400':
+          description: Bad request due to invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Mapping request not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /mapping/therapist/{therapistId}/client/{clientId}:
+    delete:
+      summary: Therapist removes a client mapping.
+      description: Allows a therapist to remove a client from their list. Journal Access will be turned off automatically.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client removed successfully. Journal Access revoked.
+        '400':
+          description: Bad request due to invalid inputs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Mapping not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /mapping/therapist/{therapistId}/client/{clientId}/request:
+    post:
+      summary: Therapist requests mapping with a client.
+      description: A therapist must request to map with a client, and the client will need to approve or reject the request.
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mapping request submitted successfully.
+        '400':
+          description: Bad request due to invalid inputs or duplicate request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /journal/{clientId}:
     get:
       summary: Search across emotions journal
       parameters:
         - name: clientId
-          in: query
+          in: path
           required: true
           schema:
             type: string
@@ -534,10 +630,19 @@ paths:
                   $ref: '#/components/schemas/Journal'
         '400':
           description: Invalid query parameters.
+        '403':
+          description: Forbidden - Client does not have permission to view this journal.
         '500':
           description: Internal server error.
     post:
       summary: Add a record of an emotion felt into the journal
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: client-123
       requestBody:
         required: true
         content:
@@ -555,8 +660,15 @@ paths:
           description: Invalid journal entry data.
         '500':
           description: Internal server error.
-    patch:
+    put:
       summary: Approve or reject a therapist's access to the journal
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: client-123
       requestBody:
         required: true
         content:
@@ -564,9 +676,6 @@ paths:
             schema:
               type: object
               properties:
-                clientId:
-                  type: string
-                  example: client-123
                 therapistId:
                   type: string
                   example: therapist-456
@@ -587,7 +696,7 @@ paths:
       summary: Remove a therapist's access to the journal
       parameters:
         - name: clientId
-          in: query
+          in: path
           required: true
           schema:
             type: string
@@ -607,9 +716,16 @@ paths:
           description: Mapping not found.
         '500':
           description: Internal server error.
-  /journal/request-access:
+  /journal/{clientId}/request-access:
     post:
       summary: Therapist requests a client for journal access
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: client-123
       requestBody:
         required: true
         content:
@@ -620,9 +736,6 @@ paths:
                 therapistId:
                   type: string
                   example: therapist-456
-                clientId:
-                  type: string
-                  example: client-123
       responses:
         '200':
           description: Journal access request sent successfully.
@@ -630,22 +743,22 @@ paths:
           description: Invalid access request data.
         '500':
           description: Internal server error.
-  /journal/view:
+  /journal/{clientId}/view:
     get:
       summary: Therapist views a client's journal entries
       parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: client-123
         - name: therapistId
           in: query
           required: true
           schema:
             type: string
             example: therapist-456
-        - name: clientId
-          in: query
-          required: true
-          schema:
-            type: string
-            example: client-123
       responses:
         '200':
           description: List of journal entries for the client.
@@ -689,7 +802,7 @@ paths:
                 therapistId:
                   type: string
                   example: therapist-123
-                SessionDate:
+                sessionDate:
                   type: string
                   format: date
                   example: 2025-01-13
@@ -705,7 +818,7 @@ paths:
         '500':
           description: Internal server error.
 
-    patch:
+    put:
       summary: Modify details of a session
       requestBody:
         required: true
@@ -768,18 +881,18 @@ paths:
           description: Conflict in sending the message (e.g., duplicate message or invalid state).
         '500':
           description: Internal server error.
-  /messages/history:
+  /messages/history/{clientId}/{therapistId}:
     get:
       summary: Get message history between client and therapist
       parameters:
         - name: clientId
-          in: query
+          in: path
           required: true
           schema:
             type: string
             format: uuid
         - name: therapistId
-          in: query
+          in: path
           required: true
           schema:
             type: string
@@ -794,7 +907,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Message'
         '400':
-          description: Invalid query parameters (e.g., missing or malformed `clientId` or `therapistId`).
+          description: Invalid path parameters (e.g., missing or malformed `clientId` or `therapistId`).
         '404':
           description: No message history found between the specified client and therapist.
         '500':
@@ -910,7 +1023,7 @@ components:
     Journal:
       type: object
       properties:
-        emotionId:
+        journalId:
           type: string
           format: uuid
           description: Unique identifier for the emotion, generated by the backend.
