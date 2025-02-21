@@ -55,20 +55,14 @@
             <artifactId>constructs</artifactId>
             <version>10.1.235</version>
         </dependency>
-
-    <!-- other dependencies -->
-
-
-
-
-        <!-- Jackson for JSON Parsing -->
+       
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.14.1</version>
         </dependency>
 
-        <!-- SLF4J for Logging -->
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -90,7 +84,18 @@
     <artifactId>aws-lambda-java-core</artifactId>
     <version>1.1.0</version>
 </dependency> 
-<!-- Removed duplicate dependency for aws-lambda-java-events version 1.3.0 -->
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>dynamodb</artifactId>
+    <version>2.20.129</version> 
+</dependency>
+
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>dynamodb-enhanced</artifactId>
+    <version>2.20.129</version> 
+</dependency>
+
 
 <dependency>
     <groupId>com.amazonaws</groupId>
