@@ -1,0 +1,126 @@
+**DynamoDB Schema for Therapy Journaling API**
+
+---
+
+## **Tables and Attributes**
+
+### **1. Users Table**
+- **PK (Partition Key):** `userId` (String)  
+- **Attributes:**  
+  - `email` (String, Unique)
+  - `passwordHash` (String)
+  - `role` (String) [CLIENT | THERAPIST]
+  - `createdAt` (String, ISO-8601 Date)
+  
+**Global Secondary Index (GSI):**
+- **GSI-1:** `email-index`
+  - PK: `email`
+  - SK: `userId`
+
+**Queries:**
+- Authenticate user by querying `email-index`.
+- Fetch user details using `userId`.
+
+---
+
+### **2. Journals Table**
+- **PK:** `clientId` (String)
+- **SK:** `timestamp` (String, ISO-8601 DateTime)
+- **Attributes:**
+  - `emotion` (String)
+  - `intensity` (Number)
+
+**Queries:**
+- Fetch all journal entries for a client (`clientId`).
+
+---
+
+### **3. Therapists Table**
+- **PK:** `therapistId` (String)
+- **Attributes:**
+  - `name` (String)
+  - `specialty` (String)
+
+**Queries:**
+- List all therapists.
+
+---
+
+### **4. Therapist-Client Mapping Table**
+- **PK:** `clientId` (String)
+- **SK:** `therapistId` (String)
+- **Attributes:**
+  - `therapistName` (String)
+
+**Queries:**
+- Fetch therapists mapped to a client.
+- Fetch clients mapped to a therapist (reverse lookup).
+
+---
+
+### **5. Journal Access Table**
+- **PK:** `therapistId` (String)
+- **SK:** `clientId` (String)
+- **Attributes:**
+  - `accessStatus` (String) [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+
+**Queries:**
+- Manage journal access requests.
+
+---
+
+### **6. Sessions Table**
+- **PK:** `sessionId` (String, UUID)
+- **Attributes:**
+  - `therapistId` (String)
+  - `clientId` (String)
+  - `sessionDate` (String, ISO-8601 DateTime)
+  - `privateNotes` (String)
+  - `sharedNotes` (String)
+
+**Queries:**
+- Fetch session details by `sessionId`.
+
+---
+
+### **7. Messages Table**
+- **PK:** `conversationId` (String) [Concatenation of senderId_receiverId]
+- **SK:** `timestamp` (String, ISO-8601 DateTime)
+- **Attributes:**
+  - `senderId` (String)
+  - `receiverId` (String)
+  - `message` (String)
+
+**Queries:**
+- Fetch message history between two users.
+
+---
+
+### **8. Appointments Table**
+- **PK:** `appointmentId` (String, UUID)
+- **Attributes:**
+  - `clientId` (String)
+  - `therapistId` (String)
+  - `appointmentDate` (String, ISO-8601 DateTime)
+  - `status` (String) [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+
+**Queries:**
+- Fetch appointment status using `appointmentId`.
+
+---
+
+## **Indexes and Queries Mapping**
+| API Endpoint | Table | Query | Index Used |
+|-------------|--------|--------|------------|
+| `/auth/login` | Users | Query by `email` | `email-index` |
+| `/clients/{clientId}/journals` | Journals | Query by `clientId` | None |
+| `/therapists` | Therapists | Scan all | None |
+| `/therapists/{therapistId}/clients` | Therapist-Client Mapping | Query by `therapistId` | None |
+| `/therapists/{therapistId}/clients/{clientId}/journal-access` | Journal Access | Query by `therapistId` | None |
+| `/sessions` | Sessions | Query by `sessionId` | None |
+| `/messages/history` | Messages | Query by `conversationId` | None |
+| `/appointments/{appointmentId}/status` | Appointments | Query by `appointmentId` | None |
+
+---
+
+
