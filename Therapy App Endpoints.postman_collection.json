@@ -1,0 +1,4161 @@
+{
+	"info": {
+		"_postman_id": "b68238c5-66be-4678-acfc-b5a7f167af47",
+		"name": "Therapy App Endpoints",
+		"description": "Therapy app endpoints and responses",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34190769"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"sender1@example.com\",\r\n    \"password\":\"password\",\r\n    \"name\":\"name\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 01:42:13 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"sender1@example.com\",\n    \"name\": \"name\",\n    \"password\": \"$2a$10$6gAMnlu5q81IG2XFgSz.JOThtH5FsK7TMpeZylNIeLX1M54Jyx.3G\",\n    \"description\": null,\n    \"therapists\": null,\n    \"role\": \"CLIENT\"\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"therapist1@example.com\",\r\n    \"password\":\"password\",\r\n    \"name\":\"therapist1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/registerTH",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"registerTH"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:46:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"therapist1@example.com\",\n    \"password\": \"$2a$10$/C0RvUrncDVz1x.OlW/G..4VNVnpRnVIjN88Lqp1UNQOfDT2vJUta\",\n    \"name\": \"therapist1\",\n    \"specialization\": null,\n    \"role\": \"Therapist\",\n    \"availableSlots\": [],\n    \"clients\": [],\n    \"specializationList\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"therapist1@example.com\",\r\n    \"password\":\"password\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login/therapist",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login",
+						"therapist"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"sender1@example.com\",\r\n    \"password\":\"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:43:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q\"\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"therapist1@example.com\",\r\n    \"password\":\"password\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:19:43 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc5NzMxODN9.BMZjBOBWWhepKKxYIz0__MDzkgRpnLDjxKKlKHbrUEI\",\n    \"email\": \"therapist1@example.com\",\n    \"roles\": [\n        \"ROLE_THERAPIST\"\n    ],\n    \"tokenType\": \"Bearer\"\n}"
+				}
+			]
+		},
+		{
+			"name": "client endpoints",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/clients/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 01:46:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"sender1@example.com\",\n    \"name\": \"name\",\n    \"password\": null,\n    \"description\": null,\n    \"therapists\": null,\n    \"role\": \"CLIENT\"\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/clients/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 01:47:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/clients/sender1@example.com/mapTherapist/therapist@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"sender1@example.com",
+								"mapTherapist",
+								"therapist@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:37:44 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"sender1@example.com\",\n    \"name\": \"name\",\n    \"password\": \"$2a$10$RUCPUpRRS8d1ILZ54GvUhOwViIrGGv6OR4qzJmAD7kacJCpqSCJOO\",\n    \"description\": null,\n    \"therapists\": [\n        \"therapist@example.com\"\n    ],\n    \"role\": \"CLIENT\"\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/clients/sender1@example.com/unmapTherapist/therapist@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"sender1@example.com",
+								"unmapTherapist",
+								"therapist@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:46:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"sender1@example.com\",\n    \"name\": \"name\",\n    \"password\": \"$2a$10$RUCPUpRRS8d1ILZ54GvUhOwViIrGGv6OR4qzJmAD7kacJCpqSCJOO\",\n    \"description\": null,\n    \"therapists\": [],\n    \"role\": \"CLIENT\"\n}"
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Journal Endpoints",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientEmail\":\"sender1@example.com\",\r\n    \"title\":\"test Journal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/journals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:49:14 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"journalId\": \"91848189-a73b-4edc-8219-02a4f24c5da7\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"title\": \"test Journal\",\n    \"content\": null,\n    \"emotions\": [],\n    \"therapists\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/91848189-a73b-4edc-8219-02a4f24c5da7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"91848189-a73b-4edc-8219-02a4f24c5da7"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:50:18 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"journalId\": \"91848189-a73b-4edc-8219-02a4f24c5da7\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"title\": \"test Journal\",\n    \"content\": null,\n    \"emotions\": [],\n    \"therapists\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/91848189-a73b-4edc-8219-02a4f24c5da7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"91848189-a73b-4edc-8219-02a4f24c5da7"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:50:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/client/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"client",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:52:25 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [],\n        \"therapists\": []\n    },\n    {\n        \"journalId\": \"8e1cecd6-b1ca-41a6-ac06-86e7fe9281b1\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"test Journal 3\",\n        \"content\": null,\n        \"emotions\": [],\n        \"therapists\": []\n    },\n    {\n        \"journalId\": \"bc17f185-f3de-475b-81ec-01f34319cad3\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"test Journal\",\n        \"content\": null,\n        \"emotions\": [],\n        \"therapists\": []\n    },\n    {\n        \"journalId\": \"testJournal1\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [],\n        \"therapists\": [\n            \"therapist2@example.com\",\n            \"therapist1@example.com\"\n        ]\n    },\n    {\n        \"journalId\": \"f4f69f41-7640-4406-b486-4d65a5c1c823\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"test Journal 2\",\n        \"content\": null,\n        \"emotions\": [],\n        \"therapists\": []\n    },\n    {\n        \"journalId\": \"75d65c63-56b0-4250-ad7c-2bedf1237151\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"test Journal 4\",\n        \"content\": null,\n        \"emotions\": [],\n        \"therapists\": []\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/title/test Journal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"title",
+								"test Journal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:54:05 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"journalId\": \"bc17f185-f3de-475b-81ec-01f34319cad3\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"test Journal\",\n        \"content\": null,\n        \"emotions\": [],\n        \"therapists\": []\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/accessible/sender1@example/title Journal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"accessible",
+								"sender1@example",
+								"title Journal"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=FFF0F125C33B79CF56E4F0D78BF38E0B; Path=/; HttpOnly"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:55:11 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/accessible/sender1@example.com/title Journal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"accessible",
+								"sender1@example.com",
+								"title Journal"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:56:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/accessible/sender1@example.com/string",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"accessible",
+								"sender1@example.com",
+								"string"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:56:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [],\n        \"therapists\": []\n    },\n    {\n        \"journalId\": \"testJournal1\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [],\n        \"therapists\": [\n            \"therapist2@example.com\",\n            \"therapist1@example.com\"\n        ]\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MjUxMDM3LCJleHAiOjE3MzczMzc0Mzd9.j5VoowdcYx0XXlbb2ETyhc9T4y7kjCpyvez1zNUp9mWqfs4sKuF7dJUCI7V85n2wJVyiVLc7tg3CPk7MzE-BLw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/testJournal1/therapist/therapist@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"testJournal1",
+								"therapist",
+								"therapist@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 13:58:04 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"journalId\": \"testJournal1\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"title\": \"string\",\n    \"content\": \"string\",\n    \"emotions\": [],\n    \"therapists\": [\n        \"therapist2@example.com\",\n        \"therapist1@example.com\",\n        \"therapist@example.com\"\n    ]\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/journals/testJournal1/therapist/therapist@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"testJournal1",
+								"therapist",
+								"therapist@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 14:01:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"journalId\": \"testJournal1\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"title\": \"string\",\n    \"content\": \"string\",\n    \"emotions\": [],\n    \"therapists\": [\n        \"therapist2@example.com\",\n        \"therapist1@example.com\"\n    ]\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientEmail\": \"sender1@example.com\",\r\n    \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\r\n    \"emotion\": {\r\n        \"name\": \"test Emotion\",\r\n        \"intensity\": 2,\r\n        \"timestamp\": \"2025-01-19T19:36:56\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/journals/emotion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"emotion"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 14:47:41 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"title\": \"string\",\n    \"content\": \"string\",\n    \"emotions\": [\n        {\n            \"name\": \"test Emotion\",\n            \"intensity\": 2,\n            \"timestamp\": \"2025-01-19T19:36:56\"\n        }\n    ],\n    \"therapists\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientEmail\": \"sender1@example.com\",\r\n    \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\r\n    \"emotion\": {\r\n        \"name\": \"test Emotion\",\r\n        \"intensity\": 2,\r\n        \"timestamp\": \"2025-01-19T19:36:56\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/journals/search/string",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"search",
+								"string"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 14:55:31 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [\n            {\n                \"name\": \"test Emotion\",\n                \"intensity\": 2,\n                \"timestamp\": \"2025-01-19T19:36:56\"\n            }\n        ],\n        \"therapists\": []\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientEmail\": \"sender1@example.com\",\r\n    \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\r\n    \"emotion\": {\r\n        \"name\": \"test Emotion\",\r\n        \"intensity\": 2,\r\n        \"timestamp\": \"2025-01-19T19:36:56\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/journals/search/accessible/string",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"journals",
+								"search",
+								"accessible",
+								"string"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 15:04:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"journalId\": \"2b1d3191-9a6c-4faa-a3e6-8ad616d5354b\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"title\": \"string\",\n        \"content\": \"string\",\n        \"emotions\": [\n            {\n                \"name\": \"test Emotion\",\n                \"intensity\": 2,\n                \"timestamp\": \"2025-01-19T19:36:56\"\n            }\n        ],\n        \"therapists\": []\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Message Endpoint",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:426cdcn\",\r\n  \"receiverId\": \"client@example.com\",\r\n  \"senderId\": \"sender1@example.com\",\r\n  \"messageContent\": \"This is a test message. 455\",\r\n  \"timestamp\": \"2025-01-15T19:11:42.087\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 16:49:33 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:426cdcn\",\n    \"senderId\": \"sender1@example.com\",\n    \"receiverId\": \"client@example.com\",\n    \"messageContent\": \"This is a test message. 455\",\n    \"timestamp\": \"2025-01-15T19:11:42.087\"\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:426cdcn\",\r\n  \"receiverId\": \"client@example.com\",\r\n  \"senderId\": \"sender1@example.com\",\r\n  \"messageContent\": \"This is a test message. 455\",\r\n  \"timestamp\": \"2025-01-15T19:11:42.087\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/messages/sent/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"sent",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 16:56:28 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"sender@example.com#receiver@example.com#2025-01-16T19:11:42.04566\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-16T19:11:42.055\"\n    },\n    {\n        \"messageKey\": \"sender@example.com#receiver@example.com#2025-01-16T19:11:42.04578\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.066\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-16T19:11:426cdcn\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"client@example.com\",\n        \"messageContent\": \"This is a test message. 455\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:426cdcn\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"client@example.com\",\n        \"messageContent\": \"This is a test message. 455\",\n        \"timestamp\": \"2025-01-15T19:11:42.087\"\n    },\n    {\n        \"messageKey\": \"sender@example.com#receiver@example.com#2025-01-16T19:11:42.0455\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-16T19:11:42.044\"\n    },\n    {\n        \"messageKey\": \"sender@example.com#receiver@example.com#2025-01-16T19:11:42.044\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-16T19:11:42.044\"\n    },\n    {\n        \"messageKey\": \"sender@example.com#receiver@example.com#2025-01-16T19:11:42.04577\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-16T19:11:42.066\"\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/messages/received/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"received",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 16:57:25 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"receiver1@example.com#sender1@example.com#2025-01-16T19:11:42.045669\",\n        \"senderId\": \"receiver@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"receiver1@example.com#sender1@example.com#2025-01-16T19:11:42.04579\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-16T19:11:42.0456\",\n        \"senderId\": \"client@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 455\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-16T19:11:42.0456cdcn\",\n        \"senderId\": \"client@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 455\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"receiver1@example.com#sender1@example.com#2025-01-16T19:11:42.04578\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.066\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-16T19:11:42.045669\",\n        \"senderId\": \"client@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 455\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-16T19:11:42.0456691\",\n        \"senderId\": \"client@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    },\n    {\n        \"messageKey\": \"receiver1@example.com#sender1@example.com#2025-01-16T19:11:42.0456691\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is a test message. 3\",\n        \"timestamp\": \"2025-01-15T19:11:42.085\"\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/messages/conversation/sender1@example.com/receiver1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"conversation",
+								"sender1@example.com",
+								"receiver1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:15:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:66\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 1\",\n        \"timestamp\": \"2025-01-19T22:43:42\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:45\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:46\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:47\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 3\",\n        \"timestamp\": \"2025-01-19T22:43:47\"\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/messages/conversation/current/sender1@example.com/receiver1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"conversation",
+								"current",
+								"sender1@example.com",
+								"receiver1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:22:31 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:66\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 1\",\n        \"timestamp\": \"2025-01-19T22:43:42\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:45\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:46\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:47\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 3\",\n        \"timestamp\": \"2025-01-19T22:43:47\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:22\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo\",\n        \"timestamp\": \"2025-01-19T22:49:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:26\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo 1\",\n        \"timestamp\": \"2025-01-19T22:49:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:27\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo 2\",\n        \"timestamp\": \"2025-01-19T22:49:47\"\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/messages/all/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"all",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:26:31 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:66\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 1\",\n        \"timestamp\": \"2025-01-19T22:43:42\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:45\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:46\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:47\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 3\",\n        \"timestamp\": \"2025-01-19T22:43:47\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:22\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo\",\n        \"timestamp\": \"2025-01-19T22:49:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:26\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo 1\",\n        \"timestamp\": \"2025-01-19T22:49:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-19T19:11:27\",\n        \"senderId\": \"receiver1@example.com\",\n        \"receiverId\": \"sender1@example.com\",\n        \"messageContent\": \"This is test message hemlo 2\",\n        \"timestamp\": \"2025-01-19T22:49:47\"\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3Mjk1MjEyLCJleHAiOjE3MzczODE2MTJ9.6M6AHaQy0JLXgpeqc5vqUgeywYkydrMIsVU29eTTG62B9p3NKzE9rbdUwn4UUvsOhysEV1MQrSBuRt4R7ZpCpA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/messages/search/is",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages",
+								"search",
+								"is"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jan 2025 17:33:22 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:66\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 1\",\n        \"timestamp\": \"2025-01-19T22:43:42\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:45\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:43\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:46\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 2\",\n        \"timestamp\": \"2025-01-19T22:43:46\"\n    },\n    {\n        \"messageKey\": \"client@example.com#sender1@example.com#2025-01-17T19:11:47\",\n        \"senderId\": \"sender1@example.com\",\n        \"receiverId\": \"receiver1@example.com\",\n        \"messageContent\": \"This is a test message 3\",\n        \"timestamp\": \"2025-01-19T22:43:47\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Session endpoints",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"therapistEmail\":\"therapist1@example.com\",\r\n    \"isOpen\":true,\r\n    \"sessionDate\":\"2025-01-20T15:53:45\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/sessions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:26:54 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"sessionId\": \"830cdb32-6836-4d96-804d-7f64a1a4052a\",\n    \"therapistEmail\": \"therapist1@example.com\",\n    \"clientEmail\": null,\n    \"sessionDate\": \"2025-01-20T15:53:45\",\n    \"privateNotes\": null,\n    \"sharedNotes\": null,\n    \"isOpen\": true\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"therapistEmail\":\"therapist1@example.com\",\r\n    \"isOpen\":true,\r\n    \"sessionDate\":\"2025-01-20T15:56:54\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/sessions/public/open",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"public",
+								"open"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:36:51 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"9676158a-70dc-4f5c-b42b-60ad21bb679a\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:56:54\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    },\n    {\n        \"sessionId\": \"fb663106-b2fd-4dbc-99e0-8a11c9ab226b\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:53:54\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    },\n    {\n        \"sessionId\": \"830cdb32-6836-4d96-804d-7f64a1a4052a\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:53:45\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/client/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"client",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:46:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"49803211-3eec-4967-bdf2-462a4c6418e6\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"685969f0-40be-4e3d-a673-2cc43ef5edcd\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:53:45\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ced56cd9-61b6-4c69-a96a-af0faae46b62\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/therapist/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"therapist",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:48:27 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"49803211-3eec-4967-bdf2-462a4c6418e6\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"685969f0-40be-4e3d-a673-2cc43ef5edcd\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:53:45\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"9676158a-70dc-4f5c-b42b-60ad21bb679a\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:56:54\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    },\n    {\n        \"sessionId\": \"fb663106-b2fd-4dbc-99e0-8a11c9ab226b\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:53:54\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    },\n    {\n        \"sessionId\": \"830cdb32-6836-4d96-804d-7f64a1a4052a\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": null,\n        \"sessionDate\": \"2025-01-20T15:53:45\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": true\n    },\n    {\n        \"sessionId\": \"ced56cd9-61b6-4c69-a96a-af0faae46b62\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/client/sender1@example.com/therapist/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"client",
+								"sender1@example.com",
+								"therapist",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 10:49:20 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"49803211-3eec-4967-bdf2-462a4c6418e6\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ced56cd9-61b6-4c69-a96a-af0faae46b62\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"685969f0-40be-4e3d-a673-2cc43ef5edcd\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:53:45\",\n        \"privateNotes\": null,\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/add-client/9676158a-70dc-4f5c-b42b-60ad21bb679a/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"add-client",
+								"9676158a-70dc-4f5c-b42b-60ad21bb679a",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:05:08 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"sessionId\": \"9676158a-70dc-4f5c-b42b-60ad21bb679a\",\n    \"therapistEmail\": \"therapist1@example.com\",\n    \"clientEmail\": \"sender1@example.com\",\n    \"sessionDate\": \"2025-01-20T15:56:54\",\n    \"privateNotes\": null,\n    \"sharedNotes\": null,\n    \"isOpen\": false\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/091b734b-2a97-483a-b3a7-c74a4ee963c0/shared-notes/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"091b734b-2a97-483a-b3a7-c74a4ee963c0",
+								"shared-notes",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "19"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:11:41 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Test shared notes 1"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/ced56cd9-61b6-4c69-a96a-af0faae46b62/private-notes/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"ced56cd9-61b6-4c69-a96a-af0faae46b62",
+								"private-notes",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "7"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:13:30 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "test1ew"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/ced56cd9-61b6-4c69-a96a-af0faae46b62/shared-notes/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"ced56cd9-61b6-4c69-a96a-af0faae46b62",
+								"shared-notes",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:19:44 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/search/shared-notes/sender1@example.com/shared",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"search",
+								"shared-notes",
+								"sender1@example.com",
+								"shared"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:22:02 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/search/notes/therapist1@example.com/shared",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"search",
+								"notes",
+								"therapist1@example.com",
+								"shared"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:23:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"description": "client token",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"description": "therapist token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/sessions/search/notes/therapist1@example.com/est",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sessions",
+								"search",
+								"notes",
+								"therapist1@example.com",
+								"est"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:23:37 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"sessionId\": \"49803211-3eec-4967-bdf2-462a4c6418e6\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ce940d0c-817c-4578-8910-9eed650a0e38\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:56\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 2\",\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"ced56cd9-61b6-4c69-a96a-af0faae46b62\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-16T19:11:42.089\",\n        \"privateNotes\": \"test1ew\",\n        \"sharedNotes\": null,\n        \"isOpen\": false\n    },\n    {\n        \"sessionId\": \"091b734b-2a97-483a-b3a7-c74a4ee963c0\",\n        \"therapistEmail\": \"therapist1@example.com\",\n        \"clientEmail\": \"sender1@example.com\",\n        \"sessionDate\": \"2025-01-20T15:56:55\",\n        \"privateNotes\": null,\n        \"sharedNotes\": \"Test shared notes 1\",\n        \"isOpen\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Therapist endpoints",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/public/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"public",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:32:05 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"therapist1@example.com\",\n    \"password\": null,\n    \"name\": \"therapist1\",\n    \"specialization\": \"\",\n    \"role\": \"THERAPIST\",\n    \"availableSlots\": [],\n    \"clients\": null,\n    \"specializationList\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/public/all",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"public",
+								"all"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:48:18 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"email\": \"therapist1@example.com\",\n        \"password\": null,\n        \"name\": \"therapist1\",\n        \"specialization\": \"\",\n        \"role\": \"THERAPIST\",\n        \"availableSlots\": [],\n        \"clients\": null,\n        \"specializationList\": []\n    },\n    {\n        \"email\": \"therapist@example.com\",\n        \"password\": null,\n        \"name\": \"therapist\",\n        \"specialization\": \"[]\",\n        \"role\": \"THERAPIST\",\n        \"availableSlots\": [],\n        \"clients\": null,\n        \"specializationList\": [\n            \"[]\"\n        ]\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/therapist1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"therapist1@example.com"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:51:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/therapist1@example.com/add-client/sender1@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"therapist1@example.com",
+								"add-client",
+								"sender1@example.com"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 11:55:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"therapist1@example.com\",\n    \"password\": \"$2a$10$4CUqULJh4dJNbzXZpiMVqublE3lpp8x4HGZvRX6G5RMbrUB59dLVi\",\n    \"name\": \"therapist1\",\n    \"specialization\": \"\",\n    \"role\": \"THERAPIST\",\n    \"availableSlots\": [],\n    \"clients\": [\n        \"sender1@example.com\"\n    ],\n    \"specializationList\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzY4MzgzLCJleHAiOjE3Mzc0NTQ3ODN9.Cf4CCGQamRkY7EzchGrDcp3bY46tWhrzBDOyDXhUYOM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \"testSpec1\",\r\n    \"testSpec2\"\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/therapist1@example.com/update-specialization",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"therapist1@example.com",
+								"update-specialization"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 12:00:31 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"therapist1@example.com\",\n    \"password\": \"$2a$10$4CUqULJh4dJNbzXZpiMVqublE3lpp8x4HGZvRX6G5RMbrUB59dLVi\",\n    \"name\": \"therapist1\",\n    \"specialization\": \"testSpec1,testSpec2\",\n    \"role\": \"THERAPIST\",\n    \"availableSlots\": [],\n    \"clients\": [\n        \"sender1@example.com\"\n    ],\n    \"specializationList\": [\n        \"testSpec1\",\n        \"testSpec2\"\n    ]\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzkwNzkyLCJleHAiOjE3Mzc0NzcxOTJ9.fm03c8ND3xs4iUEM-fugeN9thV_D8YSTXTYz9QC29JQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \"2025-01-20T15:30\",\r\n    \"2025-01-20T16:30\"\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/therapist2@example.com/update-slots",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"therapist2@example.com",
+								"update-slots"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 16:37:25 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"therapist2@example.com\",\n    \"password\": \"$2a$10$xtn3ehglgR6bRlQCtuxjR.A4oF9dkuUAzD6XDr7yTTnt3jvIQtl.m\",\n    \"name\": \"therapist2\",\n    \"specialization\": \"\",\n    \"role\": \"THERAPIST\",\n    \"availableSlots\": [\n        \"2025-01-20T15:30:00\",\n        \"2025-01-20T16:30:00\"\n    ],\n    \"clients\": [],\n    \"specializationList\": []\n}"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzkwNzkyLCJleHAiOjE3Mzc0NzcxOTJ9.fm03c8ND3xs4iUEM-fugeN9thV_D8YSTXTYz9QC29JQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/public/available-slot/2025-01-20T15:30:00",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"public",
+								"available-slot",
+								"2025-01-20T15:30:00"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 16:41:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"email\": \"therapist2@example.com\",\n        \"password\": null,\n        \"name\": \"therapist2\",\n        \"specialization\": \"\",\n        \"role\": \"THERAPIST\",\n        \"availableSlots\": [\n            \"2025-01-20T15:30:00\",\n            \"2025-01-20T16:30:00\"\n        ],\n        \"clients\": null,\n        \"specializationList\": []\n    }\n]"
+				},
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZW5kZXIxQGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9DTElFTlQiXSwiaWF0IjoxNzM3MzA4NjMwLCJleHAiOjE3MzczOTUwMzB9.Ar9VzijygP2KjeJziBsI3hONYWcP_sthC9FllHwxYHa6VzwGLQ6TBVy6mCK-DkswipLtnwK5qkkIu9q1cH3L6Q",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGVyYXBpc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzM3MzkwNzkyLCJleHAiOjE3Mzc0NzcxOTJ9.fm03c8ND3xs4iUEM-fugeN9thV_D8YSTXTYz9QC29JQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/therapists/public/specialization/testSpec1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"therapists",
+								"public",
+								"specialization",
+								"testSpec1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Jan 2025 16:50:59 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"email\": \"therapist1@example.com\",\n        \"password\": \"$2a$10$K/ZROPAKj/U1XUemPjRTP.Qbrpg8ApS9W0DPQWIvUcc918Lj0GUvC\",\n        \"name\": \"therapist1\",\n        \"specialization\": \"testSpec1,testSpec2\",\n        \"role\": \"THERAPIST\",\n        \"availableSlots\": null,\n        \"clients\": [],\n        \"specializationList\": [\n            \"testSpec1\",\n            \"testSpec2\"\n        ]\n    }\n]"
+				}
+			]
+		}
+	]
+}
