@@ -7,7 +7,7 @@ This design outlines the schema and relationships for a set of entities (`Client
 ## **Entities and Design Details**
 
 ### 1. **Client Table**
-- **Primary Key**: `clientId` (Hash Key)  
+- **Primary Key**: `clientId` (Hash Key, auto-generated)  
   - Represents a unique client identifier.
 - **Attributes**:
   - `email`: Client's email. Indexed by `EmailIndex`.
@@ -16,6 +16,16 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `description`: Optional client description.
   - `therapists`: List of associated therapist emails.
   - `role`: Enum, defaulting to `CLIENT`. Indexed by `RoleIndex`.
+- **Indexes:**  
+  - **GSI Name: `EmailIndex`**  
+    - **Partition Key:** `email`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `NameIndex`**  
+    - **Partition Key:** `name`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `RoleIndex`**  
+    - **Partition Key:** `role`  
+    - **Projection:** ALL attributes  
 
 ### 2. **Journal Table**
 - **Primary Key**: `journalId` (Hash Key, auto-generated)  
@@ -26,15 +36,33 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `content`: Journal content.
   - `emotions`: List of emotions, converted using a custom converter.
   - `therapists`: List of therapist emails with access.
+- **Indexes:**  
+  - **GSI Name: `ClientEmailIndex`**  
+    - **Partition Key:** `clientEmail`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `TitleIndex`**  
+    - **Partition Key:** `title`  
+    - **Projection:** ALL attributes  
 
 ### 3. **Message Table**
-- **Primary Key**: `messageKey` (Composite: `senderId#receiverId#timestamp`)  
+- **Primary Key**: `messageKey` (Hash key, auto-generated)  
   - A unique identifier for each message.
 - **Attributes**:
   - `senderId`: Email of the sender. Indexed by `SenderIndex`.
   - `receiverId`: Email of the receiver. Indexed by `ReceiverIndex`.
   - `messageContent`: The message's text content.
   - `timestamp`: Time of message creation. Indexed by `TimeStampIndex`.
+- **Indexes:**  
+  - **GSI Name: `SenderIndex`**  
+    - **Partition Key:** `senderId`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `ReceiverIndex`**  
+    - **Partition Key:** `receiverId`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `TimeStampIndex`**  
+    - **Partition Key:** `timestamp`  
+    - **Projection:** ALL attributes  
+
 
 ### 4. **Session Table**
 - **Primary Key**: `sessionId` (Hash Key, auto-generated)  
@@ -46,9 +74,20 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `privateNotes`: Confidential notes for the therapist.
   - `sharedNotes`: Notes shared with the client.
   - `isOpen`: Indicates if the session is open for all clients.
+- **Indexes:**  
+  - **GSI Name: `TherapistEmailIndex`**  
+    - **Partition Key:** `therapistEmail`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `ClientEmailIndex`**  
+    - **Partition Key:** `clientEmail`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `SessionDateIndex`**  
+    - **Partition Key:** `sessionDate`  
+    - **Projection:** ALL attributes  
+
 
 ### 5. **Therapist Table**
-- **Primary Key**: `therapistId` (Hash Key)  
+- **Primary Key**: `therapistId` (Hash Key, auto-generated )
   - Unique identifier for each therapist.
 - **Attributes**:
   - `email`: Therapist's email. Indexed by `EmailIndex`.
@@ -58,6 +97,19 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `role`: Default to `THERAPIST`. Indexed by `RoleIndex`.
   - `availableSlots`: List of available session slots.
   - `clients`: List of client emails.
+- **Indexes:**  
+  - **GSI Name: `EmailIndex`**  
+    - **Partition Key:** `email`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `NameIndex`**  
+    - **Partition Key:** `name`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `RoleIndex`**  
+    - **Partition Key:** `role`  
+    - **Projection:** ALL attributes  
+  - **GSI Name: `SpecializationIndex`**  
+    - **Partition Key:** `specialization`  
+    - **Projection:** ALL attributes  
 
 ---
 
@@ -68,12 +120,14 @@ This design outlines the schema and relationships for a set of entities (`Client
 aws dynamodb create-table \
     --table-name client \
     --attribute-definitions \
+        AttributeName=client,AttributeType=S \
         AttributeName=email,AttributeType=S \
         AttributeName=name,AttributeType=S \
         AttributeName=role,AttributeType=S \
     --key-schema \
-        AttributeName=email,KeyType=HASH \
+        AttributeName=clientId,KeyType=HASH \
     --global-secondary-indexes \
+        "IndexName=EmailIndex,KeySchema=[{AttributeName=email,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=NameIndex,KeySchema=[{AttributeName=name,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=RoleIndex,KeySchema=[{AttributeName=role,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
@@ -136,12 +190,14 @@ aws dynamodb create-table \
 aws dynamodb create-table \
     --table-name therapist \
     --attribute-definitions \
+        AttributeName=therapistId,AttributeType=S \ 
         AttributeName=email,AttributeType=S \
         AttributeName=specialization,AttributeType=S \
         AttributeName=role,AttributeType=S \
     --key-schema \
-        AttributeName=email,KeyType=HASH \
+        AttributeName=therapistId,KeyType=HASH \
     --global-secondary-indexes \
+        "IndexName=EmailIndex,KeySchema=[{AttributeName=email,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=SpecializationIndex,KeySchema=[{AttributeName=specialization,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=RoleIndex,KeySchema=[{AttributeName=role,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
