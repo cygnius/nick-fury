@@ -7,9 +7,10 @@ This design outlines the schema and relationships for a set of entities (`Client
 ## **Entities and Design Details**
 
 ### 1. **Client Table**
-- **Primary Key**: `email` (Hash Key)  
+- **Primary Key**: `clientId` (Hash Key)  
   - Represents a unique client identifier.
 - **Attributes**:
+  - `email`: Client's email. Indexed by `EmailIndex`.
   - `name`: Client's name. Indexed by `NameIndex`.
   - `password`: Hashed password.
   - `description`: Optional client description.
@@ -47,11 +48,12 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `isOpen`: Indicates if the session is open for all clients.
 
 ### 5. **Therapist Table**
-- **Primary Key**: `email` (Hash Key)  
+- **Primary Key**: `therapistId` (Hash Key)  
   - Unique identifier for each therapist.
 - **Attributes**:
+  - `email`: Therapist's email. Indexed by `EmailIndex`.
   - `password`: Hashed password.
-  - `name`: Therapist's name.
+  - `name`: Therapist's name. Indexed by `NameIndex`
   - `specialization`: Comma-separated string of specializations. Indexed by `SpecializationIndex`.
   - `role`: Default to `THERAPIST`. Indexed by `RoleIndex`.
   - `availableSlots`: List of available session slots.
