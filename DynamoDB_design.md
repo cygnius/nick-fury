@@ -21,13 +21,10 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Partition Key:** `email`  
     - **Projection:** ALL attributes  
     - **Query methods:**
+      -`registerUser`
       -`authenticate`
-      -`getClientByEmail`
-      -`updateClient`
-      -`updateClientEmail`
-      -`deleteClient`
-      -`mapTherapistClient`
-      -`unmapTherapistClient` 
+      -`updateUser`
+      -`deleteUser` 
   - **GSI Name: `NameIndex`**  
     - **Partition Key:** `name`  
     - **Projection:** ALL attributes  
@@ -39,24 +36,21 @@ This design outlines the schema and relationships for a set of entities (`Client
 - **Primary Key**: `journalId` (Hash Key, auto-generated)  
   - Represents a unique journal entry.
 - **Attributes**:
-  - `clientEmail`: Email of the associated client. Indexed by `ClientEmailIndex`.
+  - `clientId`: ID of the associated client. Indexed by `ClientIndex`.
   - `title`: Title of the journal entry. Indexed by `TitleIndex`.
   - `content`: Journal content.
   - `emotions`: List of emotions, converted using a custom converter.
   - `therapists`: List of therapist emails with access.
 - **Indexes:**  
-  - **GSI Name: `ClientEmailIndex`**  
-    - **Partition Key:** `clientEmail`  
+  - **GSI Name: `ClientIndex`**  
+    - **Partition Key:** `clientId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`getAllJournalsByClient`
-      -`findAccessibleJournals`
+      -`getJournals`
   - **GSI Name: `TitleIndex`**  
     - **Partition Key:** `title`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`getAllJournalsByTitle`
-      -`findAccessibleJournals`
 
 ### 3. **Message Table**
 - **Primary Key**: `conversationKey` (Hash key,`user1ID#user2ID` )  
@@ -74,13 +68,11 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Sort Key:** `timestamp`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`getMessagesSentByCurrentUser`
+      -`getAllMessagesOfCurrentUser`
   - **GSI Name: `ReceiverIndex`**  
     - **Partition Key:** `receiverId`
     - **Sort Key:** `timestamp`  
-    - **Projection:** ALL attributes  
-    - **Query methods:**
-      -`getMessagesReceivedByCurrentUser`
+    - **Projection:** ALL attributes      
   - **GSI Name: `SenderReceiverIndex`**  
     - **Partition Key:** `senderId`
     - **Partition Key:** `receiverId`  
@@ -92,28 +84,25 @@ This design outlines the schema and relationships for a set of entities (`Client
 - **Primary Key**: `sessionId` (Hash Key, auto-generated)  
   - Unique identifier for each session.
 - **Attributes**:
-  - `therapistEmail`: Email of the therapist. Indexed by `TherapistEmailIndex`.
-  - `clientEmail`: Email of the client (optional). Indexed by `ClientEmailIndex`.
+  - `therapistId`: Id  of the therapist. Indexed by `TherapistIdIndex`.
+  - `clientId`: Id of the client (optional). Indexed by `ClientIdIndex`.
   - `sessionDate`: Date and time of the session. Indexed by `SessionDateIndex`.
   - `privateNotes`: Confidential notes for the therapist.
   - `sharedNotes`: Notes shared with the client.
   - `isOpen`: Indicates if the session is open for all clients.
 - **Indexes:**  
-  - **GSI Name: `TherapistEmailIndex`**  
-    - **Partition Key:** `therapistEmail`  
+  - **GSI Name: `TherapistIdIndex`**  
+    - **Partition Key:** `therapistId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`findSessionByTherapistEmail`
-      -`findSessionByClientAndTherapist`  
-      -`searchNotesForTherapist`
-  - **GSI Name: `ClientEmailIndex`**  
-    - **Partition Key:** `clientEmail`  
+      -`getSessions`
+      -`getOrSearchNotes`  
+  - **GSI Name: `ClientIdIndex`**  
+    - **Partition Key:** `clientId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`findOpenSessions`
-      -`findSessionByClientEmail`
-      -`findSessionByClientAndTherapist`
-      -`searchSharedNotes`      
+      -`getSessions`
+      -`getOrSearchNotes`        
   - **GSI Name: `SessionDateIndex`**  
     - **Partition Key:** `sessionDate`  
     - **Projection:** ALL attributes  
@@ -135,13 +124,9 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Partition Key:** `email`  
     - **Projection:** ALL attributes
     - **Query methods:**
+      -`registerUser`
       -`authenticate`
-      -`getTherapistByEmailforPublic`
-      -`deleteTherapistByEmail`
-      -`addClientToTherapist`
-      -`removeClientToTherapist`
-      -`updateSpecialization`
-      -`updateAvailableSlots`
+      -`deleteUser`
   - **GSI Name: `NameIndex`**  
     - **Partition Key:** `name`  
     - **Projection:** ALL attributes  
@@ -152,16 +137,16 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Partition Key:** `specialization`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`findTherapistsBySpecialization`
+      -`getTherapist`
       
 
 ### 6. **Appointment Table**  
 - **Primary Key:** `appointmentId` (Hash Key, auto-generated UUID)  
 - **Attributes:**
-  - `clientId`: Client ID **(Indexed by ClientIndex)**  
-  - `therapistId`: Therapist ID **(Indexed by TherapistIndex)**  
-  - `appointmentDate`: Date & time of the appointment **(Indexed by DateIndex)**  
-  - `status`: `CONFIRMED`, `CANCELLED`, `COMPLETED` **(Indexed by StatusIndex)**  
+  - `clientId`: Client ID. Indexed by `ClientIndex`.  
+  - `therapistId`: Therapist ID. Indexed by `TherapistIndex`.  
+  - `appointmentDate`: Date & time of the appointment. Indexed by `DateIndex`.  
+  - `status`: `CONFIRMED`, `CANCELLED`, `COMPLETED`. Indexed by `StatusIndex`.  
   - `sessionId`: If a session was created from this appointment  
 
 - **Indexes:**
@@ -169,12 +154,12 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Partition Key:** `clientId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`getAppointmentsByClient`   
+      -`getAppointments`   
   - **GSI Name: `TherapistIndex`**  
     - **Partition Key:** `therapistId`  
     - **Projection:** ALL attributes 
     - **Query methods:**
-      -`getAppointmentsByTherapist`
+      -`getAppointments`
   - **GSI Name: `DateIndex`**  
     - **Partition Key:** `appointmentDate`  
     - **Projection:** ALL attributes  
@@ -182,40 +167,63 @@ This design outlines the schema and relationships for a set of entities (`Client
     - **Partition Key:** `status`  
     - **Projection:** ALL attributes  
 
-### 7. **Requests Table**  
+### 7. **TherapistRequests Table**  
 - **Primary Key:** `requestId` (Hash Key, auto-generated UUID)  
 - **Attributes:**
-  - `type`: `MAPPING`, `JOURNAL_ACCESS`, or `APPOINTMENT` **(Indexed by TypeIndex)**  
-  - `clientId`: Client ID (nullable for some requests) **(Indexed by ClientIndex)**  
-  - `therapistId`: Therapist ID **(Indexed by TherapistIndex)**  
+  - `type`: `MAPPING`, `JOURNAL_ACCESS`. Indexed by `TypeIndex`.  
+  - `clientId`: Client ID . Indexed by `ClientIndex`.  
+  - `therapistId`: Therapist ID. Indexed by `TherapistIndex`  
   - `journalId`: Journal ID (Only for `JOURNAL_ACCESS`)  
   - `requestedDate`: Date of requested appointment (Only for `APPOINTMENT`)  
   - `message`: Optional message from sender  
-  - `status`: `PENDING`, `APPROVED`, `REJECTED` **(Indexed by StatusIndex)**  
+  - `status`: `PENDING`, `APPROVED`, `REJECTED`. Indexed by `StatusIndex`.  
 
 - **Indexes:**
   - **GSI Name: `TypeIndex`**  
     - **Partition Key:** `type`  
-    - **Projection:** ALL attributes
-    - **Query methods:**
-      -`approvingTherapistClientMapping`
-      -`approvingJournalAccess`
-      -`approvingAppointment`   
+    - **Projection:** ALL attributes   
   - **GSI Name: `TherapistIndex`**  
     - **Partition Key:** `therapistId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`approvingAppointment`      
+      -`getTherapistRequests`      
   - **GSI Name: `ClientIndex`**  
     - **Partition Key:** `clientId`  
     - **Projection:** ALL attributes
     - **Query methods:**
-      -`approvingTherapistClientMapping`
-      -`approvingJournalAccess`  
+      -`getTherapistRequests`        
   - **GSI Name: `StatusIndex`**  
     - **Partition Key:** `status`  
-    - **Projection:** ALL attributes  
+    - **Projection:** ALL attributes
+    - **Query methods:**
+      -`getTherapistRequests`          
 
+### 8. **ClientRequests Table**  
+- **Primary Key:** `requestId` (Hash Key, auto-generated UUID)  
+- **Attributes:**
+  - `type`: `APPOINTMENT`. Indexed by `TypeIndex`.  
+  - `clientId`: Client ID . Indexed by `ClientIndex`.  
+  - `therapistId`: Therapist ID. Indexed by `TherapistIndex`  
+  - `requestedDate`: Date of requested appointment (Only for `APPOINTMENT`)  
+  - `message`: Optional message from sender  
+  - `status`: `PENDING`, `APPROVED`, `REJECTED`. Indexed by `StatusIndex`.  
+
+- **Indexes:**
+  - **GSI Name: `TherapistIndex`**  
+    - **Partition Key:** `therapistId`  
+    - **Projection:** ALL attributes
+    - **Query methods:**
+      -`getClientRequests`              
+  - **GSI Name: `ClientIndex`**  
+    - **Partition Key:** `clientId`  
+    - **Projection:** ALL attributes
+    - **Query methods:**
+      -`getClientRequests`                
+  - **GSI Name: `StatusIndex`**  
+    - **Partition Key:** `status`  
+    - **Projection:** ALL attributes
+    - **Query methods:**
+      -`getClientRequests`                
 
 ---
 
