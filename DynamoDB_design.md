@@ -266,18 +266,19 @@ aws dynamodb create-table \
 ### 3. Create `Message` Table
 ```bash
 aws dynamodb create-table \
-    --table-name message \
+    --table-name Message \
     --attribute-definitions \
-        AttributeName=messageKey,AttributeType=S \
+        AttributeName=conversationKey,AttributeType=S \
+        AttributeName=timestamp,AttributeType=S \
         AttributeName=senderId,AttributeType=S \
         AttributeName=receiverId,AttributeType=S \
-        AttributeName=timestamp,AttributeType=S \
     --key-schema \
-        AttributeName=messageKey,KeyType=HASH \
+        AttributeName=conversationKey,KeyType=HASH \
+        AttributeName=timestamp,KeyType=RANGE \
     --global-secondary-indexes \
-        "IndexName=SenderIndex,KeySchema=[{AttributeName=senderId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
-        "IndexName=ReceiverIndex,KeySchema=[{AttributeName=receiverId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
-        "IndexName=TimeStampIndex,KeySchema=[{AttributeName=timestamp,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=SenderIndex,KeySchema=[{AttributeName=senderId,KeyType=HASH},{AttributeName=timestamp,KeyType=RANGE}],Projection={ProjectionType=ALL}" \
+        "IndexName=ReceiverIndex,KeySchema=[{AttributeName=receiverId,KeyType=HASH},{AttributeName=timestamp,KeyType=RANGE}],Projection={ProjectionType=ALL}" \
+        "IndexName=SenderReceiverIndex,KeySchema=[{AttributeName=senderId,KeyType=HASH},{AttributeName=receiverId,KeyType=RANGE}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
 ```
 
@@ -337,29 +338,46 @@ aws dynamodb create-table \
     --billing-mode PAY_PER_REQUEST
 ```
 
-### 7. Create `Request` Table
+### 7. Create `TherapistRequest` Table
 ```bash
 aws dynamodb create-table \
-    --table-name request \
+    --table-name TherapistRequests \
     --attribute-definitions \
-        AttributeName=clientId,AttributeType=S \ 
-        AttributeName=therapistId,AttributeType=S \
-        AttributeName=requestedDate,AttributeType=S \
-        AttributeName=status,AttributeType=S \
-        AttributeName=sessionId,AttributeType=S \
-        AttributeName=message,AttributeType=S \
+        AttributeName=requestId,AttributeType=S \
         AttributeName=type,AttributeType=S \
-        AttributeName=journalId,AttributeType=S \
+        AttributeName=clientId,AttributeType=S \
+        AttributeName=therapistId,AttributeType=S \
+        AttributeName=status,AttributeType=S \
     --key-schema \
         AttributeName=requestId,KeyType=HASH \
     --global-secondary-indexes \
-        "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
-        "IndexName=TherapistIndex,KeySchema=[{AttributeName=therapistId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=TypeIndex,KeySchema=[{AttributeName=type,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=TherapistIndex,KeySchema=[{AttributeName=therapistId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=StatusIndex,KeySchema=[{AttributeName=status,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
 ```
 
+### 8. Create `ClientRequest` Table
+```bash
+aws dynamodb create-table \
+    --table-name ClientRequests \
+    --attribute-definitions \
+        AttributeName=requestId,AttributeType=S \
+        AttributeName=type,AttributeType=S \
+        AttributeName=clientId,AttributeType=S \
+        AttributeName=therapistId,AttributeType=S \
+        AttributeName=status,AttributeType=S \
+    --key-schema \
+        AttributeName=requestId,KeyType=HASH \
+    --global-secondary-indexes \
+        "IndexName=TypeIndex,KeySchema=[{AttributeName=type,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=TherapistIndex,KeySchema=[{AttributeName=therapistId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=StatusIndex,KeySchema=[{AttributeName=status,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+    --billing-mode PAY_PER_REQUEST
+
+```
 ---
 
 This design efficiently supports the application's requirements for client-therapist interactions, journal entries, messaging, and session management. The indexes enable rapid querying and ensure scalability.
