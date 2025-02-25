@@ -59,35 +59,34 @@ This design outlines the schema and relationships for a set of entities (`Client
       -`findAccessibleJournals`
 
 ### 3. **Message Table**
-- **Primary Key**: `messageKey` (Hash key, auto-generated)  
-  - A unique identifier for each message.
+- **Primary Key**: `conversationKey` (Hash key,`user1ID#user2ID` )  
+  - A unique identifier for conversation.
+- **Sort Key**: `timestamp` (sort key,`timestamp` )  
+  - A keeps the messages ordered.
 - **Attributes**:
   - `senderId`: Email of the sender. Indexed by `SenderIndex`.
   - `receiverId`: Email of the receiver. Indexed by `ReceiverIndex`.
   - `messageContent`: The message's text content.
-  - `timestamp`: Time of message creation. Indexed by `TimeStampIndex`.
+  - `timestamp`: Time of message creation.
 - **Indexes:**  
   - **GSI Name: `SenderIndex`**  
-    - **Partition Key:** `senderId`  
+    - **Partition Key:** `senderId`
+    - **Sort Key:** `timestamp`  
     - **Projection:** ALL attributes
     - **Query methods:**
       -`getMessagesSentByCurrentUser`
-      -`getConversationOfCurrentUser`
-      -`getAllMessagesOfCurrentUser`
   - **GSI Name: `ReceiverIndex`**  
+    - **Partition Key:** `receiverId`
+    - **Sort Key:** `timestamp`  
+    - **Projection:** ALL attributes  
+    - **Query methods:**
+      -`getMessagesReceivedByCurrentUser`
+  - **GSI Name: `SenderReceiverIndex`**  
+    - **Partition Key:** `senderId`
     - **Partition Key:** `receiverId`  
     - **Projection:** ALL attributes  
     - **Query methods:**
-      -`getMessagesReceivedByCurrentUser`
       -`getConversationOfCurrentUser`
-      -`getAllMessagesOfCurrentUser`
-  - **GSI Name: `TimeStampIndex`**  
-    - **Partition Key:** `timestamp`  
-    - **Projection:** ALL attributes  
-    - **Query methods:**
-      -`getMessagesReceivedByCurrentUser`
-      -`getConversationOfCurrentUser`
-      -`getAllMessagesOfCurrentUser`
 
 ### 4. **Session Table**
 - **Primary Key**: `sessionId` (Hash Key, auto-generated)  
