@@ -226,7 +226,6 @@ aws dynamodb create-table \
     --key-schema \
         AttributeName=clientId,KeyType=HASH \
     --global-secondary-indexes \
-        "IndexName=EmailIndex,KeySchema=[{AttributeName=email,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=NameIndex,KeySchema=[{AttributeName=name,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=RoleIndex,KeySchema=[{AttributeName=role,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
@@ -297,7 +296,6 @@ aws dynamodb create-table \
     --key-schema \
         AttributeName=therapistId,KeyType=HASH \
     --global-secondary-indexes \
-        "IndexName=EmailIndex,KeySchema=[{AttributeName=email,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=SpecializationIndex,KeySchema=[{AttributeName=specialization,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=RoleIndex,KeySchema=[{AttributeName=role,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
