@@ -10,21 +10,13 @@ This design outlines the schema and relationships for a set of entities (`Client
 - **Primary Key**: `clientId` (Hash Key, auto-generated)  
   - Represents a unique client identifier.
 - **Attributes**:
-  - `email`: Client's email. Indexed by `EmailIndex`.
+  - `email`: Client's email..
   - `name`: Client's name. Indexed by `NameIndex`.
   - `password`: Hashed password.
   - `description`: Optional client description.
   - `therapists`: List of associated therapist emails.
   - `role`: Enum, defaulting to `CLIENT`. Indexed by `RoleIndex`.
 - **Indexes:**  
-  - **GSI Name: `EmailIndex`**  
-    - **Partition Key:** `email`  
-    - **Projection:** ALL attributes  
-    - **Query methods:**
-      -`registerUser`
-      -`authenticate`
-      -`updateUser`
-      -`deleteUser` 
   - **GSI Name: `NameIndex`**  
     - **Partition Key:** `name`  
     - **Projection:** ALL attributes  
@@ -112,7 +104,7 @@ This design outlines the schema and relationships for a set of entities (`Client
 - **Primary Key**: `therapistId` (Hash Key, auto-generated )
   - Unique identifier for each therapist.
 - **Attributes**:
-  - `email`: Therapist's email. Indexed by `EmailIndex`.
+  - `email`: Therapist's email.
   - `password`: Hashed password.
   - `name`: Therapist's name. Indexed by `NameIndex`
   - `specialization`: Comma-separated string of specializations. Indexed by `SpecializationIndex`.
@@ -120,13 +112,6 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `availableSlots`: List of available session slots.
   - `clients`: List of client emails.
 - **Indexes:**  
-  - **GSI Name: `EmailIndex`**  
-    - **Partition Key:** `email`  
-    - **Projection:** ALL attributes
-    - **Query methods:**
-      -`registerUser`
-      -`authenticate`
-      -`deleteUser`
   - **GSI Name: `NameIndex`**  
     - **Partition Key:** `name`  
     - **Projection:** ALL attributes  
