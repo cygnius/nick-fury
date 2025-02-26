@@ -14,7 +14,7 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `name`: Client's name. Indexed by `NameIndex`.
   - `password`: Hashed password.
   - `description`: Optional client description.
-  - `therapists`: List of associated therapist emails.
+  - `therapists`: List of associated therapist.
   - `role`: Enum, defaulting to `CLIENT`. Indexed by `RoleIndex`.
 - **Indexes:**  
   - **GSI Name: `NameIndex`**  
@@ -32,7 +32,7 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `title`: Title of the journal entry. Indexed by `TitleIndex`.
   - `content`: Journal content.
   - `emotions`: List of emotions, converted using a custom converter.
-  - `therapists`: List of therapist emails with access.
+  - `therapists`: List of therapist with access.
 - **Indexes:**  
   - **GSI Name: `ClientIndex`**  
     - **Partition Key:** `clientId`  
@@ -50,8 +50,8 @@ This design outlines the schema and relationships for a set of entities (`Client
 - **Sort Key**: `timestamp` (sort key,`timestamp` )  
   - A keeps the messages ordered.
 - **Attributes**:
-  - `senderId`: Email of the sender. Indexed by `SenderIndex`.
-  - `receiverId`: Email of the receiver. Indexed by `ReceiverIndex`.
+  - `senderId`: Id of the sender. Indexed by `SenderIndex`.
+  - `receiverId`: Id of the receiver. Indexed by `ReceiverIndex`.
   - `messageContent`: The message's text content.
   - `timestamp`: Time of message creation.
 - **Indexes:**  
@@ -110,7 +110,7 @@ This design outlines the schema and relationships for a set of entities (`Client
   - `specialization`: Comma-separated string of specializations. Indexed by `SpecializationIndex`.
   - `role`: Default to `THERAPIST`. Indexed by `RoleIndex`.
   - `availableSlots`: List of available session slots.
-  - `clients`: List of client emails.
+  - `clients`: List of client.
 - **Indexes:**  
   - **GSI Name: `NameIndex`**  
     - **Partition Key:** `name`  
@@ -238,12 +238,12 @@ aws dynamodb create-table \
     --table-name journal \
     --attribute-definitions \
         AttributeName=journalId,AttributeType=S \
-        AttributeName=clientEmail,AttributeType=S \
+        AttributeName=clientId,AttributeType=S \
         AttributeName=title,AttributeType=S \
     --key-schema \
         AttributeName=journalId,KeyType=HASH \
     --global-secondary-indexes \
-        "IndexName=ClientEmailIndex,KeySchema=[{AttributeName=clientEmail,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=TitleIndex,KeySchema=[{AttributeName=title,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
 ```
@@ -273,14 +273,14 @@ aws dynamodb create-table \
     --table-name session \
     --attribute-definitions \
         AttributeName=sessionId,AttributeType=S \
-        AttributeName=therapistEmail,AttributeType=S \
-        AttributeName=clientEmail,AttributeType=S \
+        AttributeName=therapistId,AttributeType=S \
+        AttributeName=clientId,AttributeType=S \
         AttributeName=sessionDate,AttributeType=S \
     --key-schema \
         AttributeName=sessionId,KeyType=HASH \
     --global-secondary-indexes \
-        "IndexName=TherapistEmailIndex,KeySchema=[{AttributeName=therapistEmail,KeyType=HASH}],Projection={ProjectionType=ALL}" \
-        "IndexName=ClientEmailIndex,KeySchema=[{AttributeName=clientEmail,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=TherapistIndex,KeySchema=[{AttributeName=therapistId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
+        "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=SessionDateIndex,KeySchema=[{AttributeName=sessionDate,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
 ```
@@ -361,7 +361,6 @@ aws dynamodb create-table \
         "IndexName=ClientIndex,KeySchema=[{AttributeName=clientId,KeyType=HASH}],Projection={ProjectionType=ALL}" \
         "IndexName=StatusIndex,KeySchema=[{AttributeName=status,KeyType=HASH}],Projection={ProjectionType=ALL}" \
     --billing-mode PAY_PER_REQUEST
-
 ```
 ---
 
