@@ -32,7 +32,7 @@ Table choices:
 
 1. Clients Table
 Purpose: Stores client details and their relationships with therapists.
-Partition Key: clientId (UUID or unique identifier for the client)
+Partition Key: clientId (UUID, String)
 Sort Key: None
 Attributes:
 clientName (String)
@@ -41,7 +41,7 @@ clientPassword (String, hashed)
 
 2. Therapists Table
 Purpose: Stores therapist details and their relationships with clients.
-Partition Key: therapistId (UUID or unique identifier for the therapist)
+Partition Key: therapistId (UUID, String)
 Sort Key: None
 Attributes:
 therapistName (String)
@@ -50,11 +50,13 @@ therapistPassword (String, hashed)
 
 3. Messages Table
 Purpose: Stores messages exchanged between clients and therapists.
-Partition Key: messageId (Composite key to uniquely identify the conversation)
-Sort Key: timestamp (ISO 8601 format date-time for chronological ordering)
+Partition Key: messageId (UUID, String)
+Sort Key: timestamp (ISO 8601, String)
 Attributes:
-Sender (String, either Client or Therapist)
-MessageContent (String)
+clientId (UUID, String)
+therapistId (UUID, String)
+sender (String, either Client or Therapist)
+messageContent (String)
 GSI1PK: clientId
 GSI1SK: timestamp
 GSI2PK: therapistId
@@ -62,37 +64,40 @@ GSI2SK: timestamp
 
 4. Journals Table
 Purpose: Stores journal entries created by clients.
-Partition Key: clientId (Client who owns the journal)
-Sort Key: timestamp (ISO 8601 format date-time for chronological ordering)
+Partition Key: clientId (UUID, String)
+Sort Key: timestamp (ISO 8601, String)
 Attributes:
 feeling (String)
 intensity (String)
-therapistId (String)
+GSI1PK: feeling
+GSI1SK: timestamp
 
 5. Sessions Table
 Purpose: Stores session information between clients and therapists.
-Partition Key: sessionId (String)
-Sort Key: sessionDate (String)
+Partition Key: sessionId (UUID, String)
+Sort Key: sessionDate (ISO 8601, String)
 Attributes:
-therapistId (String)
-clientId (String)
+therapistId (UUID, String)
+clientId (UUID, String)
 sharedNotes (String, notes shared with the client)
 privateNotes (String, notes private to the therapist)
-GSI1PK: clientId
-GSI1SK: therapistId
+GSI1PK: therapistId
+GSI1SK: sessionDate
 
 6. ClientTherapistMappings
-Partition Key: clientId (UUID or unique identifier for the client)
-Sort Key: therapistId (UUID or unique identifier for the therapist)
+Partition Key: clientId (UUID, String)
+Sort Key: therapistId (UUID, String)
 Attributes:
-journalAccess (String)(Yes/No)
+journalAccess (String, Yes/No)
 
 7. Appointments
-Partition Key: appointmentId (UUID or unique identifier for the therapist)
-Sort Key: timestamp (String)
+Partition Key: appointmentId (UUID, String)
+Sort Key: timestamp (ISO 8601, String)
 Attributes:
-clientId (String)
-therapistId (String)
+clientId (UUID, String)
+therapistId (UUID, String)
+GSI1PK: therapistId
+GSI1SK: timestamp
 
 Note: I have chosen GSI for some of the tables.
 
