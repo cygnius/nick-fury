@@ -47,20 +47,19 @@ Attributes:
 therapistName (String)
 therapistEmail (String)
 therapistPassword (String, hashed)
+specialization (String)
+GSI1PK: specialization
 
 3. Messages Table
 Purpose: Stores messages exchanged between clients and therapists.
 Partition Key: messageId (UUID, String)
 Sort Key: timestamp (ISO 8601, String)
 Attributes:
-clientId (UUID, String)
-therapistId (UUID, String)
 sender (String, either Client or Therapist)
+receiver (String, either Client or Therapist)
 messageContent (String)
-GSI1PK: clientId
-GSI1SK: timestamp
-GSI2PK: therapistId
-GSI2SK: timestamp
+GSI1PK: sender
+GSI1SK: receiver
 
 4. Journals Table
 Purpose: Stores journal entries created by clients.
@@ -89,6 +88,8 @@ Partition Key: clientId (UUID, String)
 Sort Key: therapistId (UUID, String)
 Attributes:
 journalAccess (String, Yes/No)
+GSI1PK: therapistId
+GSI1SK: clientId
 
 7. Appointments
 Partition Key: appointmentId (UUID, String)

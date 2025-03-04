@@ -40,6 +40,15 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY) // Change to RETAIN for production
                 .build();
 
+        // Global Secondary Index 1 (GSI1) - Query therapists by specialization
+        therapistsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+                .indexName("GSI1")
+                .partitionKey(Attribute.builder()
+                        .name("specialization")
+                        .type(AttributeType.STRING)
+                        .build())
+                .build());
+
         // Define the Messages Table
         Table messagesTable = Table.Builder.create(this, "MessagesTable")
                 .tableName("Messages")
@@ -55,28 +64,15 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY) // Change to RETAIN for production
                 .build();
 
-        // Global Secondary Index 1 (GSI1) - Query messages by clientId
+        // Global Secondary Index 1 (GSI1) - Query messages by sender
         messagesTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
                 .indexName("GSI1")
                 .partitionKey(Attribute.builder()
-                        .name("clientId")
+                        .name("sender")
                         .type(AttributeType.STRING)
                         .build())
                 .sortKey(Attribute.builder()
-                        .name("timestamp")
-                        .type(AttributeType.STRING)
-                        .build())
-                .build());
-
-        // Global Secondary Index 2 (GSI2) - Query messages by therapistId
-        messagesTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI2")
-                .partitionKey(Attribute.builder()
-                        .name("therapistId")
-                        .type(AttributeType.STRING)
-                        .build())
-                .sortKey(Attribute.builder()
-                        .name("timestamp")
+                        .name("receiver")
                         .type(AttributeType.STRING)
                         .build())
                 .build());
@@ -151,6 +147,19 @@ public class DynamoDBStack extends Stack {
                 .billingMode(BillingMode.PAY_PER_REQUEST)
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
+
+        // Global Secondary Index 1 (GSI1) - Query clienttherapistmappings by therapistId
+        clientTherapistMappingsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+                .indexName("GSI1")
+                .partitionKey(Attribute.builder()
+                        .name("therapistId")
+                        .type(AttributeType.STRING)
+                        .build())
+                .sortKey(Attribute.builder()
+                        .name("clientId")
+                        .type(AttributeType.STRING)
+                        .build())
+                .build());
 
         // Define the Appointments Table
         Table appointmentsTable = Table.Builder.create(this, "AppointmentsTable")
