@@ -39,41 +39,41 @@ tags:
     description: Search across notes, journals, and messages
 
 paths:
-  /auth/register:
+  /auth/register/client:
     post:
       tags:
         - Authentication
-      summary: Register a new user
-      operationId: registerUser
+      summary: Register a new client user
+      operationId: registerClient
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                contact:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-                userType:
-                  type: string
-                  enum: [CLIENT, THERAPIST]
-                qualifications:
-                  type: string
-                specialization:
-                  type: string
+        $ref: '#/components/requestBodies/ClientRegistration'
       responses:
         201:
-          description: User registered successfully
+          description: Client registered successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Client'
+        400:
+          description: Invalid input
+        409:
+          description: Email already exists
+
+  /auth/register/therapist:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new therapist user
+      operationId: registerTherapist
+      requestBody:
+        $ref: '#/components/requestBodies/TherapistRegistration'
+      responses:
+        201:
+          description: Therapist registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
         400:
           description: Invalid input
         409:
@@ -90,53 +90,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         200:
           description: Login successful
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                  user:
-                    $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/AuthResponse'
         401:
           description: Invalid credentials
-
-  /therapists:
-    get:
-      tags:
-        - Therapists
-      summary: Get all therapists
-      operationId: getTherapists
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: specialization
-          in: query
-          schema:
-            type: string
-        - name: qualification
-          in: query
-          schema:
-            type: string
-      responses:
-        200:
-          description: List of therapists
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Therapist'
 
   /therapist/{therapistId}:
     get:
@@ -161,6 +124,122 @@ paths:
                 $ref: '#/components/schemas/Therapist'
         404:
           description: Therapist not found
+  
+  /therapists/{therapistid}/availability:
+    post:
+      tags:
+        - Sessions
+      summary: Therapist creates an available time slot
+      operationId: createAvailabilitySlot
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailabilitySlotRequest'
+      responses:
+        201:
+          description: Availability slot created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilitySlot'
+        400:
+          description: Invalid input
+        404:
+          description: Therapist not found
+    get:
+      tags:
+        - Sessions
+      summary: Get therapist's available time slots
+      operationId: getTherapistAvailability
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailabilitySlot'
+        404:
+          description: Therapist not found
+  
+  /therapists/{therapistId}/availability/{slotId}:
+    put:
+      tags:
+        - Sessions
+      summary: Update availability slot
+      operationId: updateAvailabilitySlot
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: slotId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailabilitySlotRequest'
+      responses:
+        200:
+          description: Availability slot updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilitySlot'
+        400:
+          description: Invalid input
+        404:
+          description: Therapist or slot not found
+    delete:
+      tags:
+        - Sessions
+      summary: Delete availability slot
+      operationId: deleteAvailabilitySlot
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: slotId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Availability slot deleted
+        404:
+          description: Therapist or slot not found
 
   /therapists/{therapistId}/clients:
     get:
@@ -273,14 +352,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Journal'
+              $ref: '#/components/schemas/JournalEntryRequest'
       responses:
         201:
           description: Journal entry created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journal'
+                $ref: '#/components/schemas/JournalEntry'
         400:
           description: Invalid input
         404:
@@ -290,7 +369,7 @@ paths:
       tags:
         - Journals
       summary: Get client's journal entries
-      operationId: getClientJournals
+      operationId: getClientJournalEntries
       security:
         - BearerAuth: []
       parameters:
@@ -299,16 +378,6 @@ paths:
           required: true
           schema:
             type: integer
-        - name: startDate
-          in: query
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          schema:
-            type: string
-            format: date-time
       responses:
         200:
           description: List of journal entries
@@ -317,7 +386,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Journal'
+                  $ref: '#/components/schemas/JournalEntry'
         404:
           description: Client not found
 
@@ -347,17 +416,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Journal'
+                  $ref: '#/components/schemas/JournalEntry'
         400:
           description: Invalid input
         404:
           description: Client not found
 
-  /sessions:
+  /sessions/requests:
     post:
       tags:
         - Sessions
-      summary: Request a therapy session
+      summary: Client requests a session for a specific availability slot
       operationId: requestSession
       security:
         - BearerAuth: []
@@ -366,14 +435,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                therapistId:
-                  type: integer
-                clientId:
-                  type: integer
-                appointmentTime:
-                  type: string
+              $ref: '#/components/schemas/SessionRequestBody'
       responses:
         201:
           description: Session requested
@@ -383,15 +445,53 @@ paths:
                 $ref: '#/components/schemas/Session'
         400:
           description: Invalid input
+        404:
+          description: Availability slot not found
         409:
-          description: Scheduling conflict
-
-  /sessions/{userId}:
-    get:
+          description: Slot already booked
+  
+  /sessions/requests/{sessionId}:
+    put:
+      tags:
+        - Sessions
+      summary: Therapist approves or rejects a session request
+      operationId: respondToSessionRequest
       security:
         - BearerAuth: []
       parameters:
-        - name: userId
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionResponseBody'
+      responses:
+        200:
+          description: Session request updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        400:
+          description: Invalid input
+        404:
+          description: Session not found
+
+  /sessions/client/{clientId}:
+    get:
+      tags:
+        - Sessions
+      summary: Get all sessions for a client
+      operationId: getClientSessions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientId
           in: path
           required: true
           schema:
@@ -400,6 +500,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: [REQUESTED, APPROVED, REJECTED, COMPLETED]
       responses:
         200:
           description: List of sessions
@@ -410,7 +511,38 @@ paths:
                 items:
                   $ref: '#/components/schemas/Session'
         404:
-          description: User not found
+          description: Client not found
+          
+  /sessions/therapist/{therapistId}:
+    get:
+      tags:
+        - Sessions
+      summary: Get all sessions for a therapist
+      operationId: getTherapistSessions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [REQUESTED, APPROVED, REJECTED, COMPLETED]
+      responses:
+        200:
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+        404:
+          description: Therapist not found
 
   /sessions/{sessionId}/notes:
     post:
@@ -543,12 +675,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Session'
 
-  /mappings:
+  /mappings/requests:
     post:
       tags:
         - Mappings
-      summary: Create therapist-client mapping
-      operationId: manageMappings
+      summary: Create therapist-client mapping request
+      operationId: createMappingRequest
       security:
         - BearerAuth: []
       requestBody:
@@ -556,10 +688,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Mapping'
+              $ref: '#/components/schemas/MappingRequest'
       responses:
         201:
-          description: Mapping created
+          description: Mapping request created
           content:
             application/json:
               schema:
@@ -567,40 +699,14 @@ paths:
         400:
           description: Invalid input
         409:
-          description: Mapping already exists
-
-    patch:
-      security:
-        - BearerAuth: []
-      tags: [Mappings]
-      summary: Update mapping status or journal access
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                mappingId:
-                  type: integer
-                journalAccess:
-                  type: boolean
-                status:
-                  type: string
-      responses:
-        200:
-          description: Mapping updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Mapping'
-
-  /mappings/{clientId}/therapists:
+          description: Mapping request already exists
+  
+  /mappings/client/{clientId}/requests:
     get:
       tags:
         - Mappings
-      summary: Get therapists mapped to a client
-      operationId: getClientTherapists
+      summary: Get pending mapping requests for a client
+      operationId: getClientMappingRequests
       security:
         - BearerAuth: []
       parameters:
@@ -611,21 +717,58 @@ paths:
             type: integer
       responses:
         200:
-          description: List of mapped therapists
+          description: List of mapping requests
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Therapist'
+                  $ref: '#/components/schemas/Mapping'
         404:
           description: Client not found
-
-  /mappings/{clientId}/journalAccess:
-    patch:
+          
+  /mappings/client/{clientId}/requests/{mappingId}:
+    put:
       tags:
         - Mappings
-      summary: Client controls journal access
+      summary: Client approves or rejects a mapping request
+      operationId: respondToMappingRequest
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: mappingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MappingResponseBody'
+      responses:
+        200:
+          description: Mapping updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mapping'
+        400:
+          description: Invalid input
+        404:
+          description: Mapping not found
+  
+  /mappings/client/{clientId}/journalAccess/{mappingId}:
+    put:
+      tags:
+        - Mappings
+      summary: Update journal access for a specific mapping
       operationId: updateJournalAccess
       security:
         - BearerAuth: []
@@ -635,17 +778,17 @@ paths:
           required: true
           schema:
             type: integer
+        - name: mappingId
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                mappingId:
-                  type: integer
-                journalAccess:
-                  type: boolean
+              $ref: '#/components/schemas/JournalAccessUpdateBody'
       responses:
         200:
           description: Journal access updated
@@ -653,8 +796,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Mapping'
+        400:
+          description: Invalid input
         404:
           description: Mapping not found
+
+  /mappings/client/{clientId}/connected-therapist:
+    get:
+      tags:
+        - Mappings
+      summary: Get therapist mapped to a client
+      operationId: getConnectedTherapists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of mapped therapist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+        404:
+          description: Client not found
+          
+  /mappings/therapist/{therapistId}/connected-clients:
+    get:
+      tags:
+        - Mappings
+      summary: Get clients mapped to a therapist
+      operationId: getConnectedClients
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of mapped clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+        404:
+          description: Therapist not found
 
   /mappings/{clientId}/status:
     patch:
@@ -707,16 +904,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                receiverId:
-                  type: integer
-                content:
-                  type: string
-                attachments:
-                  type: array
-                  items:
-                    type: string
+              $ref: '#/components/schemas/MessageRequest'
       responses:
         201:
           description: Message sent
@@ -727,7 +915,7 @@ paths:
         400:
           description: Invalid input
         404:
-          description: Receiver not found
+          description: Recipient not found
 
   /messages/{userId}:
     get:
@@ -952,7 +1140,7 @@ paths:
                   journals:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Journal'
+                      $ref: '#/components/schemas/JournalEntry'
                   messages:
                     type: array
                     items:
@@ -962,74 +1150,187 @@ paths:
 
 components:
   schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        userId:
+          type: integer
+        userType:
+          type: string
+          enum: [CLIENT, THERAPIST]
+        expiresAt:
+          type: string
+          format: date-time
+          
     User:
       type: object
       properties:
-        userId:
+        id:
           type: integer
         name:
           type: string
-        contact:
-          type: string
         email:
+          type: string
+        contact:
           type: string
         userType:
           type: string
           enum: [CLIENT, THERAPIST]
-    
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          
     Client:
-      type: object
-      properties:
-        clientId:
-          type: integer
-        userId:
-          type: integer
-        user:
-          $ref: '#/components/schemas/User'
-
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            userType:
+              type: string
+              enum: [CLIENT]
+              
     Therapist:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            userType:
+              type: string
+              enum: [THERAPIST]
+            qualifications:
+              type: string
+            specialization:
+              type: string
+              
+    JournalEntryRequest:
+      type: object
+      required:
+        - title
+        - content
+        - emotionRating
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        emotionRating:
+          type: integer
+          minimum: 1
+          maximum: 10
+        tags:
+          type: array
+          items:
+            type: string
+          
+    JournalEntry:
       type: object
       properties:
-        therapistId:
-          type: integer
-        userId:
-          type: integer
-        qualifications:
-          type: string
-        specializations:
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
-
-    Mapping:
-      type: object
-      properties:
-        mappingId:
-          type: integer
-        therapistId:
+        id:
           type: integer
         clientId:
           type: integer
-        journalAccess:
-          type: boolean
-        status:
+        title:
           type: string
-          enum: [PENDING, ACTIVE, REJECTED, REVOKED]
-
-    Journal:
+        content:
+          type: string
+        emotionRating:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          
+    AvailabilitySlotRequest:
       type: object
+      required:
+        - startTime
+        - endTime
       properties:
-        journalId:
-          type: integer
-        clientId:
-          type: integer
-        emotion:
+        startTime:
           type: string
-        feeling:
-          type: integer
+          format: date-time
+          example: "2025-03-10T14:00:00Z"
+        endTime:
+          type: string
+          format: date-time
+          example: "2025-03-10T15:00:00Z"
         notes:
           type: string
+          example: "Available for new clients"
+          
+    AvailabilitySlot:
+      type: object
+      properties:
+        id:
+          type: integer
+        therapistId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        notes:
+          type: string
+        status:
+          type: string
+          enum: [AVAILABLE, BOOKED, CANCELLED]
         createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          
+    SessionRequestBody:
+      type: object
+      required:
+        - availabilitySlotId
+        - clientId
+      properties:
+        availabilitySlotId:
+          type: integer
+          example: 123
+        clientId:
+          type: integer
+          example: 456
+        notes:
+          type: string
+          
+    SessionResponseBody:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [APPROVED, REJECTED]
+        notes:
           type: string
 
     Session:
@@ -1095,6 +1396,59 @@ components:
           type: string
         createdAt:
           type: string
+  
+  requestBodies:
+    ClientRegistration:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - email
+              - password
+              - contact
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+              contact:
+                type: string
+                
+    TherapistRegistration:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - email
+              - password
+              - contact
+              - qualifications
+              - specialization
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+              contact:
+                type: string
+              qualifications:
+                type: string
+              specialization:
+                type: string
 
   securitySchemes:
     BearerAuth:
