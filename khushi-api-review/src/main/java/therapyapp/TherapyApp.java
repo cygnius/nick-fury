@@ -11,7 +11,7 @@ public class TherapyApp {
         App app = new App();
 
     
-        DynamoDbStack dynamoDbStack = new DynamoDbStack(app, "DynamoDbStack");
+        DynamoDbStack dynamoDbStack = new DynamoDbStack(app, "DynamoDbStack", null);
 
         LambdaStack lambdaStack = new LambdaStack(app, "LambdaStack");
 
