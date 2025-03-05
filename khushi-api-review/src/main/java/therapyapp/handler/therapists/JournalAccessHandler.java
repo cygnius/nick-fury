@@ -5,23 +5,28 @@ import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.google.gson.Gson;
+
+import therapyapp.model.JournalAccess;
 
 public class JournalAccessHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
-
+    private final Gson gson = new Gson();
+    
     @Override
     public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
-        context.getLogger().log("Processing journal access request");
+        
+        Map<String, String> pathParams = (Map<String, String>) input.get("pathParameters");
+        String clientId = pathParams.get("clientId");
+        String therapistId = ((Map<String, String>) input.get("queryStringParameters")).get("therapistId");
+        
+        Map<String, Object> requestBody = gson.fromJson((String) input.get("body"), Map.class);
+        String accessStatus = (String) requestBody.get("access"); // ACCEPTED, REJECTED, REVOKED
+        
+        JournalAccess journalAccess = new JournalAccess(therapistId, clientId, accessStatus);
+        
         Map<String, Object> response = new HashMap<>();
-
-        try {
-            String accessType = "PENDING";  // Placeholder for actual logic
-            response.put("statusCode", 200);
-            response.put("body", "Journal access status updated: " + accessType);
-        } catch (Exception e) {
-            response.put("statusCode", 500);
-            response.put("body", "Error processing journal access request");
-        }
-
+        response.put("statusCode", 200);
+        response.put("body", gson.toJson(journalAccess));
         return response;
     }
 }
