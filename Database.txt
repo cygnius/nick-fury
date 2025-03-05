@@ -1,55 +1,76 @@
 Table: Users
-- user_id (string) Primary Key
-- name (string)
-- contact (string)
-- email (string)
-- password_hash (string)
-- user_type (string) - ["CLIENT", "THERAPIST"]
+- Partition Key: user_id (string)
+- Attributes:
+  - name (string)
+  - contact (string)
+  - email (string)
+  - password_hash (string)
+  - user_type (string) - ["CLIENT", "THERAPIST"]
 
 Table: Clients
-- client_id (string) Primary Key
-- user_id (string) Foreign Key
+- Partition Key: client_id (string)
+- Attributes:
+  - user_id (string)
 
 Table: Therapists
-- therapist_id (string) Primary Key
-- user_id (string) Foreign Key
-- name (string)
-- qualifications (string)
-- specialization (string)
+- Partition Key: therapist_id (string)
+- Attributes:
+  - user_id (string)
+  - name (string)
+  - qualifications (string)
+  - specialization (string)
 
 Table: Mapping
-- mapping_id (string) Primary Key
-- therapist_id (string) Foreign Key
-- client_id (string) Foreign Key
-- journal_access (boolean)
-- status (string)
+- Partition Key: mapping_id (string)
+- Attributes:
+  - therapist_id (string)
+  - client_id (string)
+  - journal_access (boolean)
+  - status (string)
+- GSI:
+  - GSI1: therapist_id (Partition Key), client_id (Sort Key)
+  - GSI2: client_id (Partition Key), therapist_id (Sort Key)
 
 Table: Journal
-- journal_id (string) Primary Key
-- client_id (string) Foreign Key
-- emotion (string)
-- feeling (number)
-- notes (string)
-- created_at (string)
+- Partition Key: journal_id (string)
+- Attributes:
+  - client_id (string)
+  - emotion (string)
+  - feeling (number)
+  - notes (string)
+  - created_at (string)
+- GSI:
+  - GSI1: client_id (Partition Key), created_at (Sort Key)
 
-Table: Sessions
-- session_id (string) Primary Key
-- therapist_id (string) Foreign Key
-- client_id (string) Foreign Key
-- appointment_time (string)
-- status (string)
+Table: Session
+- Partition Key: session_id (string)
+- Attributes:
+  - therapist_id (string)
+  - client_id (string)
+  - appointment_time (string)
+  - status (string)
+- GSI:
+  - GSI1: therapist_id (Partition Key), appointment_time (Sort Key)
+  - GSI2: client_id (Partition Key), appointment_time (Sort Key)
 
 Table: Notes
-- note_id (string) Primary Key
-- session_id (string) Foreign Key
-- content (string)
-- is_private (boolean)
-- created_at (string)
+- Partition Key: note_id (string)
+- Attributes:
+  - session_id (string)
+  - content (string)
+  - is_private (boolean)
+  - created_at (string)
+- GSI:
+  - GSI1: session_id (Partition Key), created_at (Sort Key)
 
 Table: Messages
-- message_id (string) Primary Key
-- sender_id (string) Foreign Key
-- receiver_id (string) Foreign Key
-- content (string)
-- sent_at (string)
-- is_read (boolean)
+- Partition Key: message_id (string)
+- Attributes:
+  - sender_id (string)
+  - receiver_id (string)
+  - content (string)
+  - sent_at (string)
+  - is_read (boolean)
+- GSI:
+  - GSI1: sender_id (Partition Key), sent_at (Sort Key)
+  - GSI2: receiver_id (Partition Key), sent_at (Sort Key)
