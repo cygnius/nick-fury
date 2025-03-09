@@ -1,7 +1,7 @@
-## Software Development hiring assignments for EffDog
+# Software Development hiring assignments for EffDog
 To read more about the recruitment process and open opportunities at EffDog, click [here](https://bit.ly/31O42C1)
 
-### Introduction
+## Introduction
 We are giving you a business problem and you have to translate it into a technical solution - develop backend APIs (Java + Lambda + Swagger + DynamoDB) fulfilling all business requirements. 
 
 The goal of this hiring challenge is to test: 
@@ -12,7 +12,7 @@ The goal of this hiring challenge is to test:
 
 *Note: This is a public submission. Any work on this assignment does not bring EffDog or its employees any moat; and by design, is made to assess skills we need. Assignment provided is unrelated to EffDog's core business.* 
 
-### Assignment
+## Assignment
 *   The busines problem is located [here](../stories/therapy.md).
 *   The end submission expected from you is code for the backend API service which uses Swagger & is deployed on AWS.
 *   The service should be built on top of the exact framework mentioned following all the best practices described in this [Instructions link](#instructions).
@@ -21,14 +21,15 @@ The goal of this hiring challenge is to test:
 *   Deadline for the assignment: 1 week from the date you start working on the assignment.
 *   We typically take 5-6 days to evaluate this submission.
 
-### Training & Learning
+## Training & Learning
 *   Prequisite: You should be able to read & write basic java.
 *   We expect and understand that you will NOT know all the technologies and frameworks required for this assignment. 
 *   We expect you to learn them using the links provided in this file and then solve the assignment. 
 *   You can also contact Prateek (contact details given below) if you have questions and review your API design/DB schema/thought process. This is an excellent opportunity for you to get mentorship and learn from the very senior people in the industry (12+ years of experience @ Amazon). Use it to your advantage. The more you ask questions, the more we understand your thought process and we will be able to assess you better.
 
-### Instructions
-* Step 1: **API Design**: Design and express your APIs using Swagger. Get it reviewed with Prateek (Review details given below). The app is supposed to be API driven & API need to be written in Java. Trainings:
+## Instructions
+### **Step 1**
+* **API Design**: Design and express your APIs using Swagger. Get it reviewed with Prateek (Review details given below). The app is supposed to be API driven & API need to be written in Java. Trainings:
     * You will need to understand & write Swagger APIs. In case, you dont know about them, you can learn it here:
         * CRUD Design:
             * https://www.youtube.com/watch?v=lsMQRaeKNDk
@@ -73,7 +74,8 @@ The goal of this hiring challenge is to test:
         * [Swagger Tools](https://swagger.io/tools/)
 
 
-* Step 2: **Model**: Database for the project needs to be Dynamo DB. Design the Dynamo DB schema for the assignment. Get it reviewed with Prateek (contact details given below). Helpful guides:
+### **Step 2**
+* **Model**: Database for the project needs to be Dynamo DB. Design the Dynamo DB schema for the assignment. Get it reviewed with Prateek (contact details given below). Helpful guides:
    * [Understanding DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
    * [Getting started and Playing around with CLI with DDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html)
    * [Getting started with DDB & Java](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Java.html)
@@ -91,8 +93,14 @@ The goal of this hiring challenge is to test:
        * For each DDB table, List each attribute and its data type. Which attribute is the hash partition key and range key? 
        * For each DDB table, what are additional GSI and LSI, what are the hash partition key and range key? 
        * For each of the APIs defined in Step 1, how are you constructing the query and which LSI/GSI are you using? 
-* Step 3: **Implementation**: Once the API design and the database design is finalized and reviewed, you will start with the implementation. The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS CDK application. You should be testing your APIs through Postman. Make a [Postman collection](https://www.postman.com/collection/) containing all your API calls. All functionality should be executable over these APIs. Important Points:
+
+### **Step 3**
+* **Implementation**: Once the API design and the database design is finalized and reviewed, you will start with the implementation. The Java APIs need to be deployable as a AWS API Gateway + Lambda solution as a AWS CDK application. You should be testing your APIs through Postman. Make a [Postman collection](https://www.postman.com/collection/) containing all your API calls. All functionality should be executable over these APIs. Important Points:
     * Remember that we are looking ONLY for properly functioning backend APIs which can be demo-ed using Postman. We DO NOT expect you to make the frontend for the same.
+    * You **DO NOT** need to implement ALL APIs. Please implement ONLY the following APIs-
+      * **Therapy Session** - Create/Read/Update/Delete/List
+      * **Mappings** (therapist-client mapping and journal access requests) - All the APIs in the OpenAPI YAML File
+      * **Messages** - All the APIs in the OpenAPI YAML File
     * If you don't know about AWS, backend API, serverless paradigm of computing, you can learn it here:
         * You can learn about basics of AWS and how to create one account here by going through first 17 mins of this [youtube video](https://www.youtube.com/watch?v=ubCNZRNjhyo).
         * You can learn about AWS IAM basics from the first 19m 15s of this [youtube video](https://www.youtube.com/watch?v=GjVFf83dcE8).
@@ -112,51 +120,41 @@ The goal of this hiring challenge is to test:
     * For reference, another much [simpler github](https://github.com/aws-samples/cdk-lambda-packaging-java) repo to demonstrate how to deploy java code as lambda in AWS.
     * (Optional) Dependency injection through Dagger/Guice
 * Document **list of assumptions** made, which are not covered in the stories but have been used in building the app.
+* Tips for a good submission:
+  * You **DO NOT** need to implement ALL APIs. Please implement ONLY the following APIs-
+    * **Therapy Session** - Create/Read/Update/Delete/List
+    * **Mappings** (therapist-client mapping and journal access requests) - All the APIs in the OpenAPI YAML File
+    * **Messages** - All the APIs in the OpenAPI YAML File
+  * What are we looking for in your submission -
+    * Understanding of AWS concepts and ability to develop the code, deploy the infrastructure and debug it.
+    * Clarity in CDK & IaaC Concepts.
+    * Ability to write clear and concise code handling different edge cases and returning correct response codes.
+    * Ability to organize code into coherent, logical classes & interface methods.
+  * Important points:
+    * **1. CDK Concepts and Code Clarity Must-Haves-**
+      * **Remove RDS CDK code:** You don't need RDS for our assignment. We are using DDB as the storage engine. If it’s not strictly required—streamlines your infrastructure.
+      * **Lambda-Related Resources:**
+        * **One Function per API**: A simpler approach is to implement one Lambda function per API call as given in the Starting Point code. You must have clear & consistent naming conventions and error handling.
+        * **Use a Helper/Factory Class for Lambda Creation:** You should abstract out repeated steps (like environment variables, function config) in one place, so your main stack is cleaner and changes are easier to maintain. This underscores good software design—keeping code DRY (Don’t Repeat Yourself) and well-organized.
+        * By having a clean and well-defined lambda CDK code, you can make sure that your lambda function is well equipped with all the necessary details like environment and roles with required permissions which in turn helps the application code (lambda handler code).
+      * **API Gateway Related Resources-**
+        * **OpenAPI Integration:** The OpenAPI Specifications created in Step 1 should be integrated with the API Gateway CDK Object. This ensures your API Gateway automatically reflects the documented paths, models, and validations from your OpenAPI spec. The Starting point code uses JSON format for Open API spec. You can convert your YAML to JSON (tools available online) or you can change the code to read YAML.
+        * **Connection with Lambda:** Make sure that your API Gateway is properly connected with its corresponding lambda to ensure that all the API Requests are directed to the lambda without any errors/delays.
+        * **Logging and Monitoring:** You should enable access logging for your API Gateway. It gives you insight into request/response details, latency, and error rates.
+        * By handling your API Gateway resources systematically—defining each resource path, method, and integration clearly—you’ll create an API that’s easy to follow, maintain, and debug.
+      * **DynamoDB (DDB) Tables:**
+        * They should reflect your database schema accurately (as defined in Step 2), with well-defined keys and Global Secondary Indexes (GSIs).
+        * For efficient usage of DynamoDB Tables in your lambda handler code, make sure that the CDK Objects of DynamoDB Table and Lambda are well integrated with all the permissions in check.
+      * **Organize CDK Resources:** While separating logically similar CDK resources into different classes is fine, you will get brownie points if you group related resources into their own CDK constructs for clarity and reusability.
 
-### Checklist for candidates:
-   * You **DO NOT** need to implement ALL APIs. Please implement ONLY the following APIs-
-      * **Therapy Session** - Create/Read/Update/Delete/List
-      * **Mappings** (therapist-client mapping and journal access requests) - All the APIs in the OpenAPI YAML File
-      * **Messages** - All the APIs in the OpenAPI YAML File
+    * **2. Application Code Must-Haves-**
+      * **One Lambda Handler per API:** Maintain a separate handler java class for each operation. This ensures a clear separation of concerns and simplifies testing. The handler typically parses inputs, validates them, and constructs appropriate responses.
+      * **Handle Edge Cases Thoroughly:** For example, respond with suitable HTTP error codes if incoming parameters are null, empty, or invalid.
+      * **Dedicated DynamoDB Interaction Class:** Group read/write logic in a separate repository-like class. This helps you get and put data consistently and simplifies future modifications.
+      * Try to organize code into separate classes so that no class is more than 200-300 lines of code.
 
-### What are we looking for in the implementation of the hiring assignment (Step 3)-
-   * Understanding of AWS concepts and ability to develop the code, deploy the infrastructure and debug it.
-   * Clarity in CDK & IaaC Concepts.
-   * Ability to write clear and concise code handling different edge cases and returning correct response codes.
-   * Ability to organize code into coherent, logical classes & interface methods.
-
-Below are pointers on what we expect from your solution. These tips should guide you toward a clean, well-structured, and production-ready implementation.
-
-**1. CDK Concepts and Code Clarity Must-Haves-**
-* **Remove RDS CDK code:** You don't need RDS for our assignment. We are using DDB as the storage engine. If it’s not strictly required—streamlines your infrastructure.
-
-* **Lambda-Related Resources:**
-   * **One Function per API**: A simpler approach is to implement one Lambda function per API call as given in the Starting Point code. You must have clear & consistent naming conventions and error handling.
-   * **Use a Helper/Factory Class for Lambda Creation:** You should abstract out repeated steps (like environment variables, function config) in one place, so your main stack is cleaner and changes are easier to maintain. This underscores good software design—keeping code DRY (Don’t Repeat Yourself) and well-organized.
-
-By having a clean and well-defined lambda CDK code, you can make sure that your lambda function is well equipped with all the necessary details like environment and roles with required permissions which in turn helps the application code (lambda handler code).
-
-* **API Gateway Related Resources-**
-   * **OpenAPI Integration:** The OpenAPI Specifications created in Step 1 should be integrated with the API Gateway CDK Object. This ensures your API Gateway automatically reflects the documented paths, models, and validations from your OpenAPI spec. The Starting point code uses JSON format for Open API spec. You can convert your YAML to JSON (tools available online) or you can change the code to read YAML.
-   * **Connection with Lambda:** Make sure that your API Gateway is properly connected with its corresponding lambda to ensure that all the API Requests are directed to the lambda without any errors/delays.
-   * **Logging and Monitoring:** You should enable access logging for your API Gateway. It gives you insight into request/response details, latency, and error rates.
-
-By handling your API Gateway resources systematically—defining each resource path, method, and integration clearly—you’ll create an API that’s easy to follow, maintain, and debug.
-
-* **DynamoDB (DDB) Tables:**
-   * They should reflect your database schema accurately (as defined in Step 2), with well-defined keys and Global Secondary Indexes (GSIs).
-   * For efficient usage of DynamoDB Tables in your lambda handler code, make sure that the CDK Objects of DynamoDB Table and Lambda are well integrated with all the permissions in check.
-
-* **Organize CDK Resources:** While separating logically similar CDK resources into different classes is fine, you will get brownie points if you group related resources into their own CDK constructs for clarity and reusability.
-
-**2. Application Code Must-Haves-**
-* **One Lambda Handler per API:** Maintain a separate handler java class for each operation. This ensures a clear separation of concerns and simplifies testing. The handler typically parses inputs, validates them, and constructs appropriate responses.
-* **Handle Edge Cases Thoroughly:** For example, respond with suitable HTTP error codes if incoming parameters are null, empty, or invalid.
-* **Dedicated DynamoDB Interaction Class:** Group read/write logic in a separate repository-like class. This helps you get and put data consistently and simplifies future modifications.
-* Try to organize code into separate classes so that no class is more than 200-300 lines of code.
-
-**In Summary:**
-* Focus on readability, maintainability, and a clear separation of concerns. Keep AWS infrastructure definitions (CDK) well-structured, and write your Lambda handlers to address specific use cases with robust validation and error handling. Manage DynamoDB interactions in a dedicated service layer for clarity. Lastly, there are extra brownie points if your solution has strong observability — logging and monitoring — so you’re not just delivering functionality but a production-grade experience. \n
+    * **In Summary:**
+      * Focus on readability, maintainability, and a clear separation of concerns. Keep AWS infrastructure definitions (CDK) well-structured, and write your Lambda handlers to address specific use cases with robust validation and error handling. Manage DynamoDB interactions in a dedicated service layer for clarity. Lastly, there are extra brownie points if your solution has strong observability — logging and monitoring — so you’re not just delivering functionality but a production-grade experience. \n
 We look forward to seeing your implementation!
 
 
