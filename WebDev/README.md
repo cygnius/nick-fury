@@ -132,6 +132,7 @@ The goal of this hiring challenge is to test:
     * Ability to organize code into coherent, logical classes & interface methods.
   * Important points:
     * **1. CDK Concepts and Code Clarity Must-Haves-**
+      * Please **DO NOT** use AWS SAM for provisioning the infrastructure for this assignment as AWS SAM is an old and error-prone way of managing the infrastructure. Please use AWS CDK which is less error-prone and more maintainable.
       * **Remove RDS CDK code:** You don't need RDS for our assignment. We are using DDB as the storage engine. If it’s not strictly required—streamlines your infrastructure.
       * **Lambda-Related Resources:**
         * **One Function per API**: A simpler approach is to implement one Lambda function per API call as given in the Starting Point code. You must have clear & consistent naming conventions and error handling.
