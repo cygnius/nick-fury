@@ -1,15 +1,68 @@
 openapi: 3.0.0
 info:
   title: Therapy Journaling API
-  version: 1.0.2
+  version: 1.0.3
   description: API for managing emotions journaling, therapist-client interaction, messaging, sessions, and appointments.
 servers:
   - url: https://api.therapyapp.com
 
 components:
   schemas:
+    # User Schemas (for authentication)
+    UserRequest:
+      type: object
+      required:
+        - email
+        - password
+        - role
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum: [CLIENT, THERAPIST]
+    User:
+      type: object
+      required:
+        - userId
+        - email
+        - role
+        - createdAt
+      properties:
+        userId:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [CLIENT, THERAPIST]
+        createdAt:
+          type: string
+          format: date-time
+
+    # Client Schemas
+    ClientRequest:
+      type: object
+      required:
+        - name
+        - email
+        - pincode
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        pincode:
+          type: string
     Client:
       type: object
+      required:
+        - clientId
+        - name
+        - email
+        - pincode
       properties:
         clientId:
           type: string
@@ -17,23 +70,54 @@ components:
           type: string
         email:
           type: string
-        expertise:
-          type: string
         pincode:
           type: string
-    Therapist:
+
+    # Therapist Schemas
+    TherapistRequest:
       type: object
+      required:
+        - name
+        - email
+        - specialty
+        - pincode
       properties:
-        therapistId:
-          type: string
         name:
+          type: string
+        email:
           type: string
         specialty:
           type: string
         pincode:
           type: string
+    Therapist:
+      type: object
+      required:
+        - therapistId
+        - name
+        - email
+        - specialty
+        - pincode
+      properties:
+        therapistId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        specialty:
+          type: string
+        pincode:
+          type: string
+
+    # Journal Entry Schemas
     JournalEntry:
       type: object
+      required:
+        - clientId
+        - emotion
+        - intensity
+        - timestamp
       properties:
         entryId:
           type: string
@@ -48,8 +132,17 @@ components:
         timestamp:
           type: string
           format: date-time
+
+    # Session Schemas
     Session:
       type: object
+      required:
+        - therapistId
+        - clientId
+        - sessionDate
+        - startTime
+        - endTime
+        - status
       properties:
         sessionId:
           type: string
@@ -57,7 +150,7 @@ components:
           type: string
         clientId:
           type: string
-        date:
+        sessionDate:
           type: string
           format: date-time
         startTime:
@@ -67,8 +160,14 @@ components:
         status:
           type: string
           enum: [AVAILABLE, BOOKED, CANCELLED]
+
+    # Appointment Schemas
     Appointment:
       type: object
+      required:
+        - clientId
+        - therapistId
+        - appointmentDate
       properties:
         appointmentId:
           type: string
@@ -82,25 +181,37 @@ components:
         status:
           type: string
           enum: [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+        createdAt:
+          type: string
+          format: date-time
+
+    # Mapping Schema (for therapist-client mapping, client initiated)
     Mapping:
       type: object
+      required:
+        - therapistId
       properties:
-        clientId:
-          type: string
         therapistId:
           type: string
+
+    # Journal Access Schema
     JournalAccess:
       type: object
+      required:
+        - access
       properties:
-        clientId:
-          type: string
-        therapistId:
-          type: string
         access:
           type: string
           enum: [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+
+    # Message Schema
     Message:
       type: object
+      required:
+        - senderId
+        - receiverId
+        - message
+        - timestamp
       properties:
         messageId:
           type: string
@@ -113,6 +224,7 @@ components:
         timestamp:
           type: string
           format: date-time
+
   responses:
     NotFound:
       description: Resource not found.
@@ -128,26 +240,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-                role:
-                  type: string
-                  enum: [CLIENT, THERAPIST]
-              required:
-                - email
-                - password
-                - role
+              $ref: '#/components/schemas/UserRequest'
       responses:
         '201':
           description: User created successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Client'
+                $ref: '#/components/schemas/User'
         '400':
           $ref: '#/components/responses/InvalidInput'
   /auth/login:
@@ -159,19 +259,20 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - email
+                - password
               properties:
                 email:
                   type: string
                 password:
                   type: string
-              required:
-                - email
-                - password
       responses:
         '200':
           description: Login successful, returns JWT.
         '401':
           description: Unauthorized, invalid credentials.
+
   /clients:
     get:
       summary: List all clients
@@ -191,7 +292,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Client'
+              $ref: '#/components/schemas/ClientRequest'
       responses:
         '201':
           description: Client created successfully.
@@ -228,7 +329,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Client'
+              $ref: '#/components/schemas/ClientRequest'
       responses:
         '200':
           description: Client updated successfully.
@@ -247,11 +348,12 @@ paths:
       responses:
         '204':
           description: Client deleted successfully.
+
   /therapists:
     get:
       summary: List all therapists (optionally filter by expertise and pincode)
       parameters:
-        - name: expertise
+        - name: specialty
           in: query
           required: false
           schema:
@@ -277,7 +379,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Therapist'
+              $ref: '#/components/schemas/TherapistRequest'
       responses:
         '201':
           description: Therapist created successfully.
@@ -314,7 +416,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Therapist'
+              $ref: '#/components/schemas/TherapistRequest'
       responses:
         '200':
           description: Therapist updated successfully.
@@ -333,6 +435,7 @@ paths:
       responses:
         '204':
           description: Therapist deleted successfully.
+
   /mapping/{clientId}:
     get:
       summary: List all mapped therapists for a client with optional journal access filter
@@ -387,6 +490,7 @@ paths:
       responses:
         '200':
           description: Mapping removed successfully.
+
   /mapping/{clientId}/access:
     delete:
       summary: Remove a therapist's access to the journal (without removing the mapping)
@@ -404,6 +508,7 @@ paths:
       responses:
         '200':
           description: Therapist's journal access removed successfully.
+
   /mapping/{clientId}/request:
     post:
       summary: Therapist requests a new client to be mapped for therapy (client approval needed)
@@ -419,18 +524,19 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - therapistId
+                - requestType
               properties:
                 therapistId:
                   type: string
                 requestType:
                   type: string
                   enum: [MAPPING, JOURNAL_ACCESS]
-              required:
-                - therapistId
-                - requestType
       responses:
         '201':
           description: Request created successfully.
+
   /journal/{clientId}:
     get:
       summary: List all journal entries for a client
@@ -486,6 +592,7 @@ paths:
       responses:
         '200':
           description: Journal entry removed successfully.
+
   /sessions:
     get:
       summary: List all sessions (optionally filtered by therapist or client)
@@ -572,6 +679,7 @@ paths:
       responses:
         '204':
           description: Session deleted successfully.
+
   /messages:
     post:
       summary: Send a message between client and therapist
@@ -704,13 +812,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                access:
-                  type: string
-                  enum: [ACCEPTED, REJECTED, REVOKED]
-              required:
-                - access
+              $ref: '#/components/schemas/JournalAccess'
       responses:
         '200':
           description: Journal access updated successfully.
