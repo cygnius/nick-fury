@@ -25,7 +25,7 @@ public class DynamoDbStack extends Stack {
     public DynamoDbStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
         
-        
+        // 1. Users Table
         usersTable = Table.Builder.create(this, "UsersTable")
                 .tableName("Users")
                 .partitionKey(Attribute.builder()
@@ -35,7 +35,7 @@ public class DynamoDbStack extends Stack {
                 .billingMode(BillingMode.PAY_PER_REQUEST)
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
-        
+        // Add GSI: email-index
         usersTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
                 .indexName("email-index")
                 .partitionKey(Attribute.builder()

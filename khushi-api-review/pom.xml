@@ -87,6 +87,23 @@
 <dependency>
     <groupId>software.amazon.awssdk</groupId>
     <artifactId>dynamodb</artifactId>
+    <version>2.20.0</version>
+</dependency>
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>protocol-core</artifactId>
+    <version>2.20.43</version>
+</dependency>
+
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>protocol-core</artifactId>
+    <version>2.20.0</version>
+</dependency>
+
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>dynamodb</artifactId>
     <version>2.20.129</version> 
 </dependency>
 
@@ -95,6 +112,20 @@
     <artifactId>dynamodb-enhanced</artifactId>
     <version>2.20.129</version> 
 </dependency>
+<dependency>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-java-sdk-dynamodb</artifactId>
+    <version>1.12.689</version>
+</dependency>
+
+<dependency>
+    <groupId>com.google.inject</groupId>
+    <artifactId>guice</artifactId>
+    <version>5.1.0</version>
+</dependency>
+
+
+
 
 
 <dependency>
