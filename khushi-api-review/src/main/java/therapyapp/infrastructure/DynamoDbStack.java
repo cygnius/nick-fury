@@ -1,6 +1,5 @@
 package therapyapp.infrastructure;
 
-import software.amazon.awscdk.App;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
