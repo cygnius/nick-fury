@@ -1,9 +1,10 @@
 package therapyapp.handler.clients;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 public class ClientHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
     @Override
