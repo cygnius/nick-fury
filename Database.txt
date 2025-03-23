@@ -76,3 +76,5 @@ Table: Messages
 - GSI:
   - GSI1: sender_id (Partition Key), sent_at (Sort Key)
   - GSI2: receiver_id (Partition Key), sent_at (Sort Key)
+  - GSI3: sender_id (Partition Key), receiver_id (Sort Key)
+  - GSI4: receiver_id (Partition Key), sender_id (Sort Key)
