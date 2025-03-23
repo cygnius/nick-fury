@@ -19,6 +19,8 @@ Table: Therapists
   - name (string)
   - qualifications (string)
   - specialization (string)
+- GSI:
+  - GSI1: specialization (Partition Key), name (Sort Key)
 
 Table: Mapping
 - Partition Key: mapping_id (string)
