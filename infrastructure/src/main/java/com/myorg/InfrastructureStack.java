@@ -1,6 +1,8 @@
 package com.myorg;
 
+import com.myorg.apigw.ApiStack;
 import com.myorg.db.DynamoDBStack;
+import com.myorg.lambda.LambdaStack;
 import software.constructs.Construct;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -23,6 +25,12 @@ public class InfrastructureStack extends Stack {
         //         .build();
 
         // Creating the DynamoDB stack inside InfrastructureStack
-        new DynamoDBStack(this, "DynamoDBStack");
+        DynamoDBStack dynamoDBStack = new DynamoDBStack(this, "DynamoDBStack");
+
+        // Create the Lambda Stack and pass the DynamoDBStack
+        LambdaStack lambdaStack = new LambdaStack(this, "LambdaStack", dynamoDBStack);
+
+        // Create the API Gateway Stack and pass the LambdaStack (so it can integrate with Lambdas)
+        new ApiStack(this, "ApiStack", lambdaStack);
     }
 }

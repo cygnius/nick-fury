@@ -1,0 +1,1781 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "DynamoDB CRUDL API",
+    "version": "1.0.1",
+    "description": "API supporting CRUDL operations for DynamoDB tables."
+  },
+  "paths": {
+    "/clients": {
+      "get": {
+        "summary": "List all clients",
+        "responses": {
+          "200": {
+            "description": "List of clients",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid query parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No clients found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new client",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewClient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Client created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid or missing fields in the request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict due to duplicate email or client data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{clientId}": {
+      "get": {
+        "summary": "Get client details",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid clientId format or missing parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found for the given clientId.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update client details",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewClient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid clientId format or invalid/missing fields in the request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found for the given clientId.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict due to duplicate or conflicting data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a client",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Client deleted successfully"
+          },
+          "400": {
+            "description": "Bad request due to invalid clientId format or missing parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found for the given clientId.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/login": {
+      "post": {
+        "summary": "Login for clients",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientEmail": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "clientPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "clientEmail",
+                  "clientPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token for client authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid or missing request body fields.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials. Authentication failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access forbidden due to account issues (e.g., account disabled).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/therapists": {
+      "get": {
+        "summary": "List all therapists",
+        "responses": {
+          "200": {
+            "description": "List of therapists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Therapist"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid query parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No clients found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new therapist",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTherapist"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Therapist created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid or missing fields in the request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict due to duplicate email or client data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/therapists/{therapistId}": {
+      "get": {
+        "summary": "Get therapist details",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Therapist details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Therapist"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid therapistId format."
+          },
+          "404": {
+            "description": "Therapist not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update therapist details",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTherapist"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Therapist updated successfully"
+          },
+          "400": {
+            "description": "Invalid request body or therapistId format."
+          },
+          "404": {
+            "description": "Therapist not found."
+          },
+          "409": {
+            "description": "Conflict in updating therapist details (e.g., duplicate entries)."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a therapist",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Therapist deleted successfully"
+          },
+          "400": {
+            "description": "Invalid therapistId format."
+          },
+          "404": {
+            "description": "Therapist not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/therapists/login": {
+      "post": {
+        "summary": "Login for therapists",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistEmail": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "therapistPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "therapistEmail",
+                  "therapistPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Therapist logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token for therapist authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to invalid or missing request body fields.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials. Authentication failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access forbidden due to account issues (e.g., account disabled).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/client/{clientId}/therapist/{therapistId}": {
+      "post": {
+        "summary": "Client maps to a therapist for therapy.",
+        "description": "Allows a client to map a therapist without requiring approval.",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mapping created successfully."
+          },
+          "400": {
+            "description": "Bad request due to invalid inputs or duplicate mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Client removes a therapist from their account.",
+        "description": "Allows a client to remove a therapist they are mapped with.",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Therapist removed from the client’s account successfully."
+          },
+          "400": {
+            "description": "Bad request due to invalid inputs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mapping not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/client/{clientId}/therapist/{therapistId}/approve": {
+      "put": {
+        "summary": "Client approves a therapist’s mapping request.",
+        "description": "A client can approve a therapist’s request to map with them.",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "approvalStatus": {
+                    "type": "string",
+                    "enum": [
+                      "Approved",
+                      "Rejected"
+                    ],
+                    "description": "Whether the client approves or rejects the mapping.",
+                    "example": "Approved"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mapping request updated successfully."
+          },
+          "400": {
+            "description": "Bad request due to invalid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mapping request not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/therapist/{therapistId}/client/{clientId}": {
+      "delete": {
+        "summary": "Therapist removes a client mapping.",
+        "description": "Allows a therapist to remove a client from their list. Journal Access will be turned off automatically.",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client removed successfully. Journal Access revoked."
+          },
+          "400": {
+            "description": "Bad request due to invalid inputs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mapping not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/therapist/{therapistId}/client/{clientId}/request": {
+      "post": {
+        "summary": "Therapist requests mapping with a client.",
+        "description": "A therapist must request to map with a client, and the client will need to approve or reject the request.",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mapping request submitted successfully."
+          },
+          "400": {
+            "description": "Bad request due to invalid inputs or duplicate request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/journal/{clientId}": {
+      "get": {
+        "summary": "Search across emotions journal",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          },
+          {
+            "name": "feeling",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Sad"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-31T23:59:59.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of journal entries matching the criteria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Journal"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters."
+          },
+          "403": {
+            "description": "Forbidden - Client does not have permission to view this journal."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a record of an emotion felt into the journal",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewJournalEntry"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Journal entry added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Journal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid journal entry data."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Approve or reject a therapist's access to the journal",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistId": {
+                    "type": "string",
+                    "example": "therapist-456"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Approve",
+                      "Reject"
+                    ],
+                    "example": "Approve"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Therapist journal access updated successfully."
+          },
+          "400": {
+            "description": "Invalid inputs for updating access."
+          },
+          "404": {
+            "description": "Mapping not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a therapist's access to the journal",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "therapist-456"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Therapist journal access removed successfully."
+          },
+          "400": {
+            "description": "Invalid or non-existent mapping."
+          },
+          "404": {
+            "description": "Mapping not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/journal/{clientId}/request-access": {
+      "post": {
+        "summary": "Therapist requests a client for journal access",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistId": {
+                    "type": "string",
+                    "example": "therapist-456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Journal access request sent successfully."
+          },
+          "400": {
+            "description": "Invalid access request data."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/journal/{clientId}/view": {
+      "get": {
+        "summary": "Therapist views a client's journal entries",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "client-123"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "therapist-456"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of journal entries for the client.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Journal"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          },
+          "403": {
+            "description": "Unauthorized access to the journal."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/session": {
+      "get": {
+        "summary": "List all sessions",
+        "responses": {
+          "200": {
+            "description": "List of sessions retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new session",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistId": {
+                    "type": "string",
+                    "example": "therapist-123"
+                  },
+                  "sessionDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-01-13T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Modify details of a session",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistId": {
+                    "type": "string",
+                    "example": "therapist-123"
+                  },
+                  "sessionDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-01-14T00:00:00.000Z"
+                  },
+                  "sharedNotes": {
+                    "type": "string",
+                    "example": "Updated shared notes content."
+                  },
+                  "privateNotes": {
+                    "type": "string",
+                    "example": "Updated private notes content."
+                  }
+                },
+                "required": [
+                  "therapistId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session details updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "403": {
+            "description": "Unauthorized to modify the session."
+          },
+          "404": {
+            "description": "Session not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/messages/send": {
+      "post": {
+        "summary": "Send a message",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload or missing required fields."
+          },
+          "404": {
+            "description": "Client or therapist not found."
+          },
+          "409": {
+            "description": "Conflict in sending the message (e.g., duplicate message or invalid state)."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/messages/history/{clientId}/{therapistId}": {
+      "get": {
+        "summary": "Get message history between client and therapist",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path parameters (e.g., missing or malformed `clientId` or `therapistId`)."
+          },
+          "404": {
+            "description": "No message history found between the specified client and therapist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/appointment/request": {
+      "post": {
+        "summary": "Request an appointment in an available session",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "therapistId": {
+                    "type": "string",
+                    "description": "Unique identifier of the therapist.",
+                    "example": "therapist-123"
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "description": "Unique identifier of the available session.",
+                    "example": "session-789"
+                  }
+                },
+                "required": [
+                  "therapistId",
+                  "sessionId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Appointment request submitted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or session is not available."
+          },
+          "404": {
+            "description": "Therapist or session not found."
+          },
+          "409": {
+            "description": "Session is already booked."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Client": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the client, generated by the backend."
+          },
+          "clientName": {
+            "type": "string"
+          },
+          "clientEmail": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "NewClient": {
+        "type": "object",
+        "properties": {
+          "clientName": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "clientEmail": {
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@example.com"
+          },
+          "clientPassword": {
+            "type": "string",
+            "example": "password123"
+          }
+        }
+      },
+      "Therapist": {
+        "type": "object",
+        "properties": {
+          "therapistId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the therapist, generated by the backend."
+          },
+          "therapistName": {
+            "type": "string"
+          },
+          "therapistEmail": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "NewTherapist": {
+        "type": "object",
+        "properties": {
+          "therapistName": {
+            "type": "string",
+            "example": "Clark Kent"
+          },
+          "therapistEmail": {
+            "type": "string",
+            "format": "email",
+            "example": "clark.kent@example.com"
+          },
+          "therapistPassword": {
+            "type": "string",
+            "example": "password456"
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "therapistId": {
+            "type": "string",
+            "example": "therapist-123"
+          },
+          "sessionId": {
+            "type": "string",
+            "example": "session-789"
+          },
+          "sessionDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-01-13T00:00:00.000Z"
+          },
+          "sharedNotes": {
+            "type": "string",
+            "example": "Discussed coping strategies and exercises."
+          },
+          "privateNotes": {
+            "type": "string",
+            "example": "Therapist-only observations."
+          }
+        }
+      },
+      "Journal": {
+        "type": "object",
+        "properties": {
+          "journalId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the emotion, generated by the backend."
+          },
+          "clientId": {
+            "type": "string",
+            "example": "client-123"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-01-13T10:30:00.000Z"
+          },
+          "feeling": {
+            "type": "string",
+            "example": "Happy"
+          },
+          "intensity": {
+            "type": "string",
+            "example": "High"
+          }
+        }
+      },
+      "NewJournalEntry": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "client-123"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-01-13T10:30:00.000Z"
+          },
+          "feeling": {
+            "type": "string",
+            "example": "Happy"
+          },
+          "intensity": {
+            "type": "string",
+            "example": "High"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "therapistId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sender": {
+            "type": "string",
+            "enum": [
+              "Client",
+              "Therapist"
+            ]
+          },
+          "messageContent": {
+            "type": "string"
+          }
+        }
+      },
+      "NewMessage": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "therapistId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sender": {
+            "type": "string",
+            "enum": [
+              "Client",
+              "Therapist"
+            ]
+          },
+          "messageContent": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "clientId",
+          "therapistId",
+          "sender",
+          "messageContent"
+        ]
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "therapistId": {
+            "type": "string",
+            "description": "Unique identifier of the therapist.",
+            "example": "therapist-123"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "Unique identifier of the booked session.",
+            "example": "session-789"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "Unique identifier of the client requesting the appointment.",
+            "example": "client-456"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the appointment.",
+            "enum": [
+              "Available",
+              "Booked",
+              "Cancelled"
+            ],
+            "example": "Booked"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string"
+          },
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
