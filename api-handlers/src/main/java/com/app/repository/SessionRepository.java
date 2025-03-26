@@ -3,6 +3,8 @@ package com.app.repository;
 import com.app.model.Session;
 import com.app.util.DynamoDBUtil;
 import software.amazon.awssdk.enhanced.dynamodb.*;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,9 @@ public class SessionRepository {
 
     public List<Session> getAllSessions() {
         List<Session> sessions = new ArrayList<>();
-        sessionTable.scan().items().forEach(sessions::add);
+        for (Session session : sessionTable.scan().items()) {
+            sessions.add(session);
+        }
         return sessions;
     }
 
@@ -39,8 +43,34 @@ public class SessionRepository {
         sessionTable.putItem(session);
     }
 
-    public void deleteSession(String sessionId, String sessionDate) {
-        Key key = Key.builder().partitionValue(sessionId).sortValue(sessionDate).build();
-        sessionTable.deleteItem(key);
+//    public void deleteSession(String sessionId, String sessionDate) {
+//        Key key = Key.builder().partitionValue(sessionId).sortValue(sessionDate).build();
+//        sessionTable.deleteItem(key);
+//    }
+
+    public boolean deleteSession(String sessionId, String sessionDate) {
+        Session session = sessionTable.getItem(Key.builder().partitionValue(sessionId).sortValue(sessionDate).build());
+        if (session == null) {
+            return false;
+        }
+
+        sessionTable.deleteItem(session);
+        return true;
+    }
+
+    public List<Session> getSessionsByTherapistAndDate(String therapistId, String sessionDate) {
+        QueryConditional queryConditional = QueryConditional.keyEqualTo(b ->
+                b.partitionValue(therapistId).sortValue(sessionDate)
+        );
+
+        QueryEnhancedRequest queryRequest = QueryEnhancedRequest.builder()
+                .queryConditional(queryConditional)
+                .build();
+
+        List<Session> sessions = new ArrayList<>();
+        sessionDateIndex.query(queryRequest).forEach(page ->
+                sessions.addAll(page.items())
+        );
+        return sessions;
     }
 }

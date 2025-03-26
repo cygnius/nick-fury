@@ -15,6 +15,8 @@ public class DynamoDBStack extends Stack {
     private final Table clientsTable;
     private final Table therapistsTable;
     private final Table mappingsTable;
+    private final Table sessionsTable;
+    private final Table messagesTable;
 
     public DynamoDBStack(final Construct scope, final String id) {
         this(scope, id, null);
@@ -46,20 +48,20 @@ public class DynamoDBStack extends Stack {
                 .build();
 
         // Global Secondary Index 1 (SpecializationIndex) - Query therapists by specialization
-        therapistsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("SpecializationIndex")
-                .partitionKey(Attribute.builder()
-                        .name("specialization")
-                        .type(AttributeType.STRING)
-                        .build())
-                .sortKey(Attribute.builder()
-                        .name("therapistId")
-                        .type(AttributeType.STRING)
-                        .build())
-                .build());
+//        therapistsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+//                .indexName("SpecializationIndex")
+//                .partitionKey(Attribute.builder()
+//                        .name("specialization")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .sortKey(Attribute.builder()
+//                        .name("therapistId")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .build());
 
         // Define the Messages Table
-        Table messagesTable = Table.Builder.create(this, "MessagesTable")
+        messagesTable = Table.Builder.create(this, "MessagesTable")
                 .tableName("Messages")
                 .partitionKey(Attribute.builder()
                         .name("messageId")
@@ -73,24 +75,24 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY) // Change to RETAIN for production
                 .build();
 
-        // Global Secondary Index 1 (GSI1) - Query messages by sender
+        // Global Secondary Index 1 (ConversationIndex) - Query messages by conversationId
         messagesTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI1")
+                .indexName("ConversationIndex")
                 .partitionKey(Attribute.builder()
-                        .name("sender")
+                        .name("conversationId")
                         .type(AttributeType.STRING)
                         .build())
                 .sortKey(Attribute.builder()
-                        .name("receiver")
+                        .name("timestamp")
                         .type(AttributeType.STRING)
                         .build())
                 .build());
 
-        // Global Secondary Index 1 (GSI2) - Query messages by sender and timestamp
+        // Global Secondary Index 2 (SenderIndex) - Query messages by sender and timestamp
         messagesTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI2")
+                .indexName("SenderIndex")
                 .partitionKey(Attribute.builder()
-                        .name("sender")
+                        .name("senderId")
                         .type(AttributeType.STRING)
                         .build())
                 .sortKey(Attribute.builder()
@@ -114,21 +116,21 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY) // Change to RETAIN for production
                 .build();
 
-        // Global Secondary Index (GSI1) - Query journals by feeling
-        journalsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI1")
-                .partitionKey(Attribute.builder()
-                        .name("feeling")
-                        .type(AttributeType.STRING)
-                        .build())
-                .sortKey(Attribute.builder()
-                        .name("timestamp")
-                        .type(AttributeType.STRING)
-                        .build())
-                .build());
+        // Global Secondary Index 1 (FeelingIndex) - Query journals by feeling
+//        journalsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+//                .indexName("FeelingIndex")
+//                .partitionKey(Attribute.builder()
+//                        .name("feeling")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .sortKey(Attribute.builder()
+//                        .name("timestamp")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .build());
 
         // Define the Sessions Table
-        Table sessionsTable = Table.Builder.create(this, "SessionsTable")
+        sessionsTable = Table.Builder.create(this, "SessionsTable")
                 .tableName("Sessions")
                 .partitionKey(Attribute.builder()
                         .name("sessionId")
@@ -142,9 +144,9 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY) // Change to RETAIN for production
                 .build();
 
-        // Global Secondary Index (GSI1) - Query sessions by therapistId
+        // Global Secondary Index 1 (SessionDateIndex) - Query sessions by therapistId and sessionDate
         sessionsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI1")
+                .indexName("SessionDateIndex")
                 .partitionKey(Attribute.builder()
                         .name("therapistId")
                         .type(AttributeType.STRING)
@@ -171,17 +173,17 @@ public class DynamoDBStack extends Stack {
                 .build();
 
         // Global Secondary Index 1 (MappingsIndex) - Query clienttherapistmappings by therapistId
-        mappingsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("MappingsIndex")
-                .partitionKey(Attribute.builder()
-                        .name("therapistId")
-                        .type(AttributeType.STRING)
-                        .build())
-                .sortKey(Attribute.builder()
-                        .name("clientId")
-                        .type(AttributeType.STRING)
-                        .build())
-                .build());
+//        mappingsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+//                .indexName("MappingsIndex")
+//                .partitionKey(Attribute.builder()
+//                        .name("therapistId")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .sortKey(Attribute.builder()
+//                        .name("clientId")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .build());
 
         // Define the Appointments Table
         Table appointmentsTable = Table.Builder.create(this, "AppointmentsTable")
@@ -198,17 +200,18 @@ public class DynamoDBStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
 
-        appointmentsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
-                .indexName("GSI1")
-                .partitionKey(Attribute.builder()
-                        .name("therapistId")
-                        .type(AttributeType.STRING)
-                        .build())
-                .sortKey(Attribute.builder()
-                        .name("timestamp")
-                        .type(AttributeType.STRING)
-                        .build())
-                .build());
+        // Global Secondary Index 1 (AppointmentsIndex) - Query appointments by therapistId
+//        appointmentsTable.addGlobalSecondaryIndex(GlobalSecondaryIndexProps.builder()
+//                .indexName("AppointmentsIndex")
+//                .partitionKey(Attribute.builder()
+//                        .name("therapistId")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .sortKey(Attribute.builder()
+//                        .name("timestamp")
+//                        .type(AttributeType.STRING)
+//                        .build())
+//                .build());
     }
 
     public Table getClientsTable() {
@@ -218,4 +221,8 @@ public class DynamoDBStack extends Stack {
     public Table getTherapistsTable() { return therapistsTable; }
 
     public Table getMappingsTable() { return mappingsTable; }
+
+    public Table getSessionsTable() { return sessionsTable; }
+
+    public Table getMessagesTable() { return messagesTable; }
 }

@@ -14,7 +14,7 @@ public class TherapistLambdaStack extends Stack {
     public TherapistLambdaStack(final Construct scope, final String id, DynamoDBStack dynamoDBStack) {
         super(scope, id);
 
-        // Retrieve the Therapist table from DynamoDBStack
+        // Retrieve the Therapists table from DynamoDBStack
         Table therapistsTable = dynamoDBStack.getTherapistsTable();
 
         // Create the CreateTherapist Lambda using factory

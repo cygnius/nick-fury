@@ -56,8 +56,8 @@ Purpose: Stores messages exchanged between clients and therapists.
 Partition Key: messageId (UUID, String)
 Sort Key: timestamp (ISO 8601, String)
 Attributes:
-sender (String, either Client or Therapist)
-receiver (String, either Client or Therapist)
+senderId (String, either Client or Therapist)
+receiverId (String, either Client or Therapist)
 messageContent (String)
 GSI1PK: sender
 GSI1SK: receiver

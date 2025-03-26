@@ -3,6 +3,8 @@ package com.myorg.lambda;
 import com.myorg.db.DynamoDBStack;
 import com.myorg.lambda.client.ClientLambdaStack;
 import com.myorg.lambda.mapping.MappingLambdaStack;
+import com.myorg.lambda.message.MessageLambdaStack;
+import com.myorg.lambda.session.SessionLambdaStack;
 import com.myorg.lambda.therapist.TherapistLambdaStack;
 import software.amazon.awscdk.Stack;
 import software.constructs.Construct;
@@ -12,6 +14,8 @@ public class LambdaStack extends Stack {
     private final ClientLambdaStack clientLambdaStack;
     private final TherapistLambdaStack therapistLambdaStack;
     private final MappingLambdaStack mappingLambdaStack;
+    private final SessionLambdaStack sessionLambdaStack;
+    private final MessageLambdaStack messageLambdaStack;
 
     public LambdaStack(final Construct scope, final String id, DynamoDBStack dynamoDBStack) {
         super(scope, id);
@@ -24,6 +28,12 @@ public class LambdaStack extends Stack {
 
         // Initialize MappingLambdaStack
         mappingLambdaStack = new MappingLambdaStack(this, "MappingLambdaStack", dynamoDBStack);
+
+        // Initialize SessionLambdaStack
+        sessionLambdaStack = new SessionLambdaStack(this, "SessionLambdaStack", dynamoDBStack);
+
+        // Initialize MessageLambdaStack
+        messageLambdaStack = new MessageLambdaStack(this, "MessageLambdaStack", dynamoDBStack);
     }
 
     public ClientLambdaStack getClientLambdaStack() {
@@ -36,5 +46,13 @@ public class LambdaStack extends Stack {
 
     public MappingLambdaStack getMappingLambdaStack() {
         return mappingLambdaStack;
+    }
+
+    public SessionLambdaStack getSessionLambdaStack() {
+        return sessionLambdaStack;
+    }
+
+    public MessageLambdaStack getMessageLambdaStack() {
+        return messageLambdaStack;
     }
 }
