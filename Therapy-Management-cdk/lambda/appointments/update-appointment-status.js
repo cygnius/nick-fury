@@ -1,0 +1,57 @@
+const AWS = require("aws-sdk");
+const { generateResponse, authenticateRequest } = require("../shared/utils");
+
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+const SESSION_TABLE = process.env.SESSION_TABLE;
+
+exports.handler = async (event) => {
+  try {
+    const authResponse = await authenticateRequest(event);
+    if (authResponse.statusCode !== 200) {
+      return authResponse;
+    }
+
+    const { appointmentId } = event.pathParameters;
+    const { status, notes } = JSON.parse(event.body);
+
+    if (!status || !["CONFIRMED", "REJECTED", "CANCELLED"].includes(status)) {
+      return generateResponse(400, { error: "Invalid status" });
+    }
+
+    const now = new Date().toISOString();
+
+    const result = await dynamodb.update({
+      TableName: SESSION_TABLE,
+      Key: { session_id: appointmentId },
+      UpdateExpression: "SET #status = :status, notes = :notes, updated_at = :now",
+      ConditionExpression: "attribute_exists(session_id)",
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+      ExpressionAttributeValues: {
+        ":status": status,
+        ":notes": notes || "",
+        ":now": now,
+      },
+      ReturnValues: "ALL_NEW",
+    }).promise();
+
+    return generateResponse(200, {
+      id: appointmentId,
+      therapistId: result.Attributes.therapist_id,
+      clientId: result.Attributes.client_id,
+      startTime: result.Attributes.start_time,
+      endTime: result.Attributes.end_time,
+      status: result.Attributes.status,
+      notes: result.Attributes.notes,
+      createdAt: result.Attributes.created_at,
+      updatedAt: result.Attributes.updated_at,
+    });
+  } catch (error) {
+    if (error.code === "ConditionalCheckFailedException") {
+      return generateResponse(404, { error: "Appointment not found" });
+    }
+    console.error("Error:", error);
+    return generateResponse(500, { error: "Internal Server Error" });
+  }
+};
