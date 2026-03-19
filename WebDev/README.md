@@ -1,5 +1,5 @@
-# Software Development hiring assignments for EffDog
-To read more about the recruitment process and open opportunities at EffDog, click [here](https://bit.ly/31O42C1)
+# Software Development hiring assignments for CloudVictor
+To read more about the recruitment process and open opportunities at CloudVictor, click [here](https://bit.ly/31O42C1)
 
 ## Introduction
 We are giving you a business problem and you have to translate it into a technical solution - develop backend APIs (Java + Lambda + Swagger + DynamoDB) fulfilling all business requirements. 
@@ -10,7 +10,7 @@ The goal of this hiring challenge is to test:
 * your ability to learn new technologies/frameworks and apply them in your project.
 * your familiarity with concepts in Java & Web API design.
 
-*Note: This is a public submission. Any work on this assignment does not bring EffDog or its employees any moat; and by design, is made to assess skills we need. Assignment provided is unrelated to EffDog's core business.* 
+*Note: This is a public submission. Any work on this assignment does not bring CloudVictor or its employees any moat; and by design, is made to assess skills we need. Assignment provided is unrelated to CloudVictor's core business.* 
 
 ## Assignment
 *   The busines problem is located [here](../stories/therapy.md).
@@ -163,7 +163,7 @@ We look forward to seeing your implementation!
 * Maintainability and organisation of code.
 * Balancing between speed and quality of code - we understand that candidates can only spend limited time on these challenges. If you do make any trade-offs in favour of saving time, do mention them in comments. We do value calculated & well reasoned assumptions.
 * Ownership - going beyond the exact job description to deliver a finished product. Optional elements above provide you a way to get more brownie points assuring success.
-* No submissions to be made with compressed/binary files - all source code should be version controlled and visible in plain text in github. This is essential to our idealogy of public submission by interview candidates, not creating a competitive advantage for EffDog employees or organization.
+* No submissions to be made with compressed/binary files - all source code should be version controlled and visible in plain text in github. This is essential to our idealogy of public submission by interview candidates, not creating a competitive advantage for CloudVictor employees or organization.
 * How much the candidate stays in touch with us during the process of the project. What is the quality of clarifying questions they asked. How clear is their thought process. 
 * Follow [best practices](https://github.community/t/best-practices-for-pull-requests/10195) for pull requests.
 * Ability to learn and use version control via Git
