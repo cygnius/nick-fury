@@ -1,0 +1,318 @@
+openapi: 3.0.1
+info:
+  title: Journaling Therapy API
+  description: API for managing client and therapist interactions, emotion journals, sessions, and communication
+  version: 1.0.0
+
+paths:
+  # CLIENTS API
+  /clients:
+    get:
+      summary: Get a list of all clients
+      operationId: getClients
+      responses:
+        '200':
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+
+    post:
+      summary: Create a new client
+      operationId: createClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Client successfully created
+
+  /clients/{clientId}:
+    get:
+      summary: Get details of a specific client
+      operationId: getClient
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      responses:
+        '200':
+          description: Client details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+    put:
+      summary: Update a client's details
+      operationId: updateClient
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Client updated successfully
+
+    delete:
+      summary: Delete a client
+      operationId: deleteClient
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      responses:
+        '204':
+          description: Client deleted successfully
+
+  /clients/{clientId}/therapists:
+    get:
+      summary: Get list of therapists associated with the client
+      operationId: getClientTherapists
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      responses:
+        '200':
+          description: List of therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+  /clients/{clientId}/therapists/{therapistId}:
+    post:
+      summary: Add a therapist to a client’s account
+      operationId: addTherapistToClient
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+        - $ref: '#/components/parameters/therapistId'
+      responses:
+        '200':
+          description: Therapist added successfully
+
+    delete:
+      summary: Remove a therapist from a client’s account
+      operationId: removeTherapistFromClient
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+        - $ref: '#/components/parameters/therapistId'
+      responses:
+        '204':
+          description: Therapist removed successfully
+
+  /clients/{clientId}/journal:
+    post:
+      summary: Add a new emotion to the client’s journal
+      operationId: addEmotion
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmotionEntry'
+      responses:
+        '201':
+          description: Emotion entry added successfully
+
+  /clients/{clientId}/sessions:
+    get:
+      summary: Get list of sessions associated with the client
+      operationId: getClientSessions
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      responses:
+        '200':
+          description: List of client’s sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+
+  /clients/{clientId}/messages:
+    post:
+      summary: Send a message to a therapist
+      operationId: sendMessageToTherapist
+      parameters:
+        - $ref: '#/components/parameters/clientId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Message sent successfully
+
+  # THERAPISTS API
+  /therapists:
+    get:
+      summary: Get a list of all therapists
+      operationId: getTherapists
+      responses:
+        '200':
+          description: List of therapists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+
+    post:
+      summary: Create a new therapist account
+      operationId: createTherapist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        '201':
+          description: Therapist successfully created
+
+  /therapists/{therapistId}:
+    get:
+      summary: Get details of a specific therapist
+      operationId: getTherapist
+      parameters:
+        - $ref: '#/components/parameters/therapistId'
+      responses:
+        '200':
+          description: Therapist details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+
+    put:
+      summary: Update therapist details
+      operationId: updateTherapist
+      parameters:
+        - $ref: '#/components/parameters/therapistId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        '200':
+          description: Therapist updated successfully
+
+    delete:
+      summary: Delete a therapist
+      operationId: deleteTherapist
+      parameters:
+        - $ref: '#/components/parameters/therapistId'
+      responses:
+        '204':
+          description: Therapist deleted successfully
+
+  /therapists/{therapistId}/sessions:
+    post:
+      summary: Create a new session for clients
+      operationId: createSession
+      parameters:
+        - $ref: '#/components/parameters/therapistId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Session'
+      responses:
+        '201':
+          description: Session successfully created
+
+components:
+  parameters:
+    clientId:
+      name: clientId
+      in: path
+      required: true
+      description: Client ID
+      schema:
+        type: string
+    therapistId:
+      name: therapistId
+      in: path
+      required: true
+      description: Therapist ID
+      schema:
+        type: string
+
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        therapists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Therapist'
+    Therapist:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+    EmotionEntry:
+      type: object
+      properties:
+        emotion:
+          type: string
+        intensity:
+          type: string
+        time:
+          type: string
+          format: date-time
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+        therapistId:
+          type: string
+        privateNotes:
+          type: string
+        sharedNotes:
+          type: string
+        status:
+          type: string
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+        senderId:
+          type: string
+        recipientId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
