@@ -1,0 +1,154 @@
+DynamoDB Schema for Therapy Journaling API
+==========================================
+
+--------------------------------------------------
+1. Users Table
+--------------------------------------------------
+Primary Key (PK): userId (String)
+Attributes:
+  - email (String, Unique)
+  - passwordHash (String)
+  - role (String) [CLIENT | THERAPIST]
+  - createdAt (String, ISO-8601 Date)
+
+Global Secondary Index (GSI):
+  - GSI-1: email-index
+      PK: email
+      SK: userId
+
+Queries:
+  - Authenticate user by querying email-index.
+  - Fetch user details using userId.
+
+--------------------------------------------------
+2. Journals Table
+--------------------------------------------------
+Primary Key (PK): clientId (String)
+Sort Key (SK): timestamp (String, ISO-8601 DateTime)
+Attributes:
+  - emotion (String)
+  - intensity (Number)
+
+Queries:
+  - Fetch all journal entries for a client by clientId.
+
+--------------------------------------------------
+3. Therapists Table
+--------------------------------------------------
+Primary Key (PK): therapistId (String)
+Attributes:
+  - name (String)
+  - specialty (String)
+
+Queries:
+  - List all therapists.
+
+--------------------------------------------------
+4. Therapist-Client Mapping Table
+--------------------------------------------------
+Primary Key (PK): clientId (String)
+Sort Key (SK): therapistId (String)
+Attributes:
+  - therapistName (String)
+
+Global Secondary Index (GSI):
+  - GSI-1: therapist-index
+      PK: therapistId
+      SK: clientId
+
+Queries:
+  - From client perspective: Fetch mapped therapists using the primary key.
+  - From therapist perspective: List all clients mapped to a therapist via the therapist-index.
+
+--------------------------------------------------
+5. Journal Access Table
+--------------------------------------------------
+Primary Key (PK): therapistId (String)
+Sort Key (SK): clientId (String)
+Attributes:
+  - accessStatus (String) [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+
+Global Secondary Index (GSI):
+  - GSI-1: client-index
+      PK: clientId
+      SK: therapistId
+
+Queries:
+  - Therapist Query: Manage/update access requests using the primary key.
+  - Client Query: List all therapists with journal access using the client-index.
+
+--------------------------------------------------
+6. Sessions Table
+--------------------------------------------------
+Primary Key (PK): sessionId (String, UUID)
+Attributes:
+  - therapistId (String)
+  - clientId (String)
+  - sessionDate (String, ISO-8601 DateTime)
+  - privateNotes (String)
+  - sharedNotes (String)
+
+Global Secondary Index (GSI):
+  - GSI-1: therapist-session-index
+      PK: therapistId
+      SK: sessionDate
+
+Queries:
+  - Fetch session details using sessionId.
+  - List all sessions for a particular therapist after a given date using the therapist-session-index.
+
+--------------------------------------------------
+7. Messages Table
+--------------------------------------------------
+Primary Key (PK): conversationId (String) [Concatenation of senderId_receiverId]
+Sort Key (SK): timestamp (String, ISO-8601 DateTime)
+Attributes:
+  - senderId (String)
+  - receiverId (String)
+  - message (String)
+
+Global Secondary Index (GSI):
+  - GSI-1: sender-index
+      PK: senderId
+      SK: timestamp
+
+Queries:
+  - Fetch message history between two users by conversationId.
+  - List all messages sent by a particular sender using the sender-index.
+
+--------------------------------------------------
+8. Appointments Table
+--------------------------------------------------
+Primary Key (PK): appointmentId (String, UUID)
+Attributes:
+  - clientId (String)
+  - therapistId (String)
+  - appointmentDate (String, ISO-8601 DateTime)
+  - status (String) [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+  - createdAt (String, ISO-8601 DateTime)
+
+Queries:
+  - Fetch appointment status using appointmentId.
+
+==================================================
+Indexes and Queries Mapping Summary
+--------------------------------------------------
+API Endpoint                                    | Table                        | Query                                          | Index Used
+------------------------------------------------|------------------------------|------------------------------------------------|---------------------------
+/auth/login                                     | Users                        | Query by email                                 | email-index
+/clients/{clientId}/journals                    | Journals                     | Query by clientId                              | None
+/therapists                                     | Therapists                   | Scan all therapists (optional filters)         | None
+/therapists/{therapistId}/clients               | Therapist-Client Mapping     | Query by therapistId                           | therapist-index
+/mapping/{clientId}                             | Therapist-Client Mapping     | Query by clientId                              | Primary Key
+/therapists/{therapistId}/clients/{clientId}/journal-access | Journal Access        | Query by therapistId                           | Primary Key
+/journal/{clientId}                             | Journal Access               | Query by clientId (list therapists with access) | client-index
+/sessions                                       | Sessions                     | Query by sessionId or filter by therapist/date | therapist-session-index
+/messages/history                               | Messages                     | Query by conversation or list by sender         | sender-index (for sender list)
+/appointments/{appointmentId}/status             | Appointments                 | Query by appointmentId                         | None
+
+==================================================
+This schema now includes:
+1. A GSI ("therapist-index") on the Therapist-Client Mapping Table for a therapist to list all their clients.
+2. A GSI ("client-index") on the Journal Access Table for a client to list all therapists with journal access.
+3. A GSI ("therapist-session-index") on the Sessions Table to filter sessions for a therapist after a certain date.
+4. A GSI ("sender-index") on the Messages Table to list all messages sent by a user.

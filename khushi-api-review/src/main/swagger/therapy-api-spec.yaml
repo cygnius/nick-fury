@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  title: Therapy Journaling API
+  version: 1.0.1
+  description: API for managing emotions journaling, therapist-client interaction, messaging, and appointments.
+servers:
+  - url: https://api.therapyapp.com
+
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        clientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        expertise:
+          type: string
+        pincode:
+          type: string
+    Therapist:
+      type: object
+      properties:
+        therapistId:
+          type: string
+        name:
+          type: string
+        specialty:
+          type: string
+        pincode:
+          type: string
+    JournalEntry:
+      type: object
+      properties:
+        entryId:
+          type: string
+        clientId:
+          type: string
+        emotion:
+          type: string
+        intensity:
+          type: integer
+          minimum: 1
+          maximum: 5
+        timestamp:
+          type: string
+          format: date-time
+    Session:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        therapistId:
+          type: string
+        clientId:
+          type: string
+        date:
+          type: string
+          format: date-time
+        startTime:
+          type: string
+        endTime:
+          type: string
+        status:
+          type: string
+          enum: [AVAILABLE, BOOKED, CANCELLED]
+    Appointment:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+        clientId:
+          type: string
+        therapistId:
+          type: string
+        appointmentDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [PENDING, ACCEPTED, REJECTED, EXPIRED, REVOKED]
+
+paths:
+  /clients:
+    get:
+      summary: List all clients
+      responses:
+        '200':
+          description: List of clients.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Create a new client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Client created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  
+  /clients/{clientId}:
+    get:
+      summary: Get client details
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      summary: Update client details
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Client updated successfully.
+    delete:
+      summary: Delete a client
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Client deleted successfully.
+  
+  /therapists:
+    get:
+      summary: List all therapists
+      parameters:
+        - name: expertise
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pincode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of therapists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Therapist'
+    post:
+      summary: Create a new therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        '201':
+          description: Therapist created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+  
+  /therapists/{therapistId}:
+    get:
+      summary: Get therapist details
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Therapist details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Therapist'
+    put:
+      summary: Update therapist details
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Therapist'
+      responses:
+        '200':
+          description: Therapist updated successfully.
+    delete:
+      summary: Delete a therapist
+      parameters:
+        - name: therapistId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Therapist deleted successfully.
+
+  /mapping/{clientId}:
+    post:
+      summary: Map a client to a therapist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                therapistId:
+                  type: string
+              required:
+                - therapistId
+      responses:
+        '201':
+          description: Client mapped to therapist.
+
+  /journal/{clientId}:
+    post:
+      summary: Add a journal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntry'
+      responses:
+        '201':
+          description: Journal entry added successfully.
+
