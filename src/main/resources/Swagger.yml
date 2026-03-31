@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  title: Effdog Cygnius API
+  description: API for managing clients
+  version: "1.0.0"
+paths:
+  /api/clients:
+    get:
+      summary: Get all clients
+      operationId: getAllClients
+      responses:
+        '200':
+          description: A list of clients
+    post:
+      summary: Create a new client
+      operationId: createClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Client created
+  /api/clients/{clientId}:
+    get:
+      summary: Get a client by clientId
+      operationId: getClientById
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Client not found
+    put:
+      summary: Update a client
+      operationId: updateClient
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Client updated
+    delete:
+      summary: Delete a client
+      operationId: deleteClient
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Client deleted
+        '404':
+          description: Client not found
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        clientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
